@@ -12,4 +12,6 @@
     <dimen name="cast_margin">8dp</dimen>
     <dimen name="name_artist_margin">6dp</dimen>
     <dimen name="landspace_portret_size">170dp</dimen>
+    <dimen name="image_height">298dp</dimen>
+    <dimen name="land_space_height">411dp</dimen>
 </resources>
