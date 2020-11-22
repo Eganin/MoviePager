@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MoviesApp</string>
+    <string name="poster">Poster</string>
+    <string name="back_text_details">Back</string>
+    <string name="back_text_details_path"><![CDATA[<]]></string>
+    <string name="default_pg_text">13+</string>
+    <string name="default_tags_text">Action, Adventure, Fantasy</string>
+    <string name="star_text">star</string>
+    <string name="default_text_reviews_count">125 reviews</string>
+    <string name="storyline_label_text">Storyline</string>
+    <string name="default_text_storyline_description">After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos\' actions and restore balance to the universe.</string>
+    <string name="cast_label_text">Cast</string>
+    <string name="chris_hemsworth">Chris Hemsworth</string>
+    <string name="mark_ruffalo">Mark Ruffalo</string>
+    <string name="chris_evans">Chris Evans</string>
+    <string name="robert_downey_jr">Robert Downey Jr.</string>
+</resources>

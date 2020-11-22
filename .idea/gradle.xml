@@ -12,6 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/helloworld" />
+            <option value="$PROJECT_DIR$/moviesapp" />
             <option value="$PROJECT_DIR$/viewandviewsgroup" />
           </set>
         </option>
