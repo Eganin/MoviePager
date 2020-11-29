@@ -2,7 +2,6 @@ package com.example.moviesapp.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MovieAdapter
-import java.util.*
 
 class FragmentMoviesList : Fragment() {
 
@@ -49,16 +47,14 @@ class FragmentMoviesList : Fragment() {
     }
 
     companion object {
-        fun newInstance(name: String, columnCount: Int): FragmentMoviesList {
+        fun newInstance(columnCount: Int): FragmentMoviesList {
             val args = Bundle()
-            args.putString(NAME_SAVE, name)
             args.putInt(COLUMN_COUNT_SAVE, columnCount)
             val fragment = FragmentMoviesList()
             fragment.arguments = args
             return fragment
         }
 
-        private const val NAME_SAVE = "name"
         private const val COLUMN_COUNT_SAVE = "countColumn"
         private const val DEFAULT_COLUMN_COUNT = 2
     }

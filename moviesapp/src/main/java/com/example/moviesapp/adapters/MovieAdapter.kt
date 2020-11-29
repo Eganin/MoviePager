@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 
-class MovieAdapter(var movies: MutableList<Int> = mutableListOf()) :
+class MovieAdapter(var movies: List<Int> = mutableListOf()) :
     RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
     interface OnClickPoster {

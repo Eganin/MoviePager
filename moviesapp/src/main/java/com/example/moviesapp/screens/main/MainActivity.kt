@@ -17,12 +17,14 @@ class MainActivity : AppCompatActivity(), MovieAdapter.OnClickPoster {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        fragmentMoviesDetails = FragmentMoviesDetails.newInstance("avengers")
-        fragmentMoviesList =
-            FragmentMoviesList.newInstance(name = "mainList", columnCount = getColumnCount())
-        supportFragmentManager.beginTransaction().apply {
-            add(R.id.main_container, fragmentMoviesList)
-            commit()
+        if (savedInstanceState == null) {
+            fragmentMoviesDetails = FragmentMoviesDetails.newInstance("avengers")
+            fragmentMoviesList =
+                FragmentMoviesList.newInstance(columnCount = getColumnCount())
+            supportFragmentManager.beginTransaction().apply {
+                add(R.id.main_container, fragmentMoviesList)
+                commit()
+            }
         }
 
     }

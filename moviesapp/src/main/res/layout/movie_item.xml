@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/width_movie_card_view"
     android:layout_height="@dimen/height_movie_card_view"
-
     android:background="@drawable/border_movie_card_view">
 
     <androidx.constraintlayout.widget.ConstraintLayout
