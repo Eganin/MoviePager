@@ -14,4 +14,9 @@
     <dimen name="landspace_portret_size">170dp</dimen>
     <dimen name="image_height">298dp</dimen>
     <dimen name="land_space_height">411dp</dimen>
+    <dimen name="padding_movies_recycler_view">14dp</dimen>
+    <dimen name="width_movie_card_view">170dp</dimen>
+    <dimen name="height_movie_card_view">296dp</dimen>
+    <dimen name="padding_pg">2dp</dimen>
+    <dimen name="margin_medium">13dp</dimen>
 </resources>

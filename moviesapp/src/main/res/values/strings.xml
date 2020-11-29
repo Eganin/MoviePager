@@ -14,4 +14,13 @@
     <string name="mark_ruffalo">Mark Ruffalo</string>
     <string name="chris_evans">Chris Evans</string>
     <string name="robert_downey_jr">Robert Downey Jr.</string>
+    <string name="main_poster_description">Main Poster</string>
+    <string name="star_description">Star</string>
+    <string name="first_image_description">First Image</string>
+    <string name="second_image_description">Second Image</string>
+    <string name="three_image_description">Three image</string>
+    <string name="four_image_description">Four Image</string>
+    <string name="movies_list_label_text">Movies list</string>
+    <string name="default_title_movie">Avengers: End Game</string>
+    <string name="default_time_film">137 MIN</string>
 </resources>
