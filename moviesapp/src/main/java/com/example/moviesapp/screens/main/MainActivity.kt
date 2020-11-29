@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity(), MovieAdapter.OnClickPoster {
                 FragmentMoviesList.newInstance(columnCount = getColumnCount())
             supportFragmentManager.beginTransaction().apply {
                 add(R.id.main_container, fragmentMoviesList)
+                addToBackStack(null)
                 commit()
             }
         }
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity(), MovieAdapter.OnClickPoster {
     override fun click(position: Int) {
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.main_container, fragmentMoviesDetails)
+            addToBackStack(null)
             commit()
         }
 
