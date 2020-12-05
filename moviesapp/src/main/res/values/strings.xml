@@ -23,4 +23,5 @@
     <string name="movies_list_label_text">Movies list</string>
     <string name="default_title_movie">Avengers: End Game</string>
     <string name="default_time_film">137 MIN</string>
+    <string name="image_actor_desciption">Image actor</string>
 </resources>

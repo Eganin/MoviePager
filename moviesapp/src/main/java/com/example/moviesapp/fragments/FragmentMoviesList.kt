@@ -9,11 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
-import com.example.moviesapp.adapters.MovieAdapter
+import com.example.moviesapp.adapters.MoviesAdapter
+import com.example.moviesapp.data.models.Movie
+import com.example.moviesapp.domain.MoviesDataSource
 
 class FragmentMoviesList : Fragment() {
 
-    private val adapter = MovieAdapter(mutableListOf(1))
+    private val adapter = MoviesAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +30,7 @@ class FragmentMoviesList : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MovieAdapter.OnClickPoster)
+        if (context is MoviesAdapter.OnClickPoster)
             adapter.onClickPoster = context
 
     }
@@ -44,6 +46,8 @@ class FragmentMoviesList : Fragment() {
             requireContext(), arguments?.getInt(COLUMN_COUNT_SAVE) ?: DEFAULT_COLUMN_COUNT
         )
         recyclerView.adapter = adapter
+        adapter.bindMovies(newMovies = MoviesDataSource().getMovies())
+        adapter.notifyDataSetChanged()
     }
 
     companion object {

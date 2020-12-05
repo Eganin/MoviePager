@@ -50,6 +50,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/favourite_image"
             android:layout_marginEnd="@dimen/name_artist_margin"
             android:layout_marginTop="@dimen/margin_medium"
             app:layout_constraintEnd_toEndOf="parent"

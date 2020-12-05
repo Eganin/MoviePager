@@ -41,7 +41,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_path_back_start"
             android:padding="@dimen/padding_movies_recycler_view"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/movies_list_label" />

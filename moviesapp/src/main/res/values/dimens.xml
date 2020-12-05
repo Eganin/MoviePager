@@ -19,4 +19,5 @@
     <dimen name="height_movie_card_view">296dp</dimen>
     <dimen name="padding_pg">2dp</dimen>
     <dimen name="margin_medium">13dp</dimen>
+    <dimen name="margin_medium_small">11dp</dimen>
 </resources>

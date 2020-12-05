@@ -2,27 +2,23 @@ package com.example.moviesapp.screens.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.DisplayMetrics
 import com.example.moviesapp.R
-import com.example.moviesapp.adapters.MovieAdapter
+import com.example.moviesapp.adapters.MoviesAdapter
 import com.example.moviesapp.fragments.FragmentMoviesDetails
 import com.example.moviesapp.fragments.FragmentMoviesList
 
-class MainActivity : AppCompatActivity(), MovieAdapter.OnClickPoster {
-
-    private lateinit var fragmentMoviesDetails: FragmentMoviesDetails
-    private lateinit var fragmentMoviesList: FragmentMoviesList
+class MainActivity : AppCompatActivity(), MoviesAdapter.OnClickPoster {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         if (savedInstanceState == null) {
-            fragmentMoviesDetails = FragmentMoviesDetails.newInstance("avengers")
-            fragmentMoviesList =
-                FragmentMoviesList.newInstance(columnCount = getColumnCount())
             supportFragmentManager.beginTransaction().apply {
-                add(R.id.main_container, fragmentMoviesList)
+                add(
+                    R.id.main_container,
+                    FragmentMoviesList.newInstance(columnCount = getColumnCount())
+                )
                 addToBackStack(null)
                 commit()
             }
@@ -41,7 +37,7 @@ class MainActivity : AppCompatActivity(), MovieAdapter.OnClickPoster {
 
     override fun click(position: Int) {
         supportFragmentManager.beginTransaction().apply {
-            replace(R.id.main_container, fragmentMoviesDetails)
+            replace(R.id.main_container, FragmentMoviesDetails())
             addToBackStack(null)
             commit()
         }

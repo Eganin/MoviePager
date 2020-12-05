@@ -10,4 +10,5 @@
     <color name="main_background_color">#191926</color>
     <color name="text_color_tags">#FF3466</color>
     <color name='color_reviews_count'>#6D6D80</color>
+    <color name="screen_bg">#191926</color>
 </resources>
