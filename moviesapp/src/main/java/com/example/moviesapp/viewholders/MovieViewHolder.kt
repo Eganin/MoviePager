@@ -21,7 +21,7 @@ class MovieViewHolder(itemView: View, listener: MoviesAdapter.OnClickPoster?) :
     private val title = itemView.findViewById<AppCompatTextView>(R.id.title_movie)
     private val timeLine = itemView.findViewById<AppCompatTextView>(R.id.time_film)
     private val listStarsRating = listOf<AppCompatImageView>(
-        itemView.findViewById(R.id.star_two_movie),
+        itemView.findViewById(R.id.star_one_movie),
         itemView.findViewById(R.id.star_two_movie),
         itemView.findViewById(R.id.star_three_movie),
         itemView.findViewById(R.id.star_four_movie),

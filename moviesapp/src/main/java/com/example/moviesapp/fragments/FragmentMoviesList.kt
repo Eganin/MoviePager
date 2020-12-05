@@ -15,7 +15,12 @@ import com.example.moviesapp.domain.MoviesDataSource
 
 class FragmentMoviesList : Fragment() {
 
+    interface OnRecalculationScreen {
+        fun recalculationScreen(): Int
+    }
+
     private val adapter = MoviesAdapter()
+    private var onRecalculationScreen: OnRecalculationScreen? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,36 +35,25 @@ class FragmentMoviesList : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MoviesAdapter.OnClickPoster)
-            adapter.onClickPoster = context
+        adapter.onClickPoster = context as MoviesAdapter.OnClickPoster
+        onRecalculationScreen = context as OnRecalculationScreen
 
     }
 
     override fun onDetach() {
         super.onDetach()
         adapter.onClickPoster = null
+        onRecalculationScreen = null
     }
 
     private fun setupRecyclerView(view: View) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.movies_recycler_view)
         recyclerView.layoutManager = GridLayoutManager(
-            requireContext(), arguments?.getInt(COLUMN_COUNT_SAVE) ?: DEFAULT_COLUMN_COUNT
+            requireContext(), onRecalculationScreen?.recalculationScreen()!!
         )
+
         recyclerView.adapter = adapter
         adapter.bindMovies(newMovies = MoviesDataSource().getMovies())
         adapter.notifyDataSetChanged()
-    }
-
-    companion object {
-        fun newInstance(columnCount: Int): FragmentMoviesList {
-            val args = Bundle()
-            args.putInt(COLUMN_COUNT_SAVE, columnCount)
-            val fragment = FragmentMoviesList()
-            fragment.arguments = args
-            return fragment
-        }
-
-        private const val COLUMN_COUNT_SAVE = "countColumn"
-        private const val DEFAULT_COLUMN_COUNT = 2
     }
 }

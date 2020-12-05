@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_margin="@dimen/small_margin_title"
     android:layout_width="80dp"
-    android:layout_height="118dp">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,8 +14,8 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:scaleType="centerCrop"
             android:id="@+id/image_cast"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:contentDescription="@string/image_actor_desciption"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -27,7 +27,7 @@
             android:id="@+id/name_cast"
             style="@style/titleText"
             android:layout_width="80dp"
-            android:layout_height="wrap_content"
+            android:layout_height="28dp"
             android:layout_marginTop="@dimen/name_artist_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

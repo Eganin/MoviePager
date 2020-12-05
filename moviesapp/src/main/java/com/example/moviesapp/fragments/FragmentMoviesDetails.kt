@@ -34,4 +34,8 @@ class FragmentMoviesDetails : Fragment() {
         adapter.bindActors(newActors = ActorsDataSource().getActors())
         adapter.notifyDataSetChanged()
     }
+
+    companion object {
+        fun newInstance(){}
+    }
 }
