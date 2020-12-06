@@ -21,6 +21,7 @@
                 android:contentDescription="@string/poster"
                 android:layerType="software"
                 android:scaleType="centerCrop"
+                android:src="@drawable/orig"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -226,8 +227,8 @@
                 android:layout_marginEnd="@dimen/default_margin"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cast_label"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cast_label" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

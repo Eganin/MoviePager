@@ -44,6 +44,16 @@ class MoviesDataSource {
                 countReviews = 70,
                 timeLine = 120,
                 imageMovie = "https://www.film.ru/sites/default/files/movies/posters/7277537-920152.jpg"
+            ),
+            Movie(
+                title = "Wonder woman",
+                pg = "13+",
+                isFavourite = false,
+                tags = listOf("Action", "Adventure", "Fantasy"),
+                starRating = 5,
+                countReviews = 70,
+                timeLine = 120,
+                imageMovie = "https://www.film.ru/sites/default/files/movies/posters/7277537-920152.jpg"
             )
         )
 

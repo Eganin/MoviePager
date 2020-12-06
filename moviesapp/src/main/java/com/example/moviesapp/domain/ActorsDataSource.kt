@@ -22,11 +22,11 @@ class ActorsDataSource {
                 imageActor = "https://content.muhdo.com/wp-content/uploads/2017/10/MU0217_digibook-24.jpg"
             ),
             Actor(
-                nameActor = "Captain America",
+                nameActor = "Cap",
                 imageActor = "https://img2.goodfon.ru/wallpaper/nbig/5/c0/mstiteli-era-altrona-7694.jpg"
             ),
             Actor(
-                nameActor = "Spider man",
+                nameActor = "Tom xoland",
                 imageActor = "https://s2.best-wallpaper.net/wallpaper/2560x1920/1805/Spider-Man-Avengers-Infinity-War_2560x1920.jpg"
             )
         )
