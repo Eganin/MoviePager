@@ -1,5 +1,6 @@
 package com.example.moviesapp.viewholders
 
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -30,23 +31,20 @@ class MovieViewHolder(itemView: View, listener: MoviesAdapter.OnClickPoster?) :
 
     init {
         itemView.apply {
-            setOnClickListener { listener?.click(position = adapterPosition) }
+            setOnClickListener { listener?.createMoviesDetailsFragment(position = adapterPosition)
+            }
         }
     }
 
     fun onBind(movie: Movie) {
 
         title.text = movie.title
-        pgMovie.text = movie.pg
+        pgMovie.text = movie.ageRating
         tagLine.text = movie.tags.joinToString(separator = ",")
-        "${movie.countReviews} reviews".also { countReviews.text = it }
-        "${movie.timeLine} MIN".also { timeLine.text = it }
-        Glide.with(context)
-            .load(movie.imageMovie)
-            .apply(ActorViewHolder.imageOption)
-            .into(imagePoster)
-        bindStars(countRating = movie.starRating)
-        bindFavouriteImage(isFavourite = movie.isFavourite)
+       countReviews.text = "${movie.countReviews} reviews"
+        timeLine.text = "${movie.timeLine} MIN"
+
+        downloadImage(movie=movie)
 
     }
 
@@ -73,6 +71,18 @@ class MovieViewHolder(itemView: View, listener: MoviesAdapter.OnClickPoster?) :
                 R.drawable.ic_like
             )
         )
+    }
+
+    private fun downloadImage(movie: Movie){
+        Glide.with(context)
+            .clear(imagePoster)
+
+        Glide.with(context)
+            .load(movie.imageMovie)
+            .apply(ActorViewHolder.imageOption)
+            .into(imagePoster)
+        bindStars(countRating = movie.starRating)
+        bindFavouriteImage(isFavourite = movie.isFavourite)
     }
 
 }

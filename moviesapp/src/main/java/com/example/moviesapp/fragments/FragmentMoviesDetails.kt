@@ -15,11 +15,6 @@ import com.example.moviesapp.domain.ActorsDataSource
 
 class FragmentMoviesDetails : Fragment() {
 
-    interface OnClickBack {
-        fun backFragment()
-    }
-
-    private var onClickBack: OnClickBack? = null
 
     private val adapter = ActorsAdapter()
 
@@ -33,21 +28,11 @@ class FragmentMoviesDetails : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView(view = view)
         view.findViewById<AppCompatTextView>(R.id.back_activity).setOnClickListener {
-            onClickBack?.backFragment()
+            activity?.onBackPressed()
         }
         view.findViewById<AppCompatTextView>(R.id.back_activity_path).setOnClickListener {
-            onClickBack?.backFragment()
+            activity?.onBackPressed()
         }
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        onClickBack = context as? OnClickBack
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        onClickBack = null
     }
 
     private fun setupRecyclerView(view: View) {

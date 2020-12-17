@@ -1,3 +1,3 @@
 package com.example.moviesapp.data.models
 
-data class Actor (val nameActor: String, val imageActor: String)
+data class Actor (val actorName: String, val actorImage: String)

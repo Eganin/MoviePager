@@ -16,7 +16,7 @@ class MoviesAdapter :
     private var movies: MutableList<Movie> = mutableListOf()
 
     interface OnClickPoster {
-        fun click(position: Int)
+        fun createMoviesDetailsFragment(position: Int)
     }
 
     var onClickPoster: OnClickPoster? = null

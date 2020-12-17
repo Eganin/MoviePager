@@ -2,25 +2,22 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_margin="@dimen/small_margin_title"
     android:layout_width="80dp"
-    android:layout_height="wrap_content">
+    android:layout_height="114dp"
+    android:layout_margin="@dimen/small_margin_title">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="@color/main_background_color">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:scaleType="centerCrop"
             android:id="@+id/image_cast"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:contentDescription="@string/image_actor_desciption"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/name_cast"
+            android:scaleType="centerCrop"
             tools:src="@drawable/toni" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -29,12 +26,9 @@
             android:layout_width="80dp"
             android:layout_height="28dp"
             android:layout_marginTop="@dimen/name_artist_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/image_cast"
+            android:textSize="12sp"
             tools:text="@string/robert_downey_jr" />
+    </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

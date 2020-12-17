@@ -23,10 +23,13 @@ class ActorViewHolder(itemView: View) :
 
     fun onBind(actor: Actor) {
         Glide.with(context)
-            .load(actor.imageActor)
+            .clear(imageCast)
+
+        Glide.with(context)
+            .load(actor.actorImage)
             .apply(imageOption)
             .into(imageCast)
-        nameCast.text = actor.nameActor
+        nameCast.text = actor.actorName
     }
 }
 

@@ -7,7 +7,7 @@ class MoviesDataSource {
         return listOf(
             Movie(
                 title = "Avengers end game",
-                pg = "13+",
+                ageRating = "13+",
                 isFavourite = true,
                 tags = listOf("Action", "Adventure"),
                 starRating = 5,
@@ -17,7 +17,7 @@ class MoviesDataSource {
             ),
             Movie(
                 title = "Black window",
-                pg = "13+",
+                ageRating = "13+",
                 isFavourite = true,
                 tags = listOf("Action", "Adventure", "Sci-Fi"),
                 starRating = 4,
@@ -27,7 +27,7 @@ class MoviesDataSource {
             ),
             Movie(
                 title = "Tenet",
-                pg = "16+",
+                ageRating = "16+",
                 isFavourite = false,
                 tags = listOf("Action"),
                 starRating = 5,
@@ -37,7 +37,7 @@ class MoviesDataSource {
             ),
             Movie(
                 title = "Wonder woman",
-                pg = "13+",
+                ageRating = "13+",
                 isFavourite = false,
                 tags = listOf("Action", "Adventure", "Fantasy"),
                 starRating = 5,
@@ -47,7 +47,7 @@ class MoviesDataSource {
             ),
             Movie(
                 title = "Wonder woman",
-                pg = "13+",
+                ageRating = "13+",
                 isFavourite = false,
                 tags = listOf("Action", "Adventure", "Fantasy"),
                 starRating = 5,
