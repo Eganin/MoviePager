@@ -1,6 +1,5 @@
 package com.example.moviesapp.viewholders
 
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -37,7 +36,6 @@ class MovieViewHolder(itemView: View, listener: MoviesAdapter.OnClickPoster?) :
     }
 
     fun onBind(movie: Movie) {
-
         title.text = movie.title
         pgMovie.text = movie.ageRating
         tagLine.text = movie.tags.joinToString(separator = ",")

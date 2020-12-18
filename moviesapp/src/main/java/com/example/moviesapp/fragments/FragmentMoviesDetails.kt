@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.ActorsAdapter
-import com.example.moviesapp.domain.ActorsDataSource
 
 class FragmentMoviesDetails : Fragment() {
 

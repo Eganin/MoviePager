@@ -1,6 +1,7 @@
 package com.example.moviesapp.data.models
 
 data class Movie(
+    val id: Int,
     val title: String,
     val ageRating: String,
     val isFavourite: Boolean,
@@ -8,5 +9,7 @@ data class Movie(
     val starRating: Int,
     val countReviews: Int,
     val timeLine: Int,
-    val imageMovie: String
+    val imageMovie: String,
+    val genres: List<Genre>,
+    val actors: List<Actor>
 )
