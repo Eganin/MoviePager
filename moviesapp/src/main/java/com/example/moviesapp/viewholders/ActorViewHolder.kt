@@ -8,15 +8,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.moviesapp.R
 import com.example.moviesapp.data.models.Actor
+import com.example.moviesapp.utils.imageOption
 
 class ActorViewHolder(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
-
-    companion object {
-        val imageOption = RequestOptions()
-            .placeholder(R.drawable.ic_baseline_person_24)
-            .fallback(R.drawable.ic_baseline_person_24)!!
-    }
 
     private val imageCast = itemView.findViewById<AppCompatImageView>(R.id.image_cast)
     private val nameCast = itemView.findViewById<AppCompatTextView>(R.id.name_cast)
@@ -25,11 +20,13 @@ class ActorViewHolder(itemView: View) :
         Glide.with(context)
             .clear(imageCast)
 
+
         Glide.with(context)
-            .load(actor.actorImage)
+            .load(actor.picture)
             .apply(imageOption)
             .into(imageCast)
-        nameCast.text = actor.actorName
+        nameCast.text = actor.name
+
     }
 }
 

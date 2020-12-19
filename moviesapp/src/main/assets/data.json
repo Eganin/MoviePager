@@ -5,7 +5,7 @@
     "video": false,
     "poster_path": "https://image.tmdb.org/t/p/w342/9HT9982bzgN5on1sLRmc1GMn6ZC.jpg",
     "id": 671039,
-    "adult": false,
+    "adult": true,
     "backdrop_path": "https://image.tmdb.org/t/p/w342/gnf4Cb2rms69QbCnGFJyqwBWsxv.jpg",
     "original_language": "fr",
     "original_title": "Bronx",

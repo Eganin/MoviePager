@@ -13,10 +13,10 @@ import com.example.moviesapp.viewholders.MovieViewHolder
 class MoviesAdapter :
     RecyclerView.Adapter<MovieViewHolder>() {
 
-    private var movies: MutableList<Movie> = mutableListOf()
+    private var movies: List<Movie> = mutableListOf()
 
     interface OnClickPoster {
-        fun createMoviesDetailsFragment(position: Int)
+        fun createMoviesDetailsFragment(movie: Movie)
     }
 
     var onClickPoster: OnClickPoster? = null
@@ -24,7 +24,8 @@ class MoviesAdapter :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MovieViewHolder(
         itemView = LayoutInflater.from(parent.context)
             .inflate(R.layout.view_holder_movie, parent, false),
-        listener = onClickPoster
+        listener = onClickPoster,
+        movies = movies
     )
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) =
@@ -33,10 +34,6 @@ class MoviesAdapter :
     override fun getItemCount() = movies.size
 
     fun bindMovies(newMovies: List<Movie>) {
-        movies = newMovies as MutableList<Movie>
-    }
-
-    fun addMovies(newMovies: List<Movie>) {
-        movies.addAll(newMovies)
+        movies = newMovies
     }
 }

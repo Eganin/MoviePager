@@ -9,8 +9,9 @@ import com.bumptech.glide.Glide
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
 import com.example.moviesapp.data.models.Movie
+import com.example.moviesapp.utils.imageOption
 
-class MovieViewHolder(itemView: View, listener: MoviesAdapter.OnClickPoster?) :
+class MovieViewHolder(itemView: View, listener: MoviesAdapter.OnClickPoster?, movies : List<Movie>) :
     RecyclerView.ViewHolder(itemView) {
 
     private val pgMovie = itemView.findViewById<AppCompatTextView>(R.id.pg_movie)
@@ -30,20 +31,24 @@ class MovieViewHolder(itemView: View, listener: MoviesAdapter.OnClickPoster?) :
 
     init {
         itemView.apply {
-            setOnClickListener { listener?.createMoviesDetailsFragment(position = adapterPosition)
+            setOnClickListener {
+                listener?.createMoviesDetailsFragment(movie = movies[adapterPosition])
             }
         }
     }
 
     fun onBind(movie: Movie) {
         title.text = movie.title
-        pgMovie.text = movie.ageRating
-        tagLine.text = movie.tags.joinToString(separator = ",")
-       countReviews.text = "${movie.countReviews} reviews"
-        timeLine.text = "${movie.timeLine} MIN"
+        pgMovie.text = "+${movie.minimumAge}"
+        tagLine.text = movie.genres.joinToString(separator = " , "){it.name}
+        countReviews.text = "${movie.numberOfRatings} reviews"
+        timeLine.text = "${movie.runtime} MIN"
 
-        downloadImage(movie=movie)
+        downloadImage(movie = movie)
+        bindStars(countRating = (movie.ratings /2).toInt())
 
+
+        //bindFavouriteImage(isFavourite = movie.isFavourite)
     }
 
     private fun bindStars(countRating: Int) {
@@ -71,16 +76,14 @@ class MovieViewHolder(itemView: View, listener: MoviesAdapter.OnClickPoster?) :
         )
     }
 
-    private fun downloadImage(movie: Movie){
+    private fun downloadImage(movie: Movie) {
         Glide.with(context)
             .clear(imagePoster)
 
         Glide.with(context)
-            .load(movie.imageMovie)
-            .apply(ActorViewHolder.imageOption)
+            .load(movie.poster)
+            .apply(imageOption)
             .into(imagePoster)
-        bindStars(countRating = movie.starRating)
-        bindFavouriteImage(isFavourite = movie.isFavourite)
     }
 
 }
