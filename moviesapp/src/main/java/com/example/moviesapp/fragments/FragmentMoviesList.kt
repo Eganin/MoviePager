@@ -38,21 +38,19 @@ class FragmentMoviesList  : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is MoviesAdapter.OnClickPoster) adapter.onClickPoster = context
-
     }
 
     override fun onDetach() {
         super.onDetach()
         adapter.onClickPoster = null
-
     }
 
     private fun downloadData(view: View) {
         uiScope.launch {
-            val deffered = uiScope.async {
+            val differed = uiScope.async {
                 moviesData = loadMovies(requireContext())
             }
-            deffered.await()
+            differed.await()
             setupRecyclerView(view = view, data = moviesData)
         }
     }

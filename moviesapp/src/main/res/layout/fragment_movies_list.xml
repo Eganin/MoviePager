@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,12 +12,12 @@
         android:background="@color/main_background_color">
 
         <TextView
-            android:fontFamily="@font/roboto_bold_family"
             android:id="@+id/movies_list_label"
             style="@style/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_margin_title"
+            android:fontFamily="@font/roboto_bold_family"
             android:text="@string/movies_list_label_text"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/shape_for_movies_label"
@@ -37,15 +38,15 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
-            tools:listitem="@layout/view_holder_movie"
             android:id="@+id/movies_recycler_view"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/margin_path_back_start"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/movies_list_label" />
+            app:layout_constraintTop_toBottomOf="@id/movies_list_label"
+            tools:listitem="@layout/view_holder_movie" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

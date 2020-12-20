@@ -5,18 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
 import com.example.moviesapp.data.models.Movie
-import com.example.moviesapp.data.models.loadMovies
 import com.example.moviesapp.fragments.FragmentMoviesDetails
 import com.example.moviesapp.fragments.FragmentMoviesList
-import kotlinx.coroutines.*
 
 class MainActivity : AppCompatActivity(), MoviesAdapter.OnClickPoster {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction().apply {
@@ -27,7 +23,6 @@ class MainActivity : AppCompatActivity(), MoviesAdapter.OnClickPoster {
     }
 
     override fun createMoviesDetailsFragment(movie: Movie) {
-
         supportFragmentManager.beginTransaction().apply {
             replace(R.id.main_container, FragmentMoviesDetails.newInstance(movie=movie))
             addToBackStack(null)

@@ -46,7 +46,7 @@
         android:paddingTop="@dimen/padding_pg"
         android:paddingEnd="@dimen/padding_pg"
         android:paddingBottom="@dimen/padding_pg"
-        android:text="@string/default_pg_text"
+        tools:text="@string/default_pg_text"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -70,7 +70,7 @@
         android:layout_marginEnd="14dp"
         android:layout_marginBottom="22dp"
         android:gravity="left"
-        android:text="@string/default_tags_text"
+        tools:text="@string/default_tags_text"
         android:textColor="@color/text_color_tags"
         android:textSize="8sp"
         app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
@@ -131,7 +131,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/name_artist_margin"
-        android:text="@string/default_text_reviews_count"
+        tools:text="@string/default_text_reviews_count"
         android:textColor="@color/color_reviews_count"
         android:textSize="8sp"
         android:textStyle="bold"
@@ -157,7 +157,7 @@
         android:layout_marginStart="@dimen/small_margin_title"
         android:layout_marginTop="@dimen/small_margin_title"
         android:gravity="start"
-        android:text="@string/default_title_movie"
+        tools:text="@string/default_title_movie"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/guideline_bottom" />
@@ -167,7 +167,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="@string/default_time_film"
+        tools:text="@string/default_time_film"
         android:fontFamily="@font/roboto_bold"
         android:textColor="@color/color_reviews_count"
         android:textSize="8sp"
@@ -177,6 +177,7 @@
         tools:ignore="SmallSp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
 
