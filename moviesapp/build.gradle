@@ -36,9 +36,6 @@ android {
         viewBinding true
     }
 
-    dataBinding {
-        enabled = true
-    }
 
     apply plugin: 'kotlin-android-extensions'
 }

@@ -6,8 +6,8 @@ import androidx.fragment.app.Fragment
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
 import com.example.moviesapp.data.models.Movie
-import com.example.moviesapp.fragments.FragmentMoviesDetails
-import com.example.moviesapp.fragments.FragmentMoviesList
+import com.example.moviesapp.fragments.details.FragmentMoviesDetails
+import com.example.moviesapp.fragments.list.FragmentMoviesList
 import com.example.moviesapp.routing.Router
 
 class MainActivity : AppCompatActivity(), Router, MoviesAdapter.OnClickPoster {

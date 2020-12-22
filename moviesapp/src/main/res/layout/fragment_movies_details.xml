@@ -1,248 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <data>
+    <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main_background_color">
 
-        <variable
-            name="data"
-            type="com.example.moviesapp.data.binding.MoviesDetails" />
-
-    </data>
-
-        <FrameLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
+            <ImageView
+                android:id="@+id/detail_poster"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/image_height"
+                tools:background="@drawable/orig"
+                android:contentDescription="@string/poster"
+                android:layerType="software"
+                android:scaleType="centerCrop"
+                android:src="@drawable/orig"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/ic_mask"
+                android:contentDescription="@string/main_poster_description"
+                android:layerType="software"
+                android:scaleType="fitXY"
+                app:layout_constraintBottom_toBottomOf="@id/detail_poster"
+                app:layout_constraintEnd_toEndOf="@id/detail_poster"
+                app:layout_constraintStart_toStartOf="@id/detail_poster"
+                app:layout_constraintTop_toTopOf="@id/detail_poster" />
+
+
+            <TextView
+                android:fontFamily="@font/roboto_bold_family"
+                android:id="@+id/back_activity"
+                style="@style/defaultText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_start_back"
+                android:layout_marginTop="@dimen/margin_top_back"
+                android:text="@string/back_text_details"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:fontFamily="@font/roboto_bold_family"
+                android:id="@+id/back_activity_path"
+                style="@style/defaultText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_path_back_start"
+                android:layout_marginTop="@dimen/margin_top_back"
+                android:text="@string/back_text_details_path"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:fontFamily="@font/roboto_bold_family"
+                android:id="@+id/pg"
+                style="@style/titleText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/margin_top_pg"
+                android:background="@drawable/border"
+                tools:text="@string/default_pg_text"
+                android:textSize="12sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:fontFamily="@font/roboto_bold_family"
+                android:id="@+id/title_movie"
+                style="@style/titleText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/main_background_color">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginTop="@dimen/small_margin_title"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:gravity="left|top"
+                tools:text="Avengers:\nEnd Game"
+                android:textSize="40sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/pg"
+                tools:ignore="RtlHardcoded" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tag_line"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginTop="@dimen/very_small_margin_top"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:gravity="left"
+                tools:text="@string/default_tags_text"
+                android:textColor="@color/text_color_tags"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_movie"
+                tools:ignore="RtlHardcoded" />
 
-                    <ImageView
-                        android:id="@+id/detail_poster"
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/image_height"
-                        tools:background="@drawable/orig"
-                        android:contentDescription="@string/poster"
-                        android:layerType="software"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/orig"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/star_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/very_small_margin_top"
+                android:contentDescription="@string/star_text"
+                android:src="@drawable/ic_star"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tag_line" />
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:background="@drawable/ic_mask"
-                        android:contentDescription="@string/main_poster_description"
-                        android:layerType="software"
-                        android:scaleType="fitXY"
-                        app:layout_constraintBottom_toBottomOf="@id/detail_poster"
-                        app:layout_constraintEnd_toEndOf="@id/detail_poster"
-                        app:layout_constraintStart_toStartOf="@id/detail_poster"
-                        app:layout_constraintTop_toTopOf="@id/detail_poster" />
+            <ImageView
+                android:id="@+id/star_two"
+                style="@style/star_positive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/star_text"
+                app:layout_constraintStart_toEndOf="@id/star_one"
+                app:layout_constraintTop_toBottomOf="@id/tag_line" />
 
+            <ImageView
+                android:id="@+id/star_three"
+                style="@style/star_positive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/star_text"
+                app:layout_constraintStart_toEndOf="@id/star_two"
+                app:layout_constraintTop_toBottomOf="@id/tag_line" />
 
-                    <TextView
-                        android:fontFamily="@font/roboto_bold_family"
-                        android:id="@+id/back_activity"
-                        style="@style/defaultText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_start_back"
-                        android:layout_marginTop="@dimen/margin_top_back"
-                        android:text="@string/back_text_details"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/star_four"
+                style="@style/star_positive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/star_text"
+                app:layout_constraintStart_toEndOf="@id/star_three"
+                app:layout_constraintTop_toBottomOf="@id/tag_line" />
 
-                    <TextView
-                        android:fontFamily="@font/roboto_bold_family"
-                        android:id="@+id/back_activity_path"
-                        style="@style/defaultText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/margin_path_back_start"
-                        android:layout_marginTop="@dimen/margin_top_back"
-                        android:text="@string/back_text_details_path"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/star_five"
+                style="@style/star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/star_text"
+                app:layout_constraintStart_toEndOf="@id/star_four"
+                app:layout_constraintTop_toBottomOf="@id/tag_line" />
 
-                    <TextView
-                        android:fontFamily="@font/roboto_bold_family"
-                        android:id="@+id/pg"
-                        style="@style/titleText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginTop="@dimen/margin_top_pg"
-                        android:background="@drawable/border"
-                        android:text="@{data.ageRating}"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:fontFamily="@font/roboto_bold_family"
+                android:id="@+id/reviews_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8.89dp"
+                tools:text="@string/default_text_reviews_count"
+                android:textColor="@color/color_reviews_count"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/star_five"
+                app:layout_constraintTop_toBottomOf="@id/tag_line" />
 
-                    <TextView
-                        android:fontFamily="@font/roboto_bold_family"
-                        android:id="@+id/title_movie"
-                        style="@style/titleText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginLeft="@dimen/default_margin"
-                        android:layout_marginTop="@dimen/small_margin_title"
-                        android:layout_marginEnd="@dimen/default_margin"
-                        android:gravity="left|top"
-                        android:text="@{data.titleMovie}"
-                        android:textSize="40sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/pg"
-                        tools:ignore="RtlHardcoded" />
+            <TextView
+                android:fontFamily="@font/roboto_bold_family"
+                android:id="@+id/storyline_label"
+                style="@style/titleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:text="@string/storyline_label_text"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/star_one" />
 
-                    <TextView
-                        android:id="@+id/tag_line"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginLeft="@dimen/default_margin"
-                        android:layout_marginTop="@dimen/very_small_margin_top"
-                        android:layout_marginEnd="@dimen/default_margin"
-                        android:gravity="left"
-                        tools:text="@{data.tagLine}"
-                        android:textColor="@color/text_color_tags"
-                        android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/title_movie"
-                        tools:ignore="RtlHardcoded" />
+            <TextView
+                android:id="@+id/storyline_description"
+                style="@style/defaultText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginTop="@dimen/very_small_margin_top"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                tools:text="@string/default_text_storyline_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/storyline_label" />
 
-                    <ImageView
-                        android:id="@+id/star_one"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginTop="@dimen/very_small_margin_top"
-                        android:contentDescription="@string/star_text"
-                        android:src="@drawable/ic_star"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tag_line" />
+            <TextView
+                android:fontFamily="@font/roboto_bold_family"
+                android:id="@+id/cast_label"
+                style="@style/titleText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginTop="@dimen/medium_margin"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                android:text="@string/cast_label_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/storyline_description" />
 
-                    <ImageView
-                        android:id="@+id/star_two"
-                        style="@style/star"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/star_text"
-                        app:layout_constraintStart_toEndOf="@id/star_one"
-                        app:layout_constraintTop_toBottomOf="@id/tag_line" />
-
-                    <ImageView
-                        android:id="@+id/star_three"
-                        style="@style/star"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/star_text"
-                        app:layout_constraintStart_toEndOf="@id/star_two"
-                        app:layout_constraintTop_toBottomOf="@id/tag_line" />
-
-                    <ImageView
-                        android:id="@+id/star_four"
-                        style="@style/star"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/star_text"
-                        app:layout_constraintStart_toEndOf="@id/star_three"
-                        app:layout_constraintTop_toBottomOf="@id/tag_line" />
-
-                    <ImageView
-                        android:id="@+id/star_five"
-                        style="@style/star"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:contentDescription="@string/star_text"
-                        app:layout_constraintStart_toEndOf="@id/star_four"
-                        app:layout_constraintTop_toBottomOf="@id/tag_line" />
-
-                    <TextView
-                        android:fontFamily="@font/roboto_bold_family"
-                        android:id="@+id/reviews_count"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8.89dp"
-                        android:text="@{data.reviewsCount}"
-                        android:textColor="@color/color_reviews_count"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@id/star_five"
-                        app:layout_constraintTop_toBottomOf="@id/tag_line" />
-
-                    <TextView
-                        android:fontFamily="@font/roboto_bold_family"
-                        android:id="@+id/storyline_label"
-                        style="@style/titleText"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginTop="@dimen/medium_margin"
-                        android:layout_marginEnd="@dimen/default_margin"
-                        android:text="@string/storyline_label_text"
-                        android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/star_one" />
-
-                    <TextView
-                        android:id="@+id/storyline_description"
-                        style="@style/defaultText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginLeft="@dimen/default_margin"
-                        android:layout_marginTop="@dimen/very_small_margin_top"
-                        android:layout_marginEnd="@dimen/default_margin"
-                        android:layout_marginRight="@dimen/default_margin"
-                        android:text="@{data.storyLine}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/storyline_label" />
-
-                    <TextView
-                        android:fontFamily="@font/roboto_bold_family"
-                        android:id="@+id/cast_label"
-                        style="@style/titleText"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginLeft="@dimen/default_margin"
-                        android:layout_marginTop="@dimen/medium_margin"
-                        android:layout_marginEnd="@dimen/default_margin"
-                        android:layout_marginRight="@dimen/default_margin"
-                        android:text="@string/cast_label_text"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/storyline_description" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/actors_recycler_view"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/default_margin"
-                        android:layout_marginTop="@dimen/margin_artist"
-                        android:layout_marginEnd="@dimen/default_margin"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/cast_label" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/actors_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="@dimen/margin_artist"
+                android:layout_marginEnd="@dimen/default_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cast_label" />
 
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </ScrollView>
-        </FrameLayout>
-</layout>
+    </ScrollView>
+</FrameLayout>

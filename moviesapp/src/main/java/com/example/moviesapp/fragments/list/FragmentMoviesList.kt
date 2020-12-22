@@ -1,4 +1,4 @@
-package com.example.moviesapp.fragments
+package com.example.moviesapp.fragments.list
 
 import android.content.Context
 import android.os.Bundle
@@ -13,16 +13,14 @@ import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
 import com.example.moviesapp.data.models.Movie
 import com.example.moviesapp.data.models.loadMovies
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
-class FragmentMoviesList  : Fragment() {
+class FragmentMoviesList : Fragment() {
 
     private val adapter = MoviesAdapter()
     private val uiScope = CoroutineScope(Dispatchers.Main)
     private var moviesData: List<Movie> = listOf()
+    private var recycler: RecyclerView? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,6 +43,13 @@ class FragmentMoviesList  : Fragment() {
         adapter.onClickPoster = null
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        recycler?.adapter = null
+        recycler = null
+        uiScope.cancel()
+    }
+
     private fun downloadData(view: View) {
         uiScope.launch {
             val differed = uiScope.async {
@@ -56,12 +61,12 @@ class FragmentMoviesList  : Fragment() {
     }
 
     private fun setupRecyclerView(view: View, data: List<Movie>) {
-        val recyclerView = view.findViewById<RecyclerView>(R.id.movies_recycler_view)
-        recyclerView.layoutManager = GridLayoutManager(
+        recycler = view.findViewById(R.id.movies_recycler_view)
+        recycler?.layoutManager = GridLayoutManager(
             requireContext(), recalculationScreen()
         )
 
-        recyclerView.adapter = adapter
+        recycler?.adapter = adapter
         adapter.bindMovies(newMovies = data)
         adapter.notifyDataSetChanged()
     }
