@@ -3,10 +3,12 @@ package com.example.moviesapp.screens.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
 import com.example.moviesapp.data.models.Movie
 import com.example.moviesapp.fragments.details.FragmentMoviesDetails
+import com.example.moviesapp.fragments.details.MoviesDetailsViewModel
 import com.example.moviesapp.fragments.list.FragmentMoviesList
 import com.example.moviesapp.routing.Router
 

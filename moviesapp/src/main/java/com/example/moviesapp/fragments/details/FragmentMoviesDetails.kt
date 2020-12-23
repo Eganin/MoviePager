@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,6 +22,7 @@ import com.example.moviesapp.utils.imageOption
 
 class FragmentMoviesDetails : Fragment() {
     private val adapter = ActorsAdapter()
+    private lateinit var viewModel : MoviesDetailsViewModel
     private val movie: Movie by lazy { arguments?.get(SAVE_MOVIE_DATA_KEY) as Movie }
     private var ageRating: AppCompatTextView? = null
     private var titleMovie: AppCompatTextView? = null
@@ -26,6 +30,7 @@ class FragmentMoviesDetails : Fragment() {
     private var reviewsCount: AppCompatTextView? = null
     private var storyLine: AppCompatTextView? = null
     private var detailPoster: AppCompatImageView? = null
+    private var progressBar : ProgressBar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +40,10 @@ class FragmentMoviesDetails : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this@FragmentMoviesDetails)[MoviesDetailsViewModel::class.java]
+        viewModel.state.observe(this@FragmentMoviesDetails,this::setStateLoading)
+
+        viewModel.startLoadingData()
         setupViews(view = view)
         bindViews(view = view)
         setupRecyclerView(view = view)
@@ -44,6 +53,7 @@ class FragmentMoviesDetails : Fragment() {
         view.findViewById<AppCompatTextView>(R.id.back_activity_path).setOnClickListener {
             activity?.onBackPressed()
         }
+        viewModel.stopLoadingData()
     }
 
     override fun onDestroyView() {
@@ -56,6 +66,10 @@ class FragmentMoviesDetails : Fragment() {
         storyLine = null
     }
 
+    private fun setStateLoading(state: Boolean) {
+        progressBar?.isVisible = state
+    }
+
     private fun setupViews(view: View) {
         detailPoster = view.findViewById(R.id.detail_poster)
         ageRating = view.findViewById(R.id.pg)
@@ -63,6 +77,7 @@ class FragmentMoviesDetails : Fragment() {
         tagLine = view.findViewById(R.id.tag_line)
         reviewsCount = view.findViewById(R.id.reviews_count)
         storyLine = view.findViewById(R.id.storyline_description)
+        progressBar = view.findViewById(R.id.progress_bar_details)
     }
 
     private fun setupRecyclerView(view: View) {

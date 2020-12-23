@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -21,7 +20,6 @@ import kotlinx.coroutines.*
 class FragmentMoviesList : Fragment() {
 
     private val adapter = MoviesAdapter()
-    private val uiScope = CoroutineScope(Dispatchers.Main)
     private var recycler: RecyclerView? = null
     private var progressBar: ProgressBar? = null
     private lateinit var viewModel: MoviesListViewModel
@@ -57,10 +55,9 @@ class FragmentMoviesList : Fragment() {
         super.onDestroyView()
         recycler?.adapter = null
         recycler = null
-        uiScope.cancel()
     }
 
-    fun setStateLoading(state: Boolean) {
+    private fun setStateLoading(state: Boolean) {
         progressBar?.isVisible = state
     }
 
