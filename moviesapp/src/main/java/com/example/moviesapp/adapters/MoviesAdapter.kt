@@ -2,11 +2,9 @@ package com.example.moviesapp.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 import com.example.moviesapp.data.models.Movie
-import com.example.moviesapp.databinding.ViewHolderMovieBinding
 import com.example.moviesapp.viewholders.MovieViewHolder
 
 class MoviesAdapter : RecyclerView.Adapter<MovieViewHolder>() {

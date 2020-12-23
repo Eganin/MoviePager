@@ -6,21 +6,25 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
 import com.example.moviesapp.data.models.Movie
-import com.example.moviesapp.data.models.loadMovies
 import kotlinx.coroutines.*
 
 class FragmentMoviesList : Fragment() {
 
     private val adapter = MoviesAdapter()
     private val uiScope = CoroutineScope(Dispatchers.Main)
-    private var moviesData: List<Movie> = listOf()
     private var recycler: RecyclerView? = null
+    private var progressBar: ProgressBar? = null
+    private lateinit var viewModel: MoviesListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,7 +34,13 @@ class FragmentMoviesList : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        downloadData(view = view)
+        setupUI(view = view)
+        viewModel = ViewModelProvider(this@FragmentMoviesList)[MoviesListViewModel::class.java]
+
+        viewModel.moviesList.observe(this@FragmentMoviesList, this::updateAdapter)
+        viewModel.state.observe(this@FragmentMoviesList , this::setStateLoading)
+
+        viewModel.loadMoviesModel(context = requireContext())
     }
 
     override fun onAttach(context: Context) {
@@ -50,23 +60,23 @@ class FragmentMoviesList : Fragment() {
         uiScope.cancel()
     }
 
-    private fun downloadData(view: View) {
-        uiScope.launch {
-            val differed = uiScope.async {
-                moviesData = loadMovies(requireContext())
-            }
-            differed.await()
-            setupRecyclerView(view = view, data = moviesData)
-        }
+    fun setStateLoading(state: Boolean) {
+        progressBar?.isVisible = state
     }
 
-    private fun setupRecyclerView(view: View, data: List<Movie>) {
+
+    private fun setupUI(view: View) {
         recycler = view.findViewById(R.id.movies_recycler_view)
+        progressBar = view.findViewById(R.id.progress_bar_movies_list)
+
         recycler?.layoutManager = GridLayoutManager(
             requireContext(), recalculationScreen()
         )
 
         recycler?.adapter = adapter
+    }
+
+    private fun updateAdapter(data: List<Movie>) {
         adapter.bindMovies(newMovies = data)
         adapter.notifyDataSetChanged()
     }
