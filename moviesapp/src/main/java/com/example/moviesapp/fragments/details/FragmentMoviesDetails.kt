@@ -10,19 +10,22 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.ActorsAdapter
+import com.example.moviesapp.common.ViewModelsFactory
 import com.example.moviesapp.data.models.Movie
+import com.example.moviesapp.fragments.list.MoviesListViewModel
 import com.example.moviesapp.utils.imageOption
 
 
 class FragmentMoviesDetails : Fragment() {
     private val adapter = ActorsAdapter()
-    private lateinit var viewModel : MoviesDetailsViewModel
+    private val viewModel: MoviesDetailsViewModel by viewModels { ViewModelsFactory(context = requireContext()) }
     private val movie: Movie by lazy { arguments?.get(SAVE_MOVIE_DATA_KEY) as Movie }
     private var ageRating: AppCompatTextView? = null
     private var titleMovie: AppCompatTextView? = null
@@ -30,7 +33,7 @@ class FragmentMoviesDetails : Fragment() {
     private var reviewsCount: AppCompatTextView? = null
     private var storyLine: AppCompatTextView? = null
     private var detailPoster: AppCompatImageView? = null
-    private var progressBar : ProgressBar? = null
+    private var progressBar: ProgressBar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,8 +43,7 @@ class FragmentMoviesDetails : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this@FragmentMoviesDetails)[MoviesDetailsViewModel::class.java]
-        viewModel.state.observe(this@FragmentMoviesDetails,this::setStateLoading)
+        viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
 
         viewModel.startLoadingData()
         setupViews(view = view)

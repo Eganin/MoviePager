@@ -16,13 +16,15 @@ import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
 import com.example.moviesapp.data.models.Movie
 import kotlinx.coroutines.*
+import androidx.fragment.app.viewModels
+import com.example.moviesapp.common.ViewModelsFactory
 
 class FragmentMoviesList : Fragment() {
 
     private val adapter = MoviesAdapter()
     private var recycler: RecyclerView? = null
     private var progressBar: ProgressBar? = null
-    private lateinit var viewModel: MoviesListViewModel
+    private val viewModel: MoviesListViewModel by viewModels { ViewModelsFactory(context= requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,12 +35,11 @@ class FragmentMoviesList : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI(view = view)
-        viewModel = ViewModelProvider(this@FragmentMoviesList)[MoviesListViewModel::class.java]
 
-        viewModel.moviesList.observe(this@FragmentMoviesList, this::updateAdapter)
-        viewModel.state.observe(this@FragmentMoviesList , this::setStateLoading)
+        viewModel.moviesList.observe(viewLifecycleOwner, this::updateAdapter)
+        viewModel.state.observe(viewLifecycleOwner , this::setStateLoading)
 
-        viewModel.loadMoviesModel(context = requireContext())
+        viewModel.loadMoviesModel()
     }
 
     override fun onAttach(context: Context) {

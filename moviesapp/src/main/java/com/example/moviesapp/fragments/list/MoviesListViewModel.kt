@@ -9,7 +9,8 @@ import com.example.moviesapp.data.models.Movie
 import com.example.moviesapp.data.models.loadMovies
 import kotlinx.coroutines.launch
 
-class MoviesListViewModel : ViewModel() {
+class MoviesListViewModel(private val interactor: MovieInteractor) :
+    ViewModel() {
 
     private val _moviesList = MutableLiveData<List<Movie>>(emptyList())
     val moviesList: LiveData<List<Movie>> = _moviesList
@@ -17,11 +18,11 @@ class MoviesListViewModel : ViewModel() {
     private val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> = _state
 
-    fun loadMoviesModel(context: Context) {
+    fun loadMoviesModel() {
         viewModelScope.launch {
             _state.value = true
 
-            _moviesList.value = loadMovies(context = context)
+            _moviesList.value = interactor.getDataMovies()
 
             _state.value = false
         }
