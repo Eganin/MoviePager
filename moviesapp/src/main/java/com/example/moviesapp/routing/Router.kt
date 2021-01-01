@@ -1,9 +1,10 @@
 package com.example.moviesapp.routing
 
-import com.example.moviesapp.data.models.Movie
+import com.example.moviesapp.pojo.movies.popular.Result
+
 
 interface Router {
 
     fun openMoviesList()
-    fun openMovieDetails(movie : Movie)
+    fun openMovieDetails(movie : Result)
 }

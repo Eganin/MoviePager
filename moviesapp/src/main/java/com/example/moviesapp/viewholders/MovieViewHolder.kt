@@ -8,10 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
-import com.example.moviesapp.data.models.Movie
+import com.example.moviesapp.application.MovieApp
+import com.example.moviesapp.pojo.configuration.GenreList
+import com.example.moviesapp.pojo.configuration.Images
+import com.example.moviesapp.pojo.movies.popular.Result
 import com.example.moviesapp.utils.imageOption
 
-class MovieViewHolder(itemView: View, listener: MoviesAdapter.OnClickPoster?, movies : List<Movie>) :
+class MovieViewHolder(
+    itemView: View,
+    listener: MoviesAdapter.OnClickPoster?,
+    movies: List<Result>,
+    val configuration: Images,
+    val genres: GenreList
+) :
     RecyclerView.ViewHolder(itemView) {
 
     private val pgMovie = itemView.findViewById<AppCompatTextView>(R.id.pg_movie)
@@ -37,15 +46,15 @@ class MovieViewHolder(itemView: View, listener: MoviesAdapter.OnClickPoster?, mo
         }
     }
 
-    fun onBind(movie: Movie) {
+    fun onBind(movie: Result) {
         title.text = movie.title
-        pgMovie.text = "+${movie.minimumAge}"
-        tagLine.text = movie.genres.joinToString(separator = " , "){it.name}
-        countReviews.text = "${movie.numberOfRatings} reviews"
-        timeLine.text = "${movie.runtime} MIN"
+        pgMovie.text = "+${if (movie.adult) "+16" else "+12"}"
+        tagLine.text = genres.genres.joinToString(separator = " , ") { it.name }
+        countReviews.text = "${movie.voteCount} reviews"
+        //timeLine.text = "${movie.runtime} MIN"
 
         downloadImage(movie = movie)
-        bindStars(countRating = (movie.ratings /2).toInt())
+        bindStars(countRating = (movie.voteAverage / 2).toInt())
 
 
         //bindFavouriteImage(isFavourite = movie.isFavourite)
@@ -76,12 +85,13 @@ class MovieViewHolder(itemView: View, listener: MoviesAdapter.OnClickPoster?, mo
         )
     }
 
-    private fun downloadImage(movie: Movie) {
+    private fun downloadImage(movie: Result) {
+
         Glide.with(context)
             .clear(imagePoster)
 
         Glide.with(context)
-            .load(movie.poster)
+            .load(configuration.baseURL + configuration.posterSizes[4] + movie.posterPath)
             .apply(imageOption)
             .into(imagePoster)
     }

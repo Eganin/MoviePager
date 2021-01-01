@@ -9,22 +9,26 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
-import com.example.moviesapp.data.models.Movie
-import kotlinx.coroutines.*
 import androidx.fragment.app.viewModels
+import com.example.moviesapp.application.MovieApp
 import com.example.moviesapp.common.ViewModelsFactory
+import com.example.moviesapp.pojo.movies.popular.Result
 
 class FragmentMoviesList : Fragment() {
 
-    private val adapter = MoviesAdapter()
+    private val adapter = (activity?.application as? MovieApp)?.let {
+        MoviesAdapter(
+            configuration = it.configuration,
+            genres = it.genreList
+        )
+    }
     private var recycler: RecyclerView? = null
     private var progressBar: ProgressBar? = null
-    private val viewModel: MoviesListViewModel by viewModels { ViewModelsFactory(context= requireContext()) }
+    private val viewModel: MoviesListViewModel by viewModels { ViewModelsFactory(page = "1") }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,19 +41,19 @@ class FragmentMoviesList : Fragment() {
         setupUI(view = view)
 
         viewModel.moviesList.observe(viewLifecycleOwner, this::updateAdapter)
-        viewModel.state.observe(viewLifecycleOwner , this::setStateLoading)
+        viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
 
         viewModel.loadMoviesModel()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MoviesAdapter.OnClickPoster) adapter.onClickPoster = context
+        if (context is MoviesAdapter.OnClickPoster) adapter?.onClickPoster = context
     }
 
     override fun onDetach() {
         super.onDetach()
-        adapter.onClickPoster = null
+        adapter?.onClickPoster = null
     }
 
     override fun onDestroyView() {
@@ -74,9 +78,9 @@ class FragmentMoviesList : Fragment() {
         recycler?.adapter = adapter
     }
 
-    private fun updateAdapter(data: List<Movie>) {
-        adapter.bindMovies(newMovies = data)
-        adapter.notifyDataSetChanged()
+    private fun updateAdapter(data: List<Result>) {
+        adapter?.bindMovies(newMovies = data)
+        adapter?.notifyDataSetChanged()
     }
 
     private fun recalculationScreen(): Int {

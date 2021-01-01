@@ -12,6 +12,7 @@ import retrofit2.create
 object RetrofitModule {
 
     private const val BASE_URL = "https://api.themoviedb.org/3/"
+
     const val API_KEY = "0d2c6c8ec17d73125f9c754d030f02eb"
     const val PARAM_API_KEY = "api_key"
     const val PARAM_LANGUAGE = "language"

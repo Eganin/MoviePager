@@ -6,7 +6,6 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviesapp.R
-import com.example.moviesapp.data.models.Actor
 import com.example.moviesapp.utils.imageOption
 
 class ActorViewHolder(itemView: View ) :

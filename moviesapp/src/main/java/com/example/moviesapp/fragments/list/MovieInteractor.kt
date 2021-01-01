@@ -1,13 +1,12 @@
 package com.example.moviesapp.fragments.list
 
-import android.content.Context
-import com.example.moviesapp.data.models.Movie
-import com.example.moviesapp.data.models.loadMovies
+import com.example.moviesapp.network.RetrofitModule
+import com.example.moviesapp.pojo.movies.popular.Result
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
-class MovieInteractor(private val dispatcher : CoroutineDispatcher , private val context: Context) {
-    suspend fun getDataMovies() : List<Movie> = withContext(dispatcher){
-        loadMovies(context = context)
+class MovieInteractor(private val dispatcher: CoroutineDispatcher, private val page: String?) {
+    suspend fun getDataMovies(): List<Result> = withContext(dispatcher) {
+        RetrofitModule.apiMovies.getPopularMovies(page = page ?: "1").results
     }
 }

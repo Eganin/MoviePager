@@ -25,7 +25,7 @@ import com.example.moviesapp.utils.imageOption
 
 class FragmentMoviesDetails : Fragment() {
     private val adapter = ActorsAdapter()
-    private val viewModel: MoviesDetailsViewModel by viewModels { ViewModelsFactory(context = requireContext()) }
+    private val viewModel: MoviesDetailsViewModel by viewModels { ViewModelsFactory(page="1") }
     private val movie: Movie by lazy { arguments?.get(SAVE_MOVIE_DATA_KEY) as Movie }
     private var ageRating: AppCompatTextView? = null
     private var titleMovie: AppCompatTextView? = null

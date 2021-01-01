@@ -4,15 +4,18 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
-import com.example.moviesapp.data.models.Movie
+import com.example.moviesapp.application.MovieApp
+import com.example.moviesapp.pojo.configuration.GenreList
+import com.example.moviesapp.pojo.configuration.Images
+import com.example.moviesapp.pojo.movies.popular.Result
 import com.example.moviesapp.viewholders.MovieViewHolder
 
-class MoviesAdapter : RecyclerView.Adapter<MovieViewHolder>() {
+class MoviesAdapter(val configuration : Images , val genres : GenreList) : RecyclerView.Adapter<MovieViewHolder>() {
 
-    private var movies: List<Movie> = mutableListOf()
+    private var movies: List<Result> = mutableListOf()
 
     interface OnClickPoster {
-        fun createMoviesDetailsFragment(movie: Movie)
+        fun createMoviesDetailsFragment(movie: Result)
     }
 
     var onClickPoster: OnClickPoster? = null
@@ -22,7 +25,9 @@ class MoviesAdapter : RecyclerView.Adapter<MovieViewHolder>() {
             itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.view_holder_movie, parent, false),
             listener = onClickPoster,
-            movies = movies
+            movies = movies,
+            configuration = configuration,
+            genres = genres
         )
 
     }
@@ -33,7 +38,7 @@ class MoviesAdapter : RecyclerView.Adapter<MovieViewHolder>() {
 
     override fun getItemCount() = movies.size
 
-    fun bindMovies(newMovies: List<Movie>) {
+    fun bindMovies(newMovies: List<Result>) {
         movies = newMovies
     }
 }
