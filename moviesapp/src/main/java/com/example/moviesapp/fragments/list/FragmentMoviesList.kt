@@ -2,6 +2,7 @@ package com.example.moviesapp.fragments.list
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -14,21 +15,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
 import androidx.fragment.app.viewModels
-import com.example.moviesapp.application.MovieApp
 import com.example.moviesapp.common.ViewModelsFactory
 import com.example.moviesapp.pojo.movies.popular.Result
 
 class FragmentMoviesList : Fragment() {
 
-    private val adapter = (activity?.application as? MovieApp)?.let {
-        MoviesAdapter(
-            configuration = it.configuration,
-            genres = it.genreList
-        )
-    }
     private var recycler: RecyclerView? = null
     private var progressBar: ProgressBar? = null
-    private val viewModel: MoviesListViewModel by viewModels { ViewModelsFactory(page = "1") }
+    private val viewModel: MoviesListViewModel by viewModels { ViewModelsFactory() }
+    private lateinit var  adapter: MoviesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,17 +38,19 @@ class FragmentMoviesList : Fragment() {
         viewModel.moviesList.observe(viewLifecycleOwner, this::updateAdapter)
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
 
-        viewModel.loadMoviesModel()
+        viewModel.loadDataModel()
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is MoviesAdapter.OnClickPoster) adapter?.onClickPoster = context
+        adapter=
+            MoviesAdapter(viewModel=viewModel)
+        if (context is MoviesAdapter.OnClickPoster) adapter.onClickPoster = context
     }
 
     override fun onDetach() {
         super.onDetach()
-        adapter?.onClickPoster = null
+        adapter.onClickPoster = null
     }
 
     override fun onDestroyView() {
@@ -79,8 +76,8 @@ class FragmentMoviesList : Fragment() {
     }
 
     private fun updateAdapter(data: List<Result>) {
-        adapter?.bindMovies(newMovies = data)
-        adapter?.notifyDataSetChanged()
+        adapter.bindMovies(newMovies = data)
+        adapter.notifyDataSetChanged()
     }
 
     private fun recalculationScreen(): Int {

@@ -1,12 +1,14 @@
 package com.example.moviesapp.screens.main
 
 import android.os.Bundle
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
 import com.example.moviesapp.fragments.details.FragmentMoviesDetails
 import com.example.moviesapp.fragments.list.FragmentMoviesList
+import com.example.moviesapp.pojo.movies.details.ResponseMovieDetail
 import com.example.moviesapp.pojo.movies.popular.Result
 import com.example.moviesapp.routing.Router
 
@@ -22,7 +24,7 @@ class MainActivity : AppCompatActivity(), Router, MoviesAdapter.OnClickPoster {
     }
 
     override fun createMoviesDetailsFragment(movie: Result) {
-        openMovieDetails(movie = movie)
+        //openMovieDetails(movie = movie)
     }
 
     override fun onBackPressed() {
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity(), Router, MoviesAdapter.OnClickPoster {
         openNewFragment(fragment = FragmentMoviesList(), addToBackStack = false)
     }
 
-    override fun openMovieDetails(movie: Result) {
+    override fun openMovieDetails(movie: ResponseMovieDetail) {
         openNewFragment(
             fragment = FragmentMoviesDetails.newInstance(movie = movie),
             addToBackStack = true

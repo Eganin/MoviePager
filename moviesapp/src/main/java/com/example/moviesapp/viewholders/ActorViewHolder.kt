@@ -14,6 +14,7 @@ class ActorViewHolder(itemView: View ) :
     private val imageCast = itemView.findViewById<AppCompatImageView>(R.id.image_cast)
     private val name = itemView.findViewById<AppCompatTextView>(R.id.name_cast)
 
+    /*
     fun onBind(actor: Actor) {
         Glide.with(context)
             .clear(imageCast)
@@ -25,6 +26,8 @@ class ActorViewHolder(itemView: View ) :
         name.text = actor.name
 
     }
+
+     */
 }
 
 private val RecyclerView.ViewHolder.context

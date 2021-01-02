@@ -1,14 +1,24 @@
 package com.example.moviesapp.fragments.list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.moviesapp.adapters.Counter
+import com.example.moviesapp.network.RetrofitModule
+import com.example.moviesapp.pojo.configuration.GenreList
+import com.example.moviesapp.pojo.configuration.Images
 import com.example.moviesapp.pojo.movies.popular.Result
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MoviesListViewModel(private val interactor: MovieInteractor) :
     ViewModel() {
+
+    private val dispatcher = Dispatchers.IO
 
     private val _moviesList = MutableLiveData<List<Result>>(emptyList())
     val moviesList: LiveData<List<Result>> = _moviesList
@@ -16,14 +26,38 @@ class MoviesListViewModel(private val interactor: MovieInteractor) :
     private val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> = _state
 
-    fun loadMoviesModel() {
+    var configuration : Images? = null
+    var genreList: GenreList? = null
+
+    fun loadDataModel() {
         viewModelScope.launch {
-            _state.value = true
+            coroutineScope {
+                _state.value = true
 
-            _moviesList.value = interactor.getDataMovies()
+                configuration = getConfiguration()
 
-            _state.value = false
+                genreList = getGenres()
+
+                loadMovies()
+
+                _state.value = false
+            }
         }
+    }
+
+    fun loadMovies(){
+        viewModelScope.launch{
+            val movies = interactor.getDataMovies(page = Counter.count.toString())
+            _moviesList.value = movies
+        }
+    }
+
+    private  suspend fun getConfiguration() : Images = withContext(dispatcher){
+        RetrofitModule.apiMovies.getConfiguration().images
+    }
+
+    private suspend fun getGenres() : GenreList = withContext(dispatcher){
+        RetrofitModule.apiMovies.getGenres()
     }
 
 }

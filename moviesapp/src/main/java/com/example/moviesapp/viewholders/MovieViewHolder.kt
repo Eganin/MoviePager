@@ -1,5 +1,6 @@
 package com.example.moviesapp.viewholders
 
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -8,9 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
-import com.example.moviesapp.application.MovieApp
-import com.example.moviesapp.pojo.configuration.GenreList
-import com.example.moviesapp.pojo.configuration.Images
+import com.example.moviesapp.fragments.list.MoviesListViewModel
 import com.example.moviesapp.pojo.movies.popular.Result
 import com.example.moviesapp.utils.imageOption
 
@@ -18,10 +17,12 @@ class MovieViewHolder(
     itemView: View,
     listener: MoviesAdapter.OnClickPoster?,
     movies: List<Result>,
-    val configuration: Images,
-    val genres: GenreList
+    val viewModel: MoviesListViewModel
 ) :
     RecyclerView.ViewHolder(itemView) {
+
+    private val configuration = viewModel.configuration
+    private val genres = viewModel.genreList
 
     private val pgMovie = itemView.findViewById<AppCompatTextView>(R.id.pg_movie)
     private val favouriteImage = itemView.findViewById<AppCompatImageView>(R.id.favourite_image)
@@ -47,14 +48,16 @@ class MovieViewHolder(
     }
 
     fun onBind(movie: Result) {
+
         title.text = movie.title
-        pgMovie.text = "+${if (movie.adult) "+16" else "+12"}"
-        tagLine.text = genres.genres.joinToString(separator = " , ") { it.name }
+        pgMovie.text = "${if (movie?.adult == true) "+18" else "+16"}"
+        tagLine.text = genres?.genres?.filter { movie.genreIDS?.contains(it.id) ?: false }
+            ?.joinToString(separator = " , ") { it.name }
         countReviews.text = "${movie.voteCount} reviews"
         //timeLine.text = "${movie.runtime} MIN"
 
         downloadImage(movie = movie)
-        bindStars(countRating = (movie.voteAverage / 2).toInt())
+        bindStars(countRating = (movie.voteAverage?.div(2))?.toInt() ?: 0)
 
 
         //bindFavouriteImage(isFavourite = movie.isFavourite)
@@ -86,12 +89,14 @@ class MovieViewHolder(
     }
 
     private fun downloadImage(movie: Result) {
-
         Glide.with(context)
             .clear(imagePoster)
 
         Glide.with(context)
-            .load(configuration.baseURL + configuration.posterSizes[4] + movie.posterPath)
+            .load(
+                configuration?.baseURL + (configuration?.posterSizes?.get(4)
+                    ?: "") + movie.posterPath
+            )
             .apply(imageOption)
             .into(imagePoster)
     }

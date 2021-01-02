@@ -14,24 +14,24 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MovieApi {
-    @GET("/configuration")
+    @GET("configuration")
     suspend fun getConfiguration(@Query(PARAM_API_KEY) apiKey: String = API_KEY): ResponseConfiguration
 
-    @GET("/movie/popular")
+    @GET("movie/popular")
     suspend fun getPopularMovies(
         @Query(PARAM_API_KEY) apiKey: String = API_KEY,
         @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE,
         @Query(PARAM_PAGE) page: String
     ): ResponseMovies
 
-    @GET("/movie/{movie_id}")
+    @GET("movie/{movie_id}")
     suspend fun getDetailInfo(
         @Query(PARAM_API_KEY) apiKey: String = API_KEY,
         @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE,
         @Path("movie_id") movieId: String
     ): List<ResponseMovieDetail>
 
-    @GET("/genre/movie/list")
+    @GET("genre/movie/list")
     suspend fun getGenres(
         @Query(PARAM_API_KEY) apiKey: String = API_KEY,
         @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE

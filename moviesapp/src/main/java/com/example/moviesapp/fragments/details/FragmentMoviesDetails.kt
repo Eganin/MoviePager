@@ -11,22 +11,20 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.ActorsAdapter
 import com.example.moviesapp.common.ViewModelsFactory
-import com.example.moviesapp.data.models.Movie
-import com.example.moviesapp.fragments.list.MoviesListViewModel
+import com.example.moviesapp.pojo.movies.details.ResponseMovieDetail
 import com.example.moviesapp.utils.imageOption
 
 
 class FragmentMoviesDetails : Fragment() {
     private val adapter = ActorsAdapter()
-    private val viewModel: MoviesDetailsViewModel by viewModels { ViewModelsFactory(page="1") }
-    private val movie: Movie by lazy { arguments?.get(SAVE_MOVIE_DATA_KEY) as Movie }
+    private val viewModel: MoviesDetailsViewModel by viewModels { ViewModelsFactory() }
+    private val movie: ResponseMovieDetail by lazy { arguments?.get(SAVE_MOVIE_DATA_KEY) as ResponseMovieDetail }
     private var ageRating: AppCompatTextView? = null
     private var titleMovie: AppCompatTextView? = null
     private var tagLine: AppCompatTextView? = null
@@ -87,11 +85,12 @@ class FragmentMoviesDetails : Fragment() {
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
-        adapter.bindActors(newActors = movie.actors)
+        //adapter.bindActors(newActors = movie.actors)
         adapter.notifyDataSetChanged()
     }
 
     private fun bindViews(view: View) {
+        /*
         ageRating?.text = "+${movie.minimumAge}"
         titleMovie?.text = movie.title
         tagLine?.text = movie.genres.joinToString(separator = " , ") { it.name }
@@ -100,6 +99,8 @@ class FragmentMoviesDetails : Fragment() {
         downloadPoster(detailPoster = detailPoster)
         bindStars(view = view, countRating = (movie.ratings / 2).toInt())
 
+
+         */
     }
 
     private fun bindStars(view: View, countRating: Int) {
@@ -121,6 +122,7 @@ class FragmentMoviesDetails : Fragment() {
     }
 
     private fun downloadPoster(detailPoster: AppCompatImageView?) {
+        /*
         if (detailPoster != null) {
             Glide.with(requireContext())
                 .clear(detailPoster)
@@ -130,13 +132,15 @@ class FragmentMoviesDetails : Fragment() {
                 .apply(imageOption)
                 .into(detailPoster)
         }
+
+         */
     }
 
     companion object {
-        fun newInstance(movie: Movie): FragmentMoviesDetails {
+        fun newInstance(movie: ResponseMovieDetail): FragmentMoviesDetails {
             val fragment = FragmentMoviesDetails()
             val bundle = Bundle()
-            bundle.putParcelable(SAVE_MOVIE_DATA_KEY, movie)
+            //bundle.putParcelable(SAVE_MOVIE_DATA_KEY, movie)
             fragment.arguments = bundle
             return fragment
         }
