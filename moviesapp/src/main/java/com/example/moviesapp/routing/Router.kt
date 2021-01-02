@@ -1,7 +1,6 @@
 package com.example.moviesapp.routing
 
 import com.example.moviesapp.pojo.movies.details.ResponseMovieDetail
-import com.example.moviesapp.pojo.movies.popular.Result
 
 
 interface Router {

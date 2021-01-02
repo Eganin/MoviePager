@@ -1,6 +1,5 @@
 package com.example.moviesapp.fragments.list
 
-import android.util.Log
 import com.example.moviesapp.network.RetrofitModule
 import com.example.moviesapp.pojo.movies.popular.Result
 import kotlinx.coroutines.CoroutineDispatcher

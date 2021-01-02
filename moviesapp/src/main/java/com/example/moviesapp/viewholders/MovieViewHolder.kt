@@ -1,6 +1,5 @@
 package com.example.moviesapp.viewholders
 
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -30,7 +29,7 @@ class MovieViewHolder(
     private val tagLine = itemView.findViewById<AppCompatTextView>(R.id.tag_line_movie)
     private val countReviews = itemView.findViewById<AppCompatTextView>(R.id.reviews_count_movie)
     private val title = itemView.findViewById<AppCompatTextView>(R.id.title_movie)
-    private val timeLine = itemView.findViewById<AppCompatTextView>(R.id.time_film)
+    //private val timeLine = itemView.findViewById<AppCompatTextView>(R.id.time_film)
     private val listStarsRating = listOf<AppCompatImageView>(
         itemView.findViewById(R.id.star_one_movie),
         itemView.findViewById(R.id.star_two_movie),
@@ -89,17 +88,17 @@ class MovieViewHolder(
     }
 
     private fun downloadImage(movie: Result) {
-        Glide.with(context)
-            .clear(imagePoster)
+            Glide.with(context)
+                .clear(imagePoster)
 
-        Glide.with(context)
-            .load(
-                configuration?.baseURL + (configuration?.posterSizes?.get(4)
-                    ?: "") + movie.posterPath
-            )
-            .apply(imageOption)
-            .into(imagePoster)
-    }
+            Glide.with(context)
+                .load(
+                    configuration?.baseURL + (configuration?.posterSizes?.get(4)
+                        ?: "") + movie.posterPath
+                )
+                .apply(imageOption)
+                .into(imagePoster)
+        }
 
 }
 

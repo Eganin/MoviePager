@@ -13,12 +13,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.ActorsAdapter
 import com.example.moviesapp.common.ViewModelsFactory
 import com.example.moviesapp.pojo.movies.details.ResponseMovieDetail
-import com.example.moviesapp.utils.imageOption
 
 
 class FragmentMoviesDetails : Fragment() {

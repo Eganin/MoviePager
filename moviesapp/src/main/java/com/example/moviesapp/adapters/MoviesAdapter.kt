@@ -1,6 +1,5 @@
 package com.example.moviesapp.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -10,10 +9,9 @@ import com.example.moviesapp.fragments.list.MoviesListViewModel
 import com.example.moviesapp.pojo.movies.popular.Result
 import com.example.moviesapp.viewholders.MovieViewHolder
 
-class MoviesAdapter(val viewModel : MoviesListViewModel) : RecyclerView.Adapter<MovieViewHolder>()  {
+class MoviesAdapter(val viewModel : MoviesListViewModel) : RecyclerView.Adapter<MovieViewHolder>() {
 
     private var movies = mutableListOf<Result>()
-    private var isLoading  = true
 
     interface OnClickPoster {
         fun createMoviesDetailsFragment(movie: Result)
@@ -35,13 +33,8 @@ class MoviesAdapter(val viewModel : MoviesListViewModel) : RecyclerView.Adapter<
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int){
         holder.onBind(movie = movies[position])
-        if(position >= movies.size.minus(1) && movies.size >= 20 && isLoading){
-            Log.d("AAA",isLoading.toString())
-            isLoading = false
-            Log.d("AAA","DOWNLOADING")
-            Counter.count++
+        if(position >= movies.size.minus(4) && movies.size >= 20){
             viewModel.loadMovies()
-            isLoading = true
         }
     }
 
@@ -51,8 +44,5 @@ class MoviesAdapter(val viewModel : MoviesListViewModel) : RecyclerView.Adapter<
     fun bindMovies(newMovies: List<Result>) {
         movies.addAll(newMovies)
     }
-}
 
-object Counter{
-    var count =1
 }

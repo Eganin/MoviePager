@@ -2,7 +2,6 @@ package com.example.moviesapp.fragments.list
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
@@ -51,6 +50,8 @@ class FragmentMoviesList : Fragment() {
     override fun onDetach() {
         super.onDetach()
         adapter.onClickPoster = null
+        recycler = null
+        progressBar = null
     }
 
     override fun onDestroyView() {
