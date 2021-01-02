@@ -1,9 +1,13 @@
 package com.example.moviesapp.pojo.configuration
 
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+import kotlinx.android.parcel.RawValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+@Parcelize
 @Serializable
 data class Images (
     @SerialName("base_url")
@@ -13,17 +17,17 @@ data class Images (
     val secureBaseURL: String,
 
     @SerialName("backdrop_sizes")
-    val backdropSizes: List<String>,
+    val backdropSizes: @RawValue List<String>,
 
     @SerialName("logo_sizes")
-    val logoSizes: List<String>,
+    val logoSizes:  @RawValue List<String>,
 
     @SerialName("poster_sizes")
-    val posterSizes: List<String>,
+    val posterSizes:  @RawValue List<String>,
 
     @SerialName("profile_sizes")
-    val profileSizes: List<String>,
+    val profileSizes: @RawValue List<String>,
 
     @SerialName("still_sizes")
-    val stillSizes: List<String>
-)
+    val stillSizes: @RawValue List<String>
+) : Parcelable

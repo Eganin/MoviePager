@@ -27,7 +27,7 @@
                 android:id="@+id/detail_poster"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@drawable/orig"
+                tools:background="@drawable/orig"
                 android:contentDescription="@string/poster"
                 android:layerType="software"
                 android:scaleType="centerCrop"

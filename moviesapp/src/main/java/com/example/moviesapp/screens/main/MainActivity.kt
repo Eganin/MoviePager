@@ -7,8 +7,7 @@ import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
 import com.example.moviesapp.fragments.details.FragmentMoviesDetails
 import com.example.moviesapp.fragments.list.FragmentMoviesList
-import com.example.moviesapp.pojo.movies.details.ResponseMovieDetail
-import com.example.moviesapp.pojo.movies.popular.Result
+import com.example.moviesapp.pojo.configuration.Images
 import com.example.moviesapp.routing.Router
 
 class MainActivity : AppCompatActivity(), Router, MoviesAdapter.OnClickPoster {
@@ -22,8 +21,8 @@ class MainActivity : AppCompatActivity(), Router, MoviesAdapter.OnClickPoster {
         }
     }
 
-    override fun createMoviesDetailsFragment(movie: Result) {
-        //openMovieDetails(movie = movie)
+    override fun createMoviesDetailsFragment(movieId: Long, configuration: Images?) {
+        openMovieDetails(movieId = movieId, configuration = configuration)
     }
 
     override fun onBackPressed() {
@@ -31,12 +30,15 @@ class MainActivity : AppCompatActivity(), Router, MoviesAdapter.OnClickPoster {
     }
 
     override fun openMoviesList() {
-        openNewFragment(fragment = FragmentMoviesList(), addToBackStack = false)
+        openNewFragment(fragment = FragmentMoviesList(), addToBackStack = true)
     }
 
-    override fun openMovieDetails(movie: ResponseMovieDetail) {
+    override fun openMovieDetails(movieId: Long, configuration: Images?) {
         openNewFragment(
-            fragment = FragmentMoviesDetails.newInstance(movie = movie),
+            fragment = FragmentMoviesDetails.newInstance(
+                movieId = movieId,
+                configuration = configuration
+            ),
             addToBackStack = true
         )
     }

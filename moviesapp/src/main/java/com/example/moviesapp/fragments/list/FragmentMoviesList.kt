@@ -37,7 +37,9 @@ class FragmentMoviesList : Fragment() {
         viewModel.moviesList.observe(viewLifecycleOwner, this::updateAdapter)
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
 
-        viewModel.loadDataModel()
+        if(savedInstanceState == null){
+            viewModel.loadDataModel()
+        }
     }
 
     override fun onAttach(context: Context) {

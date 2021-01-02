@@ -1,10 +1,10 @@
 package com.example.moviesapp.routing
 
-import com.example.moviesapp.pojo.movies.details.ResponseMovieDetail
+import com.example.moviesapp.pojo.configuration.Images
 
 
 interface Router {
 
     fun openMoviesList()
-    fun openMovieDetails(movie : ResponseMovieDetail)
+    fun openMovieDetails(movieId : Long , configuration : Images?)
 }

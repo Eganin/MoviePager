@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 import com.example.moviesapp.fragments.list.MoviesListViewModel
+import com.example.moviesapp.pojo.configuration.Images
 
 import com.example.moviesapp.pojo.movies.popular.Result
 import com.example.moviesapp.viewholders.MovieViewHolder
@@ -14,7 +15,7 @@ class MoviesAdapter(val viewModel : MoviesListViewModel) : RecyclerView.Adapter<
     private var movies = mutableListOf<Result>()
 
     interface OnClickPoster {
-        fun createMoviesDetailsFragment(movie: Result)
+        fun createMoviesDetailsFragment(movieId : Long , configuration : Images? )
     }
 
     var onClickPoster: OnClickPoster? = null

@@ -1,6 +1,8 @@
 package com.example.moviesapp.fragments.details
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,16 +15,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.ActorsAdapter
 import com.example.moviesapp.common.ViewModelsFactory
+import com.example.moviesapp.pojo.configuration.Images
 import com.example.moviesapp.pojo.movies.details.ResponseMovieDetail
+import com.example.moviesapp.utils.imageOption
 
 
 class FragmentMoviesDetails : Fragment() {
-    private val adapter = ActorsAdapter()
     private val viewModel: MoviesDetailsViewModel by viewModels { ViewModelsFactory() }
-    private val movie: ResponseMovieDetail by lazy { arguments?.get(SAVE_MOVIE_DATA_KEY) as ResponseMovieDetail }
+    private val configuration: Images by lazy { arguments?.get(SAVE_CONFIGURATION) as Images }
+    private lateinit var adapter: ActorsAdapter
     private var ageRating: AppCompatTextView? = null
     private var titleMovie: AppCompatTextView? = null
     private var tagLine: AppCompatTextView? = null
@@ -39,11 +44,17 @@ class FragmentMoviesDetails : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
 
+        arguments?.getLong(SAVE_MOVIE_DATA_KEY)?.let { viewModel.loadDetailData(id = it) }
         viewModel.startLoadingData()
+        viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
+        viewModel.credits.observe(viewLifecycleOwner, {
+            adapter.bindActors(newActors = it.cast)
+            adapter.notifyDataSetChanged()
+        })
+        viewModel.info.observe(viewLifecycleOwner, { bindViews(view = view, data = it) })
+
         setupViews(view = view)
-        bindViews(view = view)
         setupRecyclerView(view = view)
         view.findViewById<AppCompatTextView>(R.id.back_activity).setOnClickListener {
             activity?.onBackPressed()
@@ -52,6 +63,11 @@ class FragmentMoviesDetails : Fragment() {
             activity?.onBackPressed()
         }
         viewModel.stopLoadingData()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        adapter = ActorsAdapter(configuration = configuration)
     }
 
     override fun onDestroyView() {
@@ -83,22 +99,19 @@ class FragmentMoviesDetails : Fragment() {
         recyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.adapter = adapter
-        //adapter.bindActors(newActors = movie.actors)
         adapter.notifyDataSetChanged()
     }
 
-    private fun bindViews(view: View) {
-        /*
-        ageRating?.text = "+${movie.minimumAge}"
-        titleMovie?.text = movie.title
-        tagLine?.text = movie.genres.joinToString(separator = " , ") { it.name }
-        reviewsCount?.text = "${movie.numberOfRatings} reviews"
-        storyLine?.text = movie.overview
-        downloadPoster(detailPoster = detailPoster)
-        bindStars(view = view, countRating = (movie.ratings / 2).toInt())
+    private fun bindViews(view: View, data: ResponseMovieDetail) {
+        ageRating?.text = "${if (data.adult) "+18" else "+16"}"
+        titleMovie?.text = data.title
+        tagLine?.text = data.genres.joinToString(separator = " , ") { it.name }
+        reviewsCount?.text = "${data.voteCount} reviews"
+        storyLine?.text = data.overview
+        downloadPoster(detailPoster = detailPoster, data = data)
+        bindStars(view = view, countRating = (data.voteAverage / 2).toInt())
 
 
-         */
     }
 
     private fun bindStars(view: View, countRating: Int) {
@@ -119,31 +132,31 @@ class FragmentMoviesDetails : Fragment() {
         }
     }
 
-    private fun downloadPoster(detailPoster: AppCompatImageView?) {
-        /*
+    private fun downloadPoster(detailPoster: AppCompatImageView?, data: ResponseMovieDetail) {
         if (detailPoster != null) {
             Glide.with(requireContext())
                 .clear(detailPoster)
 
             Glide.with(requireContext())
-                .load(movie.poster)
+                .load(configuration.baseURL + (configuration.backdropSizes[2]) + data.backdropPath)
                 .apply(imageOption)
                 .into(detailPoster)
         }
 
-         */
     }
 
     companion object {
-        fun newInstance(movie: ResponseMovieDetail): FragmentMoviesDetails {
+        fun newInstance(movieId: Long, configuration: Images?): FragmentMoviesDetails {
             val fragment = FragmentMoviesDetails()
             val bundle = Bundle()
-            //bundle.putParcelable(SAVE_MOVIE_DATA_KEY, movie)
+            bundle.putLong(SAVE_MOVIE_DATA_KEY, movieId)
+            bundle.putParcelable(SAVE_CONFIGURATION, configuration)
             fragment.arguments = bundle
             return fragment
         }
 
         private const val SAVE_MOVIE_DATA_KEY = "SAVE_MOVIE_DATA_KEY"
+        private const val SAVE_CONFIGURATION = "SAVE_CONFIGURATION"
     }
 
 

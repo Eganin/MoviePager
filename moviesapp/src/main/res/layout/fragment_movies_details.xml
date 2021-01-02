@@ -31,7 +31,7 @@
                 android:contentDescription="@string/poster"
                 android:layerType="software"
                 android:scaleType="centerCrop"
-                android:src="@drawable/orig"
+                tools:src="@drawable/orig"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

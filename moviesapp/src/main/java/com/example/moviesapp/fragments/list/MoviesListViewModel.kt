@@ -25,8 +25,8 @@ class MoviesListViewModel(private val interactor: MovieInteractor) :
     private val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> = _state
 
-    var configuration: Images? = null
-    var genreList: GenreList? = null
+    var configuration  : Images? = null
+    var genreList  : GenreList? = null
 
     private var isLoading = true
 

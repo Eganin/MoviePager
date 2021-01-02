@@ -7,6 +7,7 @@ import com.example.moviesapp.network.RetrofitModule.PARAM_LANGUAGE
 import com.example.moviesapp.network.RetrofitModule.PARAM_PAGE
 import com.example.moviesapp.pojo.configuration.GenreList
 import com.example.moviesapp.pojo.configuration.ResponseConfiguration
+import com.example.moviesapp.pojo.movies.credits.ResponseCredits
 import com.example.moviesapp.pojo.movies.details.ResponseMovieDetail
 import com.example.moviesapp.pojo.movies.popular.ResponseMovies
 import retrofit2.http.GET
@@ -26,14 +27,21 @@ interface MovieApi {
 
     @GET("movie/{movie_id}")
     suspend fun getDetailInfo(
+        @Path("movie_id") movieId: String,
         @Query(PARAM_API_KEY) apiKey: String = API_KEY,
-        @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE,
-        @Path("movie_id") movieId: String
-    ): List<ResponseMovieDetail>
+        @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE
+    ): ResponseMovieDetail
 
     @GET("genre/movie/list")
     suspend fun getGenres(
         @Query(PARAM_API_KEY) apiKey: String = API_KEY,
         @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE
     ): GenreList
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getCreditsMovie(
+        @Path("movie_id") movieId: String,
+        @Query(PARAM_API_KEY) apiKey: String = API_KEY,
+        @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE
+    ) : ResponseCredits
 }

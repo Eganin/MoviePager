@@ -29,6 +29,7 @@ class MovieViewHolder(
     private val tagLine = itemView.findViewById<AppCompatTextView>(R.id.tag_line_movie)
     private val countReviews = itemView.findViewById<AppCompatTextView>(R.id.reviews_count_movie)
     private val title = itemView.findViewById<AppCompatTextView>(R.id.title_movie)
+
     //private val timeLine = itemView.findViewById<AppCompatTextView>(R.id.time_film)
     private val listStarsRating = listOf<AppCompatImageView>(
         itemView.findViewById(R.id.star_one_movie),
@@ -41,13 +42,15 @@ class MovieViewHolder(
     init {
         itemView.apply {
             setOnClickListener {
-                listener?.createMoviesDetailsFragment(movie = movies[adapterPosition])
+                listener?.createMoviesDetailsFragment(
+                    movieId = movies[adapterPosition].id,
+                    configuration = viewModel.configuration
+                )
             }
         }
     }
 
     fun onBind(movie: Result) {
-
         title.text = movie.title
         pgMovie.text = "${if (movie?.adult == true) "+18" else "+16"}"
         tagLine.text = genres?.genres?.filter { movie.genreIDS?.contains(it.id) ?: false }
@@ -88,17 +91,17 @@ class MovieViewHolder(
     }
 
     private fun downloadImage(movie: Result) {
-            Glide.with(context)
-                .clear(imagePoster)
+        Glide.with(context)
+            .clear(imagePoster)
 
-            Glide.with(context)
-                .load(
-                    configuration?.baseURL + (configuration?.posterSizes?.get(4)
-                        ?: "") + movie.posterPath
-                )
-                .apply(imageOption)
-                .into(imagePoster)
-        }
+        Glide.with(context)
+            .load(
+                configuration?.baseURL + (configuration?.posterSizes?.get(4)
+                    ?: "") + movie.posterPath
+            )
+            .apply(imageOption)
+            .into(imagePoster)
+    }
 
 }
 
