@@ -3,6 +3,7 @@ package com.example.moviesapp.fragments.list
 import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +23,7 @@ class FragmentMoviesList : Fragment() {
     private var recycler: RecyclerView? = null
     private var progressBar: ProgressBar? = null
     private val viewModel: MoviesListViewModel by viewModels { ViewModelsFactory() }
-    private lateinit var  adapter: MoviesAdapter
+    private lateinit var adapter: MoviesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,19 +34,17 @@ class FragmentMoviesList : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI(view = view)
-
         viewModel.moviesList.observe(viewLifecycleOwner, this::updateAdapter)
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
-
-        if(savedInstanceState == null){
+        if(savedInstanceState == null ){
             viewModel.loadDataModel()
         }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        adapter=
-            MoviesAdapter(viewModel=viewModel)
+        adapter =
+            MoviesAdapter(viewModel = viewModel)
         if (context is MoviesAdapter.OnClickPoster) adapter.onClickPoster = context
     }
 
@@ -79,8 +78,9 @@ class FragmentMoviesList : Fragment() {
     }
 
     private fun updateAdapter(data: List<Result>) {
-        adapter.bindMovies(newMovies = data)
-        adapter.notifyDataSetChanged()
+            adapter.bindMovies(newMovies = data)
+            adapter.notifyDataSetChanged()
+
     }
 
     private fun recalculationScreen(): Int {
