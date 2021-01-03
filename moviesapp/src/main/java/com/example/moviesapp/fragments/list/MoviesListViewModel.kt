@@ -30,7 +30,7 @@ class MoviesListViewModel(private val interactor: MovieInteractor) :
 
     private var isLoading = true
 
-    fun loadDataModel(type: MovieDataType) {
+    fun loadDataModel(type: MovieDataType, query: String? = null) {
         viewModelScope.launch {
             coroutineScope {
                 _state.value = true
@@ -39,24 +39,31 @@ class MoviesListViewModel(private val interactor: MovieInteractor) :
 
                 genreList = getGenres()
 
-                loadMovies(type=type)
+                if (query == null) {
+                    loadMovies(type = type)
+                } else {
+                    loadMovies(type = type, query = query)
+                }
 
                 _state.value = false
             }
         }
     }
 
-    fun loadMovies(type: MovieDataType) {
+    fun loadMovies(type: MovieDataType, query: String? = null) {
         if (isLoading) {
             viewModelScope.launch {
                 coroutineScope {
                     Counter.count++
                     isLoading = false
-                    val movies = when(type){
+                    val movies = when (type) {
                         MovieDataType.TOP_RATED -> interactor.getTopRatedMovies(page = Counter.count.toString())
                         MovieDataType.POPULAR -> interactor.getPopularMovies(page = Counter.count.toString())
                         MovieDataType.NOW_PLAYING -> interactor.getNowPlayingMovies(page = Counter.count.toString())
                         MovieDataType.UP_COMING -> interactor.getUpComingMovies(page = Counter.count.toString())
+                        MovieDataType.SEARCH -> interactor.getSearchMovies(
+                            searchValue = query ?: "", page = Counter.count.toString()
+                        )
                     }
                     _moviesList.value = movies
                     isLoading = true
@@ -81,5 +88,5 @@ object Counter {
 }
 
 enum class MovieDataType {
-    TOP_RATED, POPULAR, NOW_PLAYING, UP_COMING
+    TOP_RATED, POPULAR, NOW_PLAYING, UP_COMING, SEARCH
 }

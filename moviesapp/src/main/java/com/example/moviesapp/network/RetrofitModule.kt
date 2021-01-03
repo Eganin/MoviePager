@@ -18,6 +18,7 @@ object RetrofitModule {
     const val PARAM_LANGUAGE = "language"
     const val DEFAULT_LANGUAGE = "en-US"
     const val PARAM_PAGE = "page"
+    const val PARAM_QUERY = "query"
 
     private val json = Json {
         ignoreUnknownKeys = true

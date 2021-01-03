@@ -4,47 +4,47 @@ import kotlinx.serialization.*
 
 @Serializable
 data class ResponseMovieDetail (
-    val adult: Boolean,
+    val adult: Boolean? = null ,
 
     @SerialName("backdrop_path")
-    val backdropPath: String,
+    val backdropPath: String? = null,
 
-    val budget: Long,
-    val genres: List<Genre>,
-    val homepage: String,
-    val id: Long,
+    val budget: Long? = null ,
+    val genres: List<Genre>? = null ,
+    val homepage: String? = null,
+    val id: Long? = null,
 
     @SerialName("imdb_id")
-    val imdbID: String,
+    val imdbID: String? = null,
 
     @SerialName("original_language")
-    val originalLanguage: String,
+    val originalLanguage: String? = null,
 
     @SerialName("original_title")
-    val originalTitle: String,
+    val originalTitle: String? = null,
 
-    val overview: String,
-    val popularity: Double,
+    val overview: String? = null,
+    val popularity: Double? = null,
 
     @SerialName("poster_path")
-    val posterPath: String,
+    val posterPath: String? = null,
 
 
     @SerialName("release_date")
-    val releaseDate: String,
+    val releaseDate: String? = null,
 
-    val revenue: Long,
-    val runtime: Long,
+    val revenue: Long? = null,
+    val runtime: Long? = null,
 
 
-    val status: String,
-    val tagline: String,
-    val title: String,
-    val video: Boolean,
+    val status: String? = null,
+    val tagline: String? = null,
+    val title: String? = null,
+    val video: Boolean? = null,
 
     @SerialName("vote_average")
-    val voteAverage: Double,
+    val voteAverage: Double? = null,
 
     @SerialName("vote_count")
-    val voteCount: Long
+    val voteCount: Long? = null
 )

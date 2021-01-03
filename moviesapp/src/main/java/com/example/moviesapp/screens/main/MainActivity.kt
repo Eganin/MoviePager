@@ -12,10 +12,10 @@ import com.example.moviesapp.routing.Router
 
 class MainActivity : AppCompatActivity(), Router, MoviesAdapter.OnClickPoster {
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         if (savedInstanceState == null) {
             openMoviesList()
         }

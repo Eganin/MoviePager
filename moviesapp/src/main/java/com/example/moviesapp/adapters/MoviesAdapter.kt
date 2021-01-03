@@ -1,8 +1,8 @@
 package com.example.moviesapp.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 import com.example.moviesapp.fragments.list.Counter
@@ -13,7 +13,11 @@ import com.example.moviesapp.pojo.configuration.Images
 import com.example.moviesapp.pojo.movies.popular.Result
 import com.example.moviesapp.viewholders.MovieViewHolder
 
-class MoviesAdapter(val viewModel: MoviesListViewModel) : RecyclerView.Adapter<MovieViewHolder>() {
+class MoviesAdapter(
+    val viewModel: MoviesListViewModel,
+    var type: MovieDataType,
+    var query: String? = null
+) : RecyclerView.Adapter<MovieViewHolder>() {
 
     private var movies = mutableListOf<Result>()
 
@@ -38,7 +42,11 @@ class MoviesAdapter(val viewModel: MoviesListViewModel) : RecyclerView.Adapter<M
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.onBind(movie = movies[position])
         if (position >= movies.size.minus(4) && movies.size >= 20) {
-            viewModel.loadMovies(MovieDataType.TOP_RATED)
+            if (query == null) {
+                viewModel.loadMovies(type = type)
+            } else {
+                viewModel.loadMovies(type = type, query = query)
+            }
         }
     }
 
@@ -46,18 +54,18 @@ class MoviesAdapter(val viewModel: MoviesListViewModel) : RecyclerView.Adapter<M
     override fun getItemCount() = movies.size
 
     fun bindMovies(newMovies: List<Result>) {
-        if(Counter.count != 0 && Counter.count != 1){
+        if (Counter.count != 0 && Counter.count != 1) {
             val oldMovies = movies.subList(movies.size - 20, movies.size)
             if (oldMovies != newMovies) movies.addAll(newMovies)
-        }else if (Counter.count == 1){
+        } else if (Counter.count == 1) {
             movies = newMovies as MutableList<Result>
-        }else{
+        } else {
             movies.addAll(newMovies)
         }
 
     }
 
-    fun clearMovies(){
+    fun clearMovies() {
         movies = mutableListOf()
     }
 

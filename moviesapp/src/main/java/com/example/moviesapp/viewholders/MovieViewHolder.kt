@@ -1,5 +1,6 @@
 package com.example.moviesapp.viewholders
 
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -14,7 +15,7 @@ import com.example.moviesapp.utils.imageOption
 
 class MovieViewHolder(
     itemView: View,
-    listener: MoviesAdapter.OnClickPoster?,
+    val listener: MoviesAdapter.OnClickPoster?,
     movies: List<Result>,
     val viewModel: MoviesListViewModel
 ) :
@@ -39,18 +40,8 @@ class MovieViewHolder(
         itemView.findViewById(R.id.star_five_movie)
     )
 
-    init {
-        itemView.apply {
-            setOnClickListener {
-                listener?.createMoviesDetailsFragment(
-                    movieId = movies[adapterPosition].id,
-                    configuration = viewModel.configuration
-                )
-            }
-        }
-    }
-
     fun onBind(movie: Result) {
+        setClickListener(movie=movie)
         title.text = movie.title
         pgMovie.text = "${if (movie?.adult == true) "+18" else "+16"}"
         tagLine.text = genres?.genres?.filter { movie.genreIDS?.contains(it.id) ?: false }
@@ -63,6 +54,17 @@ class MovieViewHolder(
 
 
         //bindFavouriteImage(isFavourite = movie.isFavourite)
+    }
+
+    private fun setClickListener(movie: Result){
+        itemView.apply {
+            setOnClickListener {
+                listener?.createMoviesDetailsFragment(
+                    movieId = movie.id,
+                    configuration = viewModel.configuration
+                )
+            }
+        }
     }
 
     private fun bindStars(countRating: Int) {

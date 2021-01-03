@@ -3,9 +3,11 @@ package com.example.moviesapp.fragments.list
 import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -26,6 +28,8 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
     private var progressBar: ProgressBar? = null
     private var sortedMoviesText: TextView? = null
     private var sortedMoviesImage: ImageView? = null
+    private var searchImage: ImageView? = null
+    private var searchEditText: EditText? = null
 
     private val viewModel: MoviesListViewModel by viewModels { ViewModelsFactory() }
     private lateinit var adapter: MoviesAdapter
@@ -49,7 +53,7 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         adapter =
-            MoviesAdapter(viewModel = viewModel)
+            MoviesAdapter(viewModel = viewModel, type = MovieDataType.POPULAR)
         if (context is MoviesAdapter.OnClickPoster) adapter.onClickPoster = context
     }
 
@@ -60,6 +64,7 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
         progressBar = null
         sortedMoviesImage = null
         sortedMoviesText = null
+        searchImage = null
     }
 
     override fun onDestroyView() {
@@ -71,9 +76,21 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
     override fun bind(value: String) {
         sortedMoviesText?.text = value
         adapter.clearMovies()
-        Counter.count =0
+        adapter.type = getTypeMovies()
+        adapter.query = searchEditText?.text.toString()
+        Counter.count = 0
         downloadData()
     }
+
+    private fun getTypeMovies() = when (sortedMoviesText?.text.toString()) {
+        getString(R.string.popular) -> MovieDataType.POPULAR
+        getString(R.string.top_rated_text) -> MovieDataType.TOP_RATED
+        getString(R.string.now_playong) -> MovieDataType.NOW_PLAYING
+        getString(R.string.up_coming) -> MovieDataType.UP_COMING
+        else -> MovieDataType.SEARCH
+
+    }
+
 
     private fun setStateLoading(state: Boolean) {
         progressBar?.isVisible = state
@@ -81,10 +98,14 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
 
     private fun downloadData() {
         when (sortedMoviesText?.text) {
-            getString(R.string.popular) -> viewModel.loadDataModel(MovieDataType.POPULAR)
-            getString(R.string.top_rated_text) -> viewModel.loadDataModel(MovieDataType.TOP_RATED)
-            getString(R.string.now_playong) -> viewModel.loadDataModel(MovieDataType.NOW_PLAYING)
-            getString(R.string.up_coming) -> viewModel.loadDataModel(MovieDataType.UP_COMING)
+            getString(R.string.popular) -> viewModel.loadDataModel(type = MovieDataType.POPULAR)
+            getString(R.string.top_rated_text) -> viewModel.loadDataModel(type = MovieDataType.TOP_RATED)
+            getString(R.string.now_playong) -> viewModel.loadDataModel(type = MovieDataType.NOW_PLAYING)
+            getString(R.string.up_coming) -> viewModel.loadDataModel(type = MovieDataType.UP_COMING)
+            getString(R.string.search_value) -> viewModel.loadDataModel(
+                type = MovieDataType.SEARCH,
+                query = searchEditText?.text.toString()
+            )
         }
     }
 
@@ -94,6 +115,8 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
         progressBar = view.findViewById(R.id.progress_bar_movies_list)
         sortedMoviesImage = view.findViewById(R.id.shape_for_movies_label)
         sortedMoviesText = view.findViewById(R.id.movies_list_label)
+        searchImage = view.findViewById(R.id.search_image)
+        searchEditText = view.findViewById(R.id.search_edit_text)
 
         recycler?.layoutManager = GridLayoutManager(
             requireContext(), recalculationScreen()
@@ -107,6 +130,10 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
 
         sortedMoviesImage?.setOnClickListener {
             SortedBottomSheet(fragment = this).show(parentFragmentManager, "main_dialog")
+        }
+
+        searchImage?.setOnClickListener {
+            bind(value = getString(R.string.search_value))
         }
 
     }
@@ -124,6 +151,10 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
         activity?.windowManager?.defaultDisplay?.getMetrics(displayMetrics)
         val width = (displayMetrics.widthPixels / displayMetrics.density).toInt()
         return if (width / 185 > 2) width / 185 else 2
+    }
+
+    companion object {
+        private const val SAVE_SORTED_MOVIES = "SAVE_SORTED_MOVIES"
     }
 
 }

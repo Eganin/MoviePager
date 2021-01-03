@@ -102,13 +102,13 @@ class FragmentMoviesDetails : Fragment() {
     }
 
     private fun bindViews(view: View, data: ResponseMovieDetail) {
-        ageRating?.text = "${if (data.adult) "+18" else "+16"}"
+        ageRating?.text = "${if (data?.adult == true) "+18" else "+16"}"
         titleMovie?.text = data.title
-        tagLine?.text = data.genres.joinToString(separator = " , ") { it.name }
+        tagLine?.text = data.genres?.joinToString(separator = " , ") { it.name }
         reviewsCount?.text = "${data.voteCount} reviews"
         storyLine?.text = data.overview
         downloadPoster(detailPoster = detailPoster, data = data)
-        bindStars(view = view, countRating = (data.voteAverage / 2).toInt())
+        bindStars(view = view, countRating = (data.voteAverage?.div(2))?.toInt() ?: 0)
 
 
     }

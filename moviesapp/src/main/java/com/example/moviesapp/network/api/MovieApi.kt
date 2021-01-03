@@ -5,6 +5,7 @@ import com.example.moviesapp.network.RetrofitModule.DEFAULT_LANGUAGE
 import com.example.moviesapp.network.RetrofitModule.PARAM_API_KEY
 import com.example.moviesapp.network.RetrofitModule.PARAM_LANGUAGE
 import com.example.moviesapp.network.RetrofitModule.PARAM_PAGE
+import com.example.moviesapp.network.RetrofitModule.PARAM_QUERY
 import com.example.moviesapp.pojo.configuration.GenreList
 import com.example.moviesapp.pojo.configuration.ResponseConfiguration
 import com.example.moviesapp.pojo.movies.credits.ResponseCredits
@@ -65,4 +66,12 @@ interface MovieApi {
         @Query(PARAM_API_KEY) apiKey: String = API_KEY,
         @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE
     ) : ResponseCredits
+
+    @GET("search/movie")
+    suspend fun getSearchMovie(
+        @Query(PARAM_API_KEY) apiKey: String = API_KEY,
+        @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE,
+        @Query(PARAM_PAGE) page: String,
+        @Query(PARAM_QUERY) query : String
+    ) : ResponseMovies
 }

@@ -28,4 +28,6 @@
     <string name="popular">Popular</string>
     <string name="top_rated_text">Top rated</string>
     <string name="up_coming">Up coming</string>
+    <string name="search">Search</string>
+    <string name="search_value">Search</string>
 </resources>
