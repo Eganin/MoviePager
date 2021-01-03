@@ -25,12 +25,12 @@ class MoviesListViewModel(private val interactor: MovieInteractor) :
     private val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> = _state
 
-    var configuration  : Images? = null
-    var genreList  : GenreList? = null
+    var configuration: Images? = null
+    var genreList: GenreList? = null
 
     private var isLoading = true
 
-    fun loadDataModel() {
+    fun loadDataModel(type: MovieDataType) {
         viewModelScope.launch {
             coroutineScope {
                 _state.value = true
@@ -39,20 +39,25 @@ class MoviesListViewModel(private val interactor: MovieInteractor) :
 
                 genreList = getGenres()
 
-                loadMovies()
+                loadMovies(type=type)
 
                 _state.value = false
             }
         }
     }
 
-    fun loadMovies() {
+    fun loadMovies(type: MovieDataType) {
         if (isLoading) {
             viewModelScope.launch {
                 coroutineScope {
                     Counter.count++
                     isLoading = false
-                    val movies = interactor.getDataMovies(page = Counter.count.toString())
+                    val movies = when(type){
+                        MovieDataType.TOP_RATED -> interactor.getTopRatedMovies(page = Counter.count.toString())
+                        MovieDataType.POPULAR -> interactor.getPopularMovies(page = Counter.count.toString())
+                        MovieDataType.NOW_PLAYING -> interactor.getNowPlayingMovies(page = Counter.count.toString())
+                        MovieDataType.UP_COMING -> interactor.getUpComingMovies(page = Counter.count.toString())
+                    }
                     _moviesList.value = movies
                     isLoading = true
                 }
@@ -71,6 +76,10 @@ class MoviesListViewModel(private val interactor: MovieInteractor) :
 
 }
 
-object Counter{
-    var count =0
+object Counter {
+    var count = 0
+}
+
+enum class MovieDataType {
+    TOP_RATED, POPULAR, NOW_PLAYING, UP_COMING
 }

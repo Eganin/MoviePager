@@ -25,6 +25,27 @@ interface MovieApi {
         @Query(PARAM_PAGE) page: String
     ): ResponseMovies
 
+    @GET("movie/now_playing")
+    suspend fun getNowPlayingMovies(
+        @Query(PARAM_API_KEY) apiKey: String = API_KEY,
+        @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE,
+        @Query(PARAM_PAGE) page: String
+    ) : ResponseMovies
+
+    @GET("movie/top_rated")
+    suspend fun getTopRatedMovies(
+        @Query(PARAM_API_KEY) apiKey: String = API_KEY,
+        @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE,
+        @Query(PARAM_PAGE) page: String
+    ) : ResponseMovies
+
+    @GET("movie/upcoming")
+    suspend fun getUpComingMovies(
+        @Query(PARAM_API_KEY) apiKey: String = API_KEY,
+        @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE,
+        @Query(PARAM_PAGE) page: String
+    ) : ResponseMovies
+
     @GET("movie/{movie_id}")
     suspend fun getDetailInfo(
         @Path("movie_id") movieId: String,

@@ -42,7 +42,7 @@ class FragmentMoviesList : Fragment() {
         viewModel.moviesList.observe(viewLifecycleOwner, this::updateAdapter)
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
         if (savedInstanceState == null) {
-            viewModel.loadDataModel()
+            viewModel.loadDataModel(MovieDataType.TOP_RATED)
         }
     }
 
@@ -86,11 +86,11 @@ class FragmentMoviesList : Fragment() {
         recycler?.adapter = adapter
 
         sortedMoviesText?.setOnClickListener {
-            SortedBottomSheet()
+            SortedBottomSheet().show(parentFragmentManager, "main_dialog")
         }
 
         sortedMoviesImage?.setOnClickListener {
-            SortedBottomSheet()
+            SortedBottomSheet().show(parentFragmentManager, "main_dialog")
         }
 
     }

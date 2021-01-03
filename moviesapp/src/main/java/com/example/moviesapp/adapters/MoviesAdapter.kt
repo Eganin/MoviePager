@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 import com.example.moviesapp.fragments.list.Counter
+import com.example.moviesapp.fragments.list.MovieDataType
 import com.example.moviesapp.fragments.list.MoviesListViewModel
 import com.example.moviesapp.pojo.configuration.Images
 
@@ -37,7 +38,7 @@ class MoviesAdapter(val viewModel: MoviesListViewModel) : RecyclerView.Adapter<M
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.onBind(movie = movies[position])
         if (position >= movies.size.minus(4) && movies.size >= 20) {
-            viewModel.loadMovies()
+            viewModel.loadMovies(MovieDataType.TOP_RATED)
         }
     }
 

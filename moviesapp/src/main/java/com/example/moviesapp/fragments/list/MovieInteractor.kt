@@ -6,7 +6,19 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 class MovieInteractor(private val dispatcher: CoroutineDispatcher) {
-    suspend fun getDataMovies(page : String): List<Result> = withContext(dispatcher) {
+    suspend fun getPopularMovies(page : String): List<Result> = withContext(dispatcher) {
         RetrofitModule.apiMovies.getPopularMovies(page = page ).results
+    }
+
+    suspend fun getNowPlayingMovies(page : String): List<Result> = withContext(dispatcher) {
+        RetrofitModule.apiMovies.getNowPlayingMovies(page=page).results
+    }
+
+    suspend fun getTopRatedMovies(page : String): List<Result> = withContext(dispatcher) {
+        RetrofitModule.apiMovies.getTopRatedMovies(page=page).results
+    }
+
+    suspend fun getUpComingMovies(page : String): List<Result> = withContext(dispatcher) {
+        RetrofitModule.apiMovies.getUpComingMovies(page=page).results
     }
 }
