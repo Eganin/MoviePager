@@ -36,4 +36,9 @@
         <item name="android:src">@drawable/ic_star</item>
     </style>
 
+    <style name="text_bottom">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
 </resources>

@@ -3,11 +3,12 @@ package com.example.moviesapp.fragments.list
 import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
 import androidx.fragment.app.viewModels
+import com.example.moviesapp.common.SortedBottomSheet
 import com.example.moviesapp.common.ViewModelsFactory
 import com.example.moviesapp.pojo.movies.popular.Result
 
@@ -22,6 +24,9 @@ class FragmentMoviesList : Fragment() {
 
     private var recycler: RecyclerView? = null
     private var progressBar: ProgressBar? = null
+    private var sortedMoviesText: TextView? = null
+    private var sortedMoviesImage: ImageView? = null
+
     private val viewModel: MoviesListViewModel by viewModels { ViewModelsFactory() }
     private lateinit var adapter: MoviesAdapter
 
@@ -36,7 +41,7 @@ class FragmentMoviesList : Fragment() {
         setupUI(view = view)
         viewModel.moviesList.observe(viewLifecycleOwner, this::updateAdapter)
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
-        if(savedInstanceState == null ){
+        if (savedInstanceState == null) {
             viewModel.loadDataModel()
         }
     }
@@ -53,6 +58,8 @@ class FragmentMoviesList : Fragment() {
         adapter.onClickPoster = null
         recycler = null
         progressBar = null
+        sortedMoviesImage = null
+        sortedMoviesText = null
     }
 
     override fun onDestroyView() {
@@ -69,17 +76,28 @@ class FragmentMoviesList : Fragment() {
     private fun setupUI(view: View) {
         recycler = view.findViewById(R.id.movies_recycler_view)
         progressBar = view.findViewById(R.id.progress_bar_movies_list)
+        sortedMoviesImage = view.findViewById(R.id.shape_for_movies_label)
+        sortedMoviesText = view.findViewById(R.id.movies_list_label)
 
         recycler?.layoutManager = GridLayoutManager(
             requireContext(), recalculationScreen()
         )
 
         recycler?.adapter = adapter
+
+        sortedMoviesText?.setOnClickListener {
+            SortedBottomSheet()
+        }
+
+        sortedMoviesImage?.setOnClickListener {
+            SortedBottomSheet()
+        }
+
     }
 
     private fun updateAdapter(data: List<Result>) {
-            adapter.bindMovies(newMovies = data)
-            adapter.notifyDataSetChanged()
+        adapter.bindMovies(newMovies = data)
+        adapter.notifyDataSetChanged()
 
     }
 

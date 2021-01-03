@@ -33,6 +33,7 @@
             app:layout_constraintBottom_toBottomOf="@id/shape_for_movies_label"
             app:layout_constraintStart_toEndOf="@id/shape_for_movies_label"
             app:layout_constraintTop_toTopOf="@id/shape_for_movies_label"
+            app:layout_constraintVertical_bias="1.0"
             tools:ignore="MissingConstraints" />
 
         <ImageView

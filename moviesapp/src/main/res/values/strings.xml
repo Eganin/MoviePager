@@ -24,4 +24,8 @@
     <string name="default_title_movie">Avengers: End Game</string>
     <string name="default_time_film">137 MIN</string>
     <string name="image_actor_desciption">Image actor</string>
+    <string name="now_playong">Now playong</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated_text">Top rated</string>
+    <string name="up_coming">Up coming</string>
 </resources>
