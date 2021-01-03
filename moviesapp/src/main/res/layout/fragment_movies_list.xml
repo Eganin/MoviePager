@@ -30,24 +30,17 @@
             app:layout_constraintStart_toStartOf="@id/shape_for_movies_label"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/name_label_edit"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:background="@color/main_background_color"
-            app:endIconMode="clear_text"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/search_image"
-            app:layout_constraintEnd_toEndOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
+                app:endIconMode="clear_text"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/search_image"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:id="@+id/search_edit_text"
                 android:hint="@string/search"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:background="@color/purple_200" />
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
             android:id="@+id/movies_list_label"

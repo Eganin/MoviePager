@@ -45,8 +45,11 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
         setupUI(view = view)
         viewModel.moviesList.observe(viewLifecycleOwner, this::updateAdapter)
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null && sortedMoviesText?.text != getText(R.string.search_value) && Counter.count == 0) {
             downloadData()
+        }
+        if (sortedMoviesText != getText(R.string.search_value)) {
+            searchEditText?.text = null
         }
     }
 
@@ -75,14 +78,17 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
 
     override fun bind(value: String) {
         sortedMoviesText?.text = value
+        val bundle = Bundle()
+        bundle.putString("AAAAAAA", (sortedMoviesText?.text ?: "Popular").toString())
+        arguments = bundle
         adapter.clearMovies()
         adapter.type = getTypeMovies()
-        adapter.query = searchEditText?.text.toString()
+        adapter.query = searchEditText?.text.toString().trim()
         Counter.count = 0
         downloadData()
     }
 
-    private fun getTypeMovies() = when (sortedMoviesText?.text.toString()) {
+    private fun getTypeMovies() = when (sortedMoviesText?.text.toString().trim()) {
         getString(R.string.popular) -> MovieDataType.POPULAR
         getString(R.string.top_rated_text) -> MovieDataType.TOP_RATED
         getString(R.string.now_playong) -> MovieDataType.NOW_PLAYING
@@ -104,7 +110,7 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
             getString(R.string.up_coming) -> viewModel.loadDataModel(type = MovieDataType.UP_COMING)
             getString(R.string.search_value) -> viewModel.loadDataModel(
                 type = MovieDataType.SEARCH,
-                query = searchEditText?.text.toString()
+                query = searchEditText?.text.toString().trim()
             )
         }
     }
@@ -117,6 +123,8 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
         sortedMoviesText = view.findViewById(R.id.movies_list_label)
         searchImage = view.findViewById(R.id.search_image)
         searchEditText = view.findViewById(R.id.search_edit_text)
+
+        sortedMoviesText?.text = arguments?.getString("AAAAAAA") ?: "Popular"
 
         recycler?.layoutManager = GridLayoutManager(
             requireContext(), recalculationScreen()
@@ -153,8 +161,5 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
         return if (width / 185 > 2) width / 185 else 2
     }
 
-    companion object {
-        private const val SAVE_SORTED_MOVIES = "SAVE_SORTED_MOVIES"
-    }
 
 }

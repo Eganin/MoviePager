@@ -12,6 +12,11 @@ import com.example.moviesapp.routing.Router
 
 class MainActivity : AppCompatActivity(), Router, MoviesAdapter.OnClickPoster {
 
+    interface OnBackQuery {
+        fun getQuery() : String
+    }
+
+    private var onBackQuery: OnBackQuery? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,12 +26,21 @@ class MainActivity : AppCompatActivity(), Router, MoviesAdapter.OnClickPoster {
         }
     }
 
-    override fun createMoviesDetailsFragment(movieId: Long, configuration: Images?) {
+    override fun createMoviesDetailsFragment(
+        movieId: Long,
+        configuration: Images?
+    ) {
         openMovieDetails(movieId = movieId, configuration = configuration)
     }
 
     override fun onBackPressed() {
         supportFragmentManager.popBackStack()
+        /*
+        val bundle = Bundle()
+        bundle.putString("AAAAAAA", onBackQuery?.getQuery())
+        supportFragmentManager.fragments.last().arguments =bundle
+
+         */
     }
 
     override fun openMoviesList() {

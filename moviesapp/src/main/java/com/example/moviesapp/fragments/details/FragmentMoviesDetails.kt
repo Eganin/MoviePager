@@ -20,10 +20,11 @@ import com.example.moviesapp.adapters.ActorsAdapter
 import com.example.moviesapp.common.ViewModelsFactory
 import com.example.moviesapp.pojo.configuration.Images
 import com.example.moviesapp.pojo.movies.details.ResponseMovieDetail
+import com.example.moviesapp.screens.main.MainActivity
 import com.example.moviesapp.utils.imageOption
 
 
-class FragmentMoviesDetails : Fragment() {
+class FragmentMoviesDetails : Fragment(), MainActivity.OnBackQuery {
     private val viewModel: MoviesDetailsViewModel by viewModels { ViewModelsFactory() }
     private val configuration: Images by lazy { arguments?.get(SAVE_CONFIGURATION) as Images }
     private lateinit var adapter: ActorsAdapter
@@ -145,7 +146,10 @@ class FragmentMoviesDetails : Fragment() {
     }
 
     companion object {
-        fun newInstance(movieId: Long, configuration: Images?): FragmentMoviesDetails {
+        fun newInstance(
+            movieId: Long,
+            configuration: Images?
+        ): FragmentMoviesDetails {
             val fragment = FragmentMoviesDetails()
             val bundle = Bundle()
             bundle.putLong(SAVE_MOVIE_DATA_KEY, movieId)
@@ -156,7 +160,10 @@ class FragmentMoviesDetails : Fragment() {
 
         private const val SAVE_MOVIE_DATA_KEY = "SAVE_MOVIE_DATA_KEY"
         private const val SAVE_CONFIGURATION = "SAVE_CONFIGURATION"
+        private const val SAVE_QUERY = "SAVE_QUERY"
     }
+
+    override fun getQuery(): String = arguments?.getString(SAVE_QUERY) ?: "Popular"
 
 
 }

@@ -1,6 +1,5 @@
 package com.example.moviesapp.viewholders
 
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -16,7 +15,6 @@ import com.example.moviesapp.utils.imageOption
 class MovieViewHolder(
     itemView: View,
     val listener: MoviesAdapter.OnClickPoster?,
-    movies: List<Result>,
     val viewModel: MoviesListViewModel
 ) :
     RecyclerView.ViewHolder(itemView) {
