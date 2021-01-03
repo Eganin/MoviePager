@@ -57,4 +57,8 @@ class MoviesAdapter(val viewModel: MoviesListViewModel) : RecyclerView.Adapter<M
 
     }
 
+    fun clearMovies(){
+        movies = mutableListOf()
+    }
+
 }

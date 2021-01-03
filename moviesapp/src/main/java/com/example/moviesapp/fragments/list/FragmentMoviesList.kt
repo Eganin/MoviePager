@@ -20,7 +20,7 @@ import com.example.moviesapp.common.SortedBottomSheet
 import com.example.moviesapp.common.ViewModelsFactory
 import com.example.moviesapp.pojo.movies.popular.Result
 
-class FragmentMoviesList : Fragment() {
+class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
 
     private var recycler: RecyclerView? = null
     private var progressBar: ProgressBar? = null
@@ -42,7 +42,7 @@ class FragmentMoviesList : Fragment() {
         viewModel.moviesList.observe(viewLifecycleOwner, this::updateAdapter)
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
         if (savedInstanceState == null) {
-            viewModel.loadDataModel(MovieDataType.TOP_RATED)
+            downloadData()
         }
     }
 
@@ -68,8 +68,24 @@ class FragmentMoviesList : Fragment() {
         recycler = null
     }
 
+    override fun bind(value: String) {
+        sortedMoviesText?.text = value
+        adapter.clearMovies()
+        Counter.count =0
+        downloadData()
+    }
+
     private fun setStateLoading(state: Boolean) {
         progressBar?.isVisible = state
+    }
+
+    private fun downloadData() {
+        when (sortedMoviesText?.text) {
+            getString(R.string.popular) -> viewModel.loadDataModel(MovieDataType.POPULAR)
+            getString(R.string.top_rated_text) -> viewModel.loadDataModel(MovieDataType.TOP_RATED)
+            getString(R.string.now_playong) -> viewModel.loadDataModel(MovieDataType.NOW_PLAYING)
+            getString(R.string.up_coming) -> viewModel.loadDataModel(MovieDataType.UP_COMING)
+        }
     }
 
 
@@ -86,11 +102,11 @@ class FragmentMoviesList : Fragment() {
         recycler?.adapter = adapter
 
         sortedMoviesText?.setOnClickListener {
-            SortedBottomSheet().show(parentFragmentManager, "main_dialog")
+            SortedBottomSheet(fragment = this).show(parentFragmentManager, "main_dialog")
         }
 
         sortedMoviesImage?.setOnClickListener {
-            SortedBottomSheet().show(parentFragmentManager, "main_dialog")
+            SortedBottomSheet(fragment = this).show(parentFragmentManager, "main_dialog")
         }
 
     }
@@ -109,4 +125,5 @@ class FragmentMoviesList : Fragment() {
         val width = (displayMetrics.widthPixels / displayMetrics.density).toInt()
         return if (width / 185 > 2) width / 185 else 2
     }
+
 }

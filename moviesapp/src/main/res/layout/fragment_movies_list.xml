@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/small_margin_title"
             android:fontFamily="@font/roboto_bold_family"
-            android:text="@string/movies_list_label_text"
+            android:text="@string/popular"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/shape_for_movies_label"
             app:layout_constraintStart_toEndOf="@id/shape_for_movies_label"
