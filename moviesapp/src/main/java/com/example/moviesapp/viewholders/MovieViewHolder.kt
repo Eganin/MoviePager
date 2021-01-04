@@ -10,7 +10,7 @@ import com.example.moviesapp.R
 import com.example.moviesapp.adapters.MoviesAdapter
 import com.example.moviesapp.fragments.list.MoviesListViewModel
 import com.example.moviesapp.pojo.movies.popular.Result
-import com.example.moviesapp.utils.imageOption
+import com.example.moviesapp.utils.imageOptionMovie
 
 class MovieViewHolder(
     itemView: View,
@@ -99,7 +99,7 @@ class MovieViewHolder(
                 configuration?.baseURL + (configuration?.posterSizes?.get(4)
                     ?: "") + movie.posterPath
             )
-            .apply(imageOption)
+            .apply(imageOptionMovie)
             .into(imagePoster)
     }
 

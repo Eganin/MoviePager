@@ -3,7 +3,6 @@ package com.example.moviesapp.fragments.list
 import android.content.Context
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -48,9 +47,6 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
         if (savedInstanceState == null && sortedMoviesText?.text != getText(R.string.search_value) && Counter.count == 0) {
             downloadData()
         }
-        if (sortedMoviesText != getText(R.string.search_value)) {
-            searchEditText?.text = null
-        }
     }
 
     override fun onAttach(context: Context) {
@@ -78,14 +74,18 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
 
     override fun bind(value: String) {
         sortedMoviesText?.text = value
+        prepareData()
+        downloadData()
+    }
+
+    private fun prepareData(){
         val bundle = Bundle()
-        bundle.putString("AAAAAAA", (sortedMoviesText?.text ?: "Popular").toString())
+        bundle.putString(SAVE_SORTED_TYPE, (sortedMoviesText?.text ?: "Popular").toString())
         arguments = bundle
         adapter.clearMovies()
         adapter.type = getTypeMovies()
         adapter.query = searchEditText?.text.toString().trim()
         Counter.count = 0
-        downloadData()
     }
 
     private fun getTypeMovies() = when (sortedMoviesText?.text.toString().trim()) {
@@ -124,7 +124,7 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
         searchImage = view.findViewById(R.id.search_image)
         searchEditText = view.findViewById(R.id.search_edit_text)
 
-        sortedMoviesText?.text = arguments?.getString("AAAAAAA") ?: "Popular"
+        sortedMoviesText?.text = arguments?.getString(SAVE_SORTED_TYPE) ?: "Popular"
 
         recycler?.layoutManager = GridLayoutManager(
             requireContext(), recalculationScreen()
@@ -161,5 +161,7 @@ class FragmentMoviesList : Fragment(), SortedBottomSheet.OnBindSorted {
         return if (width / 185 > 2) width / 185 else 2
     }
 
-
+    companion object{
+        private const val SAVE_SORTED_TYPE = "SAVE_SORTED_TYPE"
+    }
 }

@@ -20,11 +20,11 @@ import com.example.moviesapp.adapters.ActorsAdapter
 import com.example.moviesapp.common.ViewModelsFactory
 import com.example.moviesapp.pojo.configuration.Images
 import com.example.moviesapp.pojo.movies.details.ResponseMovieDetail
-import com.example.moviesapp.screens.main.MainActivity
-import com.example.moviesapp.utils.imageOption
+import com.example.moviesapp.utils.imageOptionMovie
 
 
-class FragmentMoviesDetails : Fragment(), MainActivity.OnBackQuery {
+class FragmentMoviesDetails : Fragment(){
+
     private val viewModel: MoviesDetailsViewModel by viewModels { ViewModelsFactory() }
     private val configuration: Images by lazy { arguments?.get(SAVE_CONFIGURATION) as Images }
     private lateinit var adapter: ActorsAdapter
@@ -46,13 +46,14 @@ class FragmentMoviesDetails : Fragment(), MainActivity.OnBackQuery {
         super.onViewCreated(view, savedInstanceState)
 
         arguments?.getLong(SAVE_MOVIE_DATA_KEY)?.let { viewModel.loadDetailData(id = it) }
+
         viewModel.startLoadingData()
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
+        viewModel.info.observe(viewLifecycleOwner, { bindViews(view = view, data = it) })
         viewModel.credits.observe(viewLifecycleOwner, {
             adapter.bindActors(newActors = it.cast)
             adapter.notifyDataSetChanged()
         })
-        viewModel.info.observe(viewLifecycleOwner, { bindViews(view = view, data = it) })
 
         setupViews(view = view)
         setupRecyclerView(view = view)
@@ -139,7 +140,7 @@ class FragmentMoviesDetails : Fragment(), MainActivity.OnBackQuery {
 
             Glide.with(requireContext())
                 .load(configuration.baseURL + (configuration.backdropSizes[2]) + data.backdropPath)
-                .apply(imageOption)
+                .apply(imageOptionMovie)
                 .into(detailPoster)
         }
 
@@ -160,10 +161,7 @@ class FragmentMoviesDetails : Fragment(), MainActivity.OnBackQuery {
 
         private const val SAVE_MOVIE_DATA_KEY = "SAVE_MOVIE_DATA_KEY"
         private const val SAVE_CONFIGURATION = "SAVE_CONFIGURATION"
-        private const val SAVE_QUERY = "SAVE_QUERY"
     }
-
-    override fun getQuery(): String = arguments?.getString(SAVE_QUERY) ?: "Popular"
 
 
 }

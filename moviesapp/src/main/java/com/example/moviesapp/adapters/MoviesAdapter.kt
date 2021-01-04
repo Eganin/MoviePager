@@ -2,8 +2,6 @@ package com.example.moviesapp.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 import com.example.moviesapp.fragments.list.Counter
@@ -23,7 +21,7 @@ class MoviesAdapter(
     private var movies = mutableListOf<Result>()
 
     interface OnClickPoster {
-        fun createMoviesDetailsFragment(movieId: Long, configuration: Images? )
+        fun createMoviesDetailsFragment(movieId: Long, configuration: Images?)
     }
 
     var onClickPoster: OnClickPoster? = null
@@ -58,8 +56,6 @@ class MoviesAdapter(
             if(type != MovieDataType.SEARCH){
                 val oldMovies = movies.subList(movies.size - 20, movies.size)
                 if (oldMovies != newMovies) movies.addAll(newMovies)
-            }else{
-                movies = newMovies as MutableList<Result>
             }
         } else if (Counter.count == 1) {
             movies = newMovies as MutableList<Result>

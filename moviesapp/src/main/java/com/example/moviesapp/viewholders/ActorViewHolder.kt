@@ -1,6 +1,5 @@
 package com.example.moviesapp.viewholders
 
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
@@ -9,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.example.moviesapp.R
 import com.example.moviesapp.pojo.configuration.Images
 import com.example.moviesapp.pojo.movies.credits.Cast
-import com.example.moviesapp.utils.imageOption
+import com.example.moviesapp.utils.imageOptionActor
 
 class ActorViewHolder(itemView: View , val configuration: Images ) :
     RecyclerView.ViewHolder(itemView) {
@@ -22,7 +21,7 @@ class ActorViewHolder(itemView: View , val configuration: Images ) :
             .clear(imageCast)
         Glide.with(context)
             .load(configuration.baseURL + (configuration.logoSizes[3]) +actor.profilePath)
-            .apply(imageOption)
+            .apply(imageOptionActor)
             .into(imageCast)
         name.text = actor.name
 

@@ -33,7 +33,7 @@ class MoviesListViewModel(private val interactor: MovieInteractor) :
     fun loadDataModel(type: MovieDataType, query: String? = null) {
         viewModelScope.launch {
             coroutineScope {
-                _state.value = true
+                startLoadingData()
 
                 configuration = getConfiguration()
 
@@ -45,13 +45,14 @@ class MoviesListViewModel(private val interactor: MovieInteractor) :
                     loadMovies(type = type, query = query)
                 }
 
-                _state.value = false
+                stopLoadingData()
             }
         }
     }
 
     fun loadMovies(type: MovieDataType, query: String? = null) {
         if (isLoading) {
+            startLoadingData()
             viewModelScope.launch {
                 coroutineScope {
                     Counter.count++
@@ -62,15 +63,23 @@ class MoviesListViewModel(private val interactor: MovieInteractor) :
                         MovieDataType.NOW_PLAYING -> interactor.getNowPlayingMovies(page = Counter.count.toString())
                         MovieDataType.UP_COMING -> interactor.getUpComingMovies(page = Counter.count.toString())
                         MovieDataType.SEARCH -> interactor.getSearchMovies(
-                            searchValue = query ?: "", page = Counter.count.toString()
+                            searchValue = query ?: "unknown", page = Counter.count.toString()
                         )
                     }
                     _moviesList.value = movies
                     isLoading = true
                 }
             }
-
+            stopLoadingData()
         }
+    }
+
+    fun startLoadingData() {
+        _state.value = true
+    }
+
+    fun stopLoadingData() {
+        _state.value = false
     }
 
     private suspend fun getConfiguration(): Images = withContext(dispatcher) {
