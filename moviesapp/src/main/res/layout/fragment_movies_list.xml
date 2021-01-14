@@ -15,23 +15,37 @@
             android:id="@+id/progress_bar_movies_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:visibility="gone"
+            android:text="@string/search_text"
+            style="@style/titleText"
+            android:id="@+id/search_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <ImageView
             android:id="@+id/search_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_baseline_search_24"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/shape_for_movies_label"
             app:layout_constraintStart_toStartOf="@id/shape_for_movies_label"
             app:layout_constraintTop_toTopOf="parent" />
 
 
             <com.google.android.material.textfield.TextInputEditText
+                android:visibility="gone"
                 app:endIconMode="clear_text"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/search_image"
