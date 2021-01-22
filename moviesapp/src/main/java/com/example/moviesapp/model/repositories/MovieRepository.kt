@@ -1,8 +1,6 @@
 package com.example.moviesapp.model.repositories
 
 import android.content.Context
-import com.example.moviesapp.model.entities.configuration.GenreList
-import com.example.moviesapp.model.entities.configuration.Images
 import com.example.moviesapp.model.entities.movies.popular.Result
 import com.example.moviesapp.model.network.RetrofitModule
 import com.example.moviesapp.storage.MoviesDatabase
@@ -49,7 +47,7 @@ class MovieRepository(applicationContext: Context) :Repository {
         moviesData.getAllMovies()
     }
 
-    override suspend fun insertMovie(movies: List<Result>) = withContext(dispatcher) {
+    override suspend fun insertMovies(movies: List<Result>) = withContext(dispatcher) {
         moviesData.insertMovies(movies = movies)
     }
 

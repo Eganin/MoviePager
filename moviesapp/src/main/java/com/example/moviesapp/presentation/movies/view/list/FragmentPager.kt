@@ -59,6 +59,8 @@ class FragmentPager : Fragment() {
         }
 
         if (sortedMoviesText?.text != getText(R.string.search_value)) {
+            //viewModel.getMoviesFromDb()
+            //viewModel.movies.observe(viewLifecycleOwner , this::updateAdapterDataFromDb)
             bind(
                 value = arguments?.getString(SAVE_SORTED_TYPE) ?: "Popular",
                 saveInstance = savedInstanceState
@@ -204,6 +206,11 @@ class FragmentPager : Fragment() {
         adapter.bindMovies(newMovies = data)
         adapter.notifyDataSetChanged()
 
+    }
+
+    private fun updateAdapterDataFromDb(data : List<Result>){
+        adapter.bindMoviesFromDb(newMovies = data)
+        adapter.notifyDataSetChanged()
     }
 
     private fun recalculationScreen(): Int {

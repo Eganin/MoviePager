@@ -20,9 +20,9 @@ interface Repository {
 
     suspend fun getGenres(): GenreList
 
-    suspend fun getAllMovies() : LiveData<List<Result>>
+    suspend fun getAllMovies() : List<Result>
 
-    suspend fun insertMovie(movies: List<Result>)
+    suspend fun insertMovies(movies: List<Result>)
 
     suspend fun deleteAllMovies()
 

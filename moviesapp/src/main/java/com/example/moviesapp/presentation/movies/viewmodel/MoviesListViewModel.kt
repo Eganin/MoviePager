@@ -4,10 +4,9 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.moviesapp.model.entities.configuration.GenreList
 import com.example.moviesapp.model.entities.configuration.Images
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import com.example.moviesapp.model.entities.movies.popular.Result
 import com.example.moviesapp.model.repositories.MovieRepository
+import kotlinx.coroutines.*
 
 class MoviesListViewModel(private val repository: MovieRepository) :
     ViewModel() {
@@ -19,6 +18,8 @@ class MoviesListViewModel(private val repository: MovieRepository) :
 
     private val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> = _state
+    private val _movies = MutableLiveData<List<Result>>()
+    val movies : LiveData<List<Result>> = _movies
 
     var configuration: Images? = null
     var genreList: GenreList? = null
@@ -98,6 +99,21 @@ class MoviesListViewModel(private val repository: MovieRepository) :
 
     fun stopLoadingData() {
         _state.value = false
+    }
+    fun getMoviesFromDb()=viewModelScope.launch{
+        _movies.postValue(repository.getAllMovies())
+    }
+
+    fun insertMoviesDb(movies : List<Result>) = viewModelScope.launch {
+        repository.insertMovies(movies=movies)
+    }
+
+    fun deleteAllMoviesDB() = viewModelScope.launch {
+        repository.deleteAllMovies()
+    }
+
+    fun deleteMovieByIdDb(id : Long) = viewModelScope.launch {
+        repository.deleteMovieById(id=id)
     }
 
     @Suppress("UNCHECKED_CAST")

@@ -74,6 +74,9 @@ class MoviesAdapter(
 
     }
 
+    fun bindMoviesFromDb(newMovies: List<Result>) = movies.addAll(newMovies)
+
+
     fun clearMovies() {
         movies = mutableListOf()
         notifyDataSetChanged()

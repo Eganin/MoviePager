@@ -1,6 +1,5 @@
 package com.example.moviesapp.storage
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -9,7 +8,7 @@ import com.example.moviesapp.model.entities.movies.popular.Result
 @Dao
 interface MoviesDao {
     @Query("SELECT * FROM movies")
-    suspend fun getAllMovies(): LiveData<List<Result>>
+    suspend fun getAllMovies(): List<Result>
 
     @Insert
     suspend fun insertMovies(movies: List<Result>)
