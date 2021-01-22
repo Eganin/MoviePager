@@ -8,7 +8,7 @@ import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
 
 class AppComponent(context: Context) {
 
-    private val repository = MovieRepository()
+    private val repository = MovieRepository(applicationContext = context)
 
     fun getMoviesViewModel(fragment: Fragment): MoviesListViewModel {
         return ViewModelProvider(fragment, MoviesListViewModel.Factory(repository)).get(

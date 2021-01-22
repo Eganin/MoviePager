@@ -5,5 +5,5 @@ import com.example.moviesapp.di.AppComponent
 
 class MovieApp : Application() {
 
-    val myComponent: AppComponent by lazy { AppComponent(this) }
+    val myComponent: AppComponent by lazy { AppComponent(context=this) }
 }
