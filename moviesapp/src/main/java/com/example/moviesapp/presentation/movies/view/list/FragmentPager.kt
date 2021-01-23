@@ -21,9 +21,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 import com.example.moviesapp.application.MovieApp
 import com.example.moviesapp.model.entities.movies.popular.results.Result
-import com.example.moviesapp.presentation.movies.utils.afterTextChanged
+import com.example.moviesapp.presentation.movies.utils.*
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
-import com.example.moviesapp.presentation.movies.utils.hideKeyboard
 import com.example.moviesapp.presentation.movies.viewmodel.Counter
 import com.example.moviesapp.presentation.movies.viewmodel.MovieDataType
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
@@ -58,10 +57,20 @@ class FragmentPager : Fragment() {
         if (sortedMoviesText?.text == getText(R.string.search_value)) {
             setupSearching()
         } else if (!hasConnection(context = requireContext())) {
-            viewModel.movies.observe(viewLifecycleOwner, this::updateAdapterDataFromDb)
+                when(getTypeMovies()){
+                    MovieDataType.POPULAR->viewModel.popularMovies.observe(viewLifecycleOwner, this::updateAdapterDataFromDb)
+                    MovieDataType.TOP_RATED -> viewModel.topRatedMovies.observe(viewLifecycleOwner, {updateAdapterDataFromDb(data = it.topRatedToResult())})
+                    MovieDataType.NOW_PLAYING->viewModel.nowPlayongMovies.observe(viewLifecycleOwner, {updateAdapterDataFromDb(data = it.nowPlayongToResult())})
+                    MovieDataType.UP_COMING->viewModel.upComingMovies.observe(viewLifecycleOwner, {updateAdapterDataFromDb(data = it.upComingToResult())})
+                }
             viewModel.stopLoadingData()
         } else if (sortedMoviesText?.text != getText(R.string.search_value)) {
-            if (Counter.count == 0) viewModel.deleteAllMoviesDB()
+            if (Counter.count == 0) when(getTypeMovies()){
+                MovieDataType.POPULAR->viewModel.deleteAllPopularMoviesDB()
+                MovieDataType.TOP_RATED->viewModel.deleteAllTopRatedMoviesDB()
+                MovieDataType.NOW_PLAYING->viewModel.deleteAllTNowPlayongMoviesDB()
+                MovieDataType.UP_COMING->viewModel.deleteAllTUpComingMoviesDB()
+            }
             bind(
                 value = arguments?.getString(SAVE_SORTED_TYPE) ?: "Popular",
                 saveInstance = savedInstanceState

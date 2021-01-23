@@ -10,7 +10,7 @@ import com.example.moviesapp.model.entities.movies.popular.results.ResultTopRate
 import com.example.moviesapp.model.entities.movies.popular.results.ResultUpComing
 
 @Dao
-interface MoviesDao {
+interface MoviesDaoPopular {
     @Query("SELECT * FROM movies")
     fun getAllMoviesPopular(): LiveData<List<Result>>
 
@@ -23,6 +23,10 @@ interface MoviesDao {
     @Query("DELETE FROM movies WHERE _id == :id")
     suspend fun deletePopularMovieById(id: Long)
 
+}
+
+@Dao
+interface MoviesDaoTopRated{
     @Query("SELECT * FROM top_rated_movies")
     fun getAllMoviesTopRated(): LiveData<List<ResultTopRated>>
 
@@ -34,9 +38,12 @@ interface MoviesDao {
 
     @Query("DELETE FROM top_rated_movies WHERE _id == :id")
     suspend fun deleteTopRatedMovieById(id: Long)
+}
 
+@Dao
+interface MoviesDaoNowPlayong{
     @Query("SELECT * FROM now_playong_movies")
-    fun getAllMoviesNowPlatong(): LiveData<List<ResultNowPlayong>>
+    fun getAllMoviesNowPlayong(): LiveData<List<ResultNowPlayong>>
 
     @Insert
     suspend fun insertNowPlayongMovies(movies: List<ResultNowPlayong>)
@@ -46,7 +53,10 @@ interface MoviesDao {
 
     @Query("DELETE FROM now_playong_movies WHERE _id == :id")
     suspend fun deleteNowPlayongMovieById(id: Long)
+}
 
+@Dao
+interface MoviesDaoUpComing{
     @Query("SELECT * FROM up_coming_movies")
     fun getAllMoviesUpComing(): LiveData<List<ResultUpComing>>
 

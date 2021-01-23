@@ -5,7 +5,14 @@ import androidx.lifecycle.*
 import com.example.moviesapp.model.entities.configuration.GenreList
 import com.example.moviesapp.model.entities.configuration.Images
 import com.example.moviesapp.model.entities.movies.popular.results.Result
+import com.example.moviesapp.model.entities.movies.popular.results.ResultNowPlayong
+import com.example.moviesapp.model.entities.movies.popular.results.ResultTopRated
+import com.example.moviesapp.model.entities.movies.popular.results.ResultUpComing
 import com.example.moviesapp.model.repositories.MovieRepository
+import com.example.moviesapp.presentation.movies.utils.nowPlayongToResult
+import com.example.moviesapp.presentation.movies.utils.topRatedToResult
+import com.example.moviesapp.presentation.movies.utils.upComingToResult
+
 import kotlinx.coroutines.*
 
 class MoviesListViewModel(private val repository: MovieRepository) :
@@ -13,12 +20,17 @@ class MoviesListViewModel(private val repository: MovieRepository) :
 
     private var firstLaunch = true
 
-    private val _moviesList = MutableLiveData<List<Result>>(emptyList())
+    private val _moviesList = MutableLiveData<List<Result>>()
     val moviesList: LiveData<List<Result>> = _moviesList
+
 
     private val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> = _state
-    val movies = repository.getAllMovies()
+
+    val popularMovies = repository.getAllMoviesPopular()
+    val topRatedMovies = repository.getAllMoviesTopRated()
+    val nowPlayongMovies = repository.getAllMoviesNowPlayong()
+    val upComingMovies = repository.getAllMoviesUpComing()
 
     var configuration: Images? = null
     var genreList: GenreList? = null
@@ -55,31 +67,42 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                 coroutineScope {
                     Counter.count++
                     isLoading = false
-                    val movies = when (type) {
+                    when (type) {
                         MovieDataType.TOP_RATED -> {
                             increasePage()
-                            repository.getTopRatedMovies(page = Counter.count.toString())
+                            val movies =
+                                repository.getTopRatedMovies(page = Counter.count.toString())
+                            _moviesList.value = movies.topRatedToResult()
+                            insertTopRatedMoviesDb(movies=movies)
                         }
                         MovieDataType.POPULAR -> {
                             increasePage()
-                            repository.getPopularMovies(page = Counter.count.toString())
+                            val movies =
+                                repository.getPopularMovies(page = Counter.count.toString())
+                            _moviesList.value = movies
+                            insertPopularMoviesDb(movies=movies)
                         }
                         MovieDataType.NOW_PLAYING -> {
                             increasePage()
-                            repository.getNowPlayingMovies(page = Counter.count.toString())
+                            val movies =
+                                repository.getNowPlayingMovies(page = Counter.count.toString())
+                            _moviesList.value = movies.nowPlayongToResult()
+                            insertNowPlayongMoviesDb(movies=movies)
                         }
                         MovieDataType.UP_COMING -> {
                             increasePage()
-                            repository.getUpComingMovies(page = Counter.count.toString())
+                            val movies =
+                                repository.getUpComingMovies(page = Counter.count.toString())
+                            _moviesList.value = movies.upComingToResult()
+                            insertUpComingMoviesDb(movies=movies)
                         }
                         MovieDataType.SEARCH -> query?.let {
-                            repository.getSearchMovies(
+                            val movies = repository.getSearchMovies(
                                 searchValue = it, page = Counter.count.toString()
                             )
+                            _moviesList.value = movies
                         }
                     }
-                    movies?.let { _moviesList.value = it
-                    insertMoviesDb(movies=it)}
 
                     isLoading = true
                 }
@@ -101,16 +124,36 @@ class MoviesListViewModel(private val repository: MovieRepository) :
         _state.value = false
     }
 
-    private fun insertMoviesDb(movies : List<Result>) = viewModelScope.launch {
-        repository.insertMovies(movies=movies)
+    private fun insertPopularMoviesDb(movies: List<Result>) = viewModelScope.launch {
+        repository.insertPopularMovies(movies = movies)
     }
 
-    fun deleteAllMoviesDB() = viewModelScope.launch {
-        repository.deleteAllMovies()
+    fun deleteAllPopularMoviesDB() = viewModelScope.launch {
+        repository.deleteAllPopularMovies()
     }
 
-    fun deleteMovieByIdDb(id : Long) = viewModelScope.launch {
-        repository.deleteMovieById(id=id)
+    private fun insertTopRatedMoviesDb(movies: List<ResultTopRated>) = viewModelScope.launch {
+        repository.insertTopRatedMovies(movies = movies)
+    }
+
+    fun deleteAllTopRatedMoviesDB() = viewModelScope.launch {
+        repository.deleteAllTopRatedMovies()
+    }
+
+    private fun insertNowPlayongMoviesDb(movies: List<ResultNowPlayong>) = viewModelScope.launch {
+        repository.insertNowPlayongMovies(movies = movies)
+    }
+
+    fun deleteAllTNowPlayongMoviesDB() = viewModelScope.launch {
+        repository.deleteAllNowPlayongMovies()
+    }
+
+    private fun insertUpComingMoviesDb(movies: List<ResultUpComing>) = viewModelScope.launch {
+        repository.insertUpComingMovies(movies = movies)
+    }
+
+    fun deleteAllTUpComingMoviesDB() = viewModelScope.launch {
+        repository.deleteAllUpComingMovies()
     }
 
     @Suppress("UNCHECKED_CAST")

@@ -10,12 +10,15 @@ import com.example.moviesapp.storage.MoviesDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MovieRepository(applicationContext: Context) :Repository {
+class MovieRepository(applicationContext: Context) : Repository {
     private val dispatcher = Dispatchers.IO
 
     private val db = MoviesDatabase.getInstance(context = applicationContext)
 
-    private val moviesData = db.moviesDao
+    private val moviesDataPopular = db.moviesDaoPopular
+    private val moviesDataTopRated = db.moviesDaoTopRated
+    private val moviesDataNowPlayong = db.moviesDaoNowPlayong
+    private val moviesDataUpComing = db.moviesDaoUpComing
 
     override suspend fun getPopularMovies(page: String) = withContext(dispatcher) {
         RetrofitModule.apiMovies.getPopularMovies(page = page).results
@@ -38,68 +41,68 @@ class MovieRepository(applicationContext: Context) :Repository {
             RetrofitModule.apiMovies.getSearchMovie(query = searchValue, page = page).results
         }
 
-    override suspend fun getConfiguration() = withContext(Dispatchers.IO){
-         RetrofitModule.apiMovies.getConfiguration().images
+    override suspend fun getConfiguration() = withContext(Dispatchers.IO) {
+        RetrofitModule.apiMovies.getConfiguration().images
     }
 
-    override suspend fun getGenres()= withContext(dispatcher) {
+    override suspend fun getGenres() = withContext(dispatcher) {
         RetrofitModule.apiMovies.getGenres()
     }
 
-    override  fun getAllMoviesPopular() = moviesData.getAllMoviesPopular()
+    override fun getAllMoviesPopular() = moviesDataPopular.getAllMoviesPopular()
 
 
     override suspend fun insertPopularMovies(movies: List<Result>) = withContext(dispatcher) {
-        moviesData.insertPopularMovies(movies = movies)
+        moviesDataPopular.insertPopularMovies(movies = movies)
     }
 
     override suspend fun deleteAllPopularMovies() = withContext(dispatcher) {
-        moviesData.deleteAllPopularMovies()
+        moviesDataPopular.deleteAllPopularMovies()
     }
 
     override suspend fun deletePopularMovieById(id: Long) = withContext(dispatcher) {
-        moviesData.deletePopularMovieById(id = id)
+        moviesDataPopular.deletePopularMovieById(id = id)
     }
 
-    override fun getAllMoviesTopRated()= moviesData.getAllMoviesTopRated()
+    override fun getAllMoviesTopRated() = moviesDataTopRated.getAllMoviesTopRated()
 
     override suspend fun insertTopRatedMovies(movies: List<ResultTopRated>) {
-        moviesData.insertTopRatedMovies(movies = movies)
+        moviesDataTopRated.insertTopRatedMovies(movies = movies)
     }
 
     override suspend fun deleteAllTopRatedMovies() {
-        moviesData.deleteAllTopRatedMovies()
+        moviesDataTopRated.deleteAllTopRatedMovies()
     }
 
     override suspend fun deleteTopRatedMovieById(id: Long) {
-        moviesData.deleteTopRatedMovieById(id = id)
+        moviesDataTopRated.deleteTopRatedMovieById(id = id)
     }
 
-    override fun getAllMoviesNowPlayong()= moviesData.getAllMoviesNowPlatong()
+    override fun getAllMoviesNowPlayong() = moviesDataNowPlayong.getAllMoviesNowPlayong()
 
     override suspend fun insertNowPlayongMovies(movies: List<ResultNowPlayong>) {
-        moviesData.insertNowPlayongMovies(movies = movies)
+        moviesDataNowPlayong.insertNowPlayongMovies(movies = movies)
     }
 
     override suspend fun deleteAllNowPlayongMovies() {
-        moviesData.deleteAllNowPlayongMovies()
+        moviesDataNowPlayong.deleteAllNowPlayongMovies()
     }
 
     override suspend fun deleteNowPlayongMovieById(id: Long) {
-        moviesData.deleteNowPlayongMovieById(id = id)
+        moviesDataNowPlayong.deleteNowPlayongMovieById(id = id)
     }
 
-    override fun getAllMoviesUpComing()= moviesData.getAllMoviesUpComing()
+    override fun getAllMoviesUpComing() = moviesDataUpComing.getAllMoviesUpComing()
 
     override suspend fun insertUpComingMovies(movies: List<ResultUpComing>) {
-        moviesData.insertUpComingMovies(movies = movies)
+        moviesDataUpComing.insertUpComingMovies(movies = movies)
     }
 
     override suspend fun deleteAllUpComingMovies() {
-        moviesData.deleteAllUpComingMovies()
+        moviesDataUpComing.deleteAllUpComingMovies()
     }
 
     override suspend fun deleteUpComingMovieById(id: Long) {
-        moviesData.deleteUpComingMovieById(id = id)
+        moviesDataUpComing.deleteUpComingMovieById(id = id)
     }
 }

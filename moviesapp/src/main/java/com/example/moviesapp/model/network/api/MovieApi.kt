@@ -11,9 +11,10 @@ import com.example.moviesapp.model.entities.configuration.GenreList
 import com.example.moviesapp.model.entities.configuration.ResponseConfiguration
 import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
-import com.example.moviesapp.model.entities.movies.popular.ResponseMovies
-import retrofit2.Call
-import retrofit2.http.FormUrlEncoded
+import com.example.moviesapp.model.entities.movies.popular.response.ReponseMoviesUpComing
+import com.example.moviesapp.model.entities.movies.popular.response.ResponseMoviesNowPlayong
+import com.example.moviesapp.model.entities.movies.popular.response.ResponseMoviesPopular
+import com.example.moviesapp.model.entities.movies.popular.response.ResponseMoviesTopRated
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -27,28 +28,28 @@ interface MovieApi {
         @Query(PARAM_API_KEY) apiKey: String = API_KEY,
         @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE,
         @Query(PARAM_PAGE) page: String
-    ): ResponseMovies
+    ): ResponseMoviesPopular
 
     @GET("movie/now_playing")
     suspend fun getNowPlayingMovies(
         @Query(PARAM_API_KEY) apiKey: String = API_KEY,
         @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE,
         @Query(PARAM_PAGE) page: String
-    ) : ResponseMovies
+    ) : ResponseMoviesNowPlayong
 
     @GET("movie/top_rated")
     suspend fun getTopRatedMovies(
         @Query(PARAM_API_KEY) apiKey: String = API_KEY,
         @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE,
         @Query(PARAM_PAGE) page: String
-    ) : ResponseMovies
+    ) : ResponseMoviesTopRated
 
     @GET("movie/upcoming")
     suspend fun getUpComingMovies(
         @Query(PARAM_API_KEY) apiKey: String = API_KEY,
         @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE,
         @Query(PARAM_PAGE) page: String
-    ) : ResponseMovies
+    ) : ReponseMoviesUpComing
 
     @GET("movie/{movie_id}")
     suspend fun getDetailInfo(
@@ -76,5 +77,5 @@ interface MovieApi {
         @Query(PARAM_LANGUAGE) language: String = DEFAULT_LANGUAGE,
         @Query(PARAM_PAGE) page: String,
         @Query(PARAM_QUERY) query : String
-    ) : ResponseMovies
+    ) : ResponseMoviesPopular
 }

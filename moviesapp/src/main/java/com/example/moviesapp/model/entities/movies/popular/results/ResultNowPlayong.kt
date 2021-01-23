@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 )
 @TypeConverters(value = [GenresConventer::class])
 @Serializable
-data class ResultNowPlayong (
+data class ResultNowPlayong  (
     @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_ADULT)
     val adult: Boolean? = null,
 
@@ -68,4 +68,4 @@ data class ResultNowPlayong (
     @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_VOTE_COUNT)
     @SerialName("vote_count")
     val voteCount: Long? = null
-        )
+)

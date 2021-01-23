@@ -11,11 +11,11 @@ import com.example.moviesapp.model.entities.movies.popular.results.ResultUpComin
 interface Repository {
     suspend fun getPopularMovies(page: String) : List<Result>
 
-    suspend fun getNowPlayingMovies(page: String) : List<Result>
+    suspend fun getNowPlayingMovies(page: String) : List<ResultNowPlayong>
 
-    suspend fun getTopRatedMovies(page: String) : List<Result>
+    suspend fun getTopRatedMovies(page: String) : List<ResultTopRated>
 
-    suspend fun getUpComingMovies(page: String) : List<Result>
+    suspend fun getUpComingMovies(page: String) : List<ResultUpComing>
 
     suspend fun getSearchMovies(searchValue: String, page: String) : List<Result>
 
