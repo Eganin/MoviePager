@@ -8,6 +8,7 @@ object MoviesContact {
     object Result{
         const val TABLE_NAME = "movies"
         const val COLUMN_NAME_ID = BaseColumns._ID
+        const val COLUMN_NAME_MOVIE = "id_movie"
         const val COLUMN_NAME_ADULT = "adult"
         const val COLUMN_NAME_BACKDROP_PATH = "backdrop_path"
         const val COLUMN_NAME_GENRES_IDS = "genres_ids"

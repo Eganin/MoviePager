@@ -10,6 +10,7 @@ import com.example.moviesapp.presentation.movies.viewmodel.MovieDataType
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
 import com.example.moviesapp.model.entities.configuration.Images
 import com.example.moviesapp.model.entities.movies.popular.Result
+import com.example.moviesapp.presentation.movies.utils.network.hasConnection
 import kotlin.ClassCastException
 
 
@@ -40,7 +41,7 @@ class MoviesAdapter(
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.onBind(movie = movies[position])
-        if (position >= movies.size.minus(4) && movies.size >= 20) {
+        if (position >= movies.size.minus(4) && movies.size >= 20 && hasConnection(context=holder.itemView.context)) {
             viewModel.loadMovies(type = type)
         }
     }

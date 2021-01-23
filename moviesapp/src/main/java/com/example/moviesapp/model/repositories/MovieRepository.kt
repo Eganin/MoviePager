@@ -1,6 +1,9 @@
 package com.example.moviesapp.model.repositories
 
 import android.content.Context
+import com.example.moviesapp.model.entities.configuration.GenreList
+import com.example.moviesapp.model.entities.configuration.ResponseConfiguration
+import com.example.moviesapp.model.entities.movies.popular.ResponseMovies
 import com.example.moviesapp.model.entities.movies.popular.Result
 import com.example.moviesapp.model.network.RetrofitModule
 import com.example.moviesapp.storage.MoviesDatabase
@@ -35,17 +38,16 @@ class MovieRepository(applicationContext: Context) :Repository {
             RetrofitModule.apiMovies.getSearchMovie(query = searchValue, page = page).results
         }
 
-    override suspend fun getConfiguration() = withContext(dispatcher) {
-        RetrofitModule.apiMovies.getConfiguration().images
+    override suspend fun getConfiguration() = withContext(Dispatchers.IO){
+         RetrofitModule.apiMovies.getConfiguration().images
     }
 
     override suspend fun getGenres()= withContext(dispatcher) {
         RetrofitModule.apiMovies.getGenres()
     }
 
-    override suspend fun getAllMovies() = withContext(dispatcher) {
-        moviesData.getAllMovies()
-    }
+    override  fun getAllMovies() = moviesData.getAllMovies()
+
 
     override suspend fun insertMovies(movies: List<Result>) = withContext(dispatcher) {
         moviesData.insertMovies(movies = movies)

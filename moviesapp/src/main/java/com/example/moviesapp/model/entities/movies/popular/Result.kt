@@ -25,7 +25,10 @@ data class Result(
     val genreIDS: List<Long>? = null,
 
     @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_ID)
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey(autoGenerate = true)
+    val idDb : Long? = null ,
+
+    @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_MOVIE)
     val id: Long,
 
     @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_ORIGINAL_LANGUAGE)

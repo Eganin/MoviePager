@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +22,7 @@ import com.example.moviesapp.R
 import com.example.moviesapp.application.MovieApp
 import com.example.moviesapp.model.entities.movies.popular.Result
 import com.example.moviesapp.presentation.movies.utils.afterTextChanged
+import com.example.moviesapp.presentation.movies.utils.network.hasConnection
 import com.example.moviesapp.presentation.movies.utils.hideKeyboard
 import com.example.moviesapp.presentation.movies.viewmodel.Counter
 import com.example.moviesapp.presentation.movies.viewmodel.MovieDataType
@@ -54,17 +54,19 @@ class FragmentPager : Fragment() {
         setupUI(view = view)
         viewModel.moviesList.observe(viewLifecycleOwner, this::updateAdapter)
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
+
         if (sortedMoviesText?.text == getText(R.string.search_value)) {
             setupSearching()
-        }
-
-        if (sortedMoviesText?.text != getText(R.string.search_value)) {
-            //viewModel.getMoviesFromDb()
-            //viewModel.movies.observe(viewLifecycleOwner , this::updateAdapterDataFromDb)
+        } else if (!hasConnection(context = requireContext())) {
+            viewModel.movies.observe(viewLifecycleOwner, this::updateAdapterDataFromDb)
+            viewModel.stopLoadingData()
+        } else if (sortedMoviesText?.text != getText(R.string.search_value)) {
+            if (Counter.count == 0) viewModel.deleteAllMoviesDB()
             bind(
                 value = arguments?.getString(SAVE_SORTED_TYPE) ?: "Popular",
                 saveInstance = savedInstanceState
             )
+
         }
 
     }
@@ -115,8 +117,10 @@ class FragmentPager : Fragment() {
             if (it.isNotEmpty()) {
                 Handler().postDelayed({
                     Counter.count = 0
-                    lifecycleScope.launch {
-                        downloadData()
+                    if (hasConnection(context = requireContext())) {
+                        lifecycleScope.launch {
+                            downloadData()
+                        }
                     }
                 }, 2000)
             } else {
@@ -208,7 +212,7 @@ class FragmentPager : Fragment() {
 
     }
 
-    private fun updateAdapterDataFromDb(data : List<Result>){
+    private fun updateAdapterDataFromDb(data: List<Result>) {
         adapter.bindMoviesFromDb(newMovies = data)
         adapter.notifyDataSetChanged()
     }

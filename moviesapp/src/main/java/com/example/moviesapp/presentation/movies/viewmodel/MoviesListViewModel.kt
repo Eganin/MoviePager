@@ -18,8 +18,7 @@ class MoviesListViewModel(private val repository: MovieRepository) :
 
     private val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> = _state
-    private val _movies = MutableLiveData<List<Result>>()
-    val movies : LiveData<List<Result>> = _movies
+    val movies = repository.getAllMovies()
 
     var configuration: Images? = null
     var genreList: GenreList? = null
@@ -79,7 +78,8 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                             )
                         }
                     }
-                    movies?.let { _moviesList.value = it }
+                    movies?.let { _moviesList.value = it
+                    insertMoviesDb(movies=it)}
 
                     isLoading = true
                 }
@@ -93,18 +93,15 @@ class MoviesListViewModel(private val repository: MovieRepository) :
         firstLaunch = false
     }
 
-    fun startLoadingData() {
+    private fun startLoadingData() {
         _state.value = true
     }
 
     fun stopLoadingData() {
         _state.value = false
     }
-    fun getMoviesFromDb()=viewModelScope.launch{
-        _movies.postValue(repository.getAllMovies())
-    }
 
-    fun insertMoviesDb(movies : List<Result>) = viewModelScope.launch {
+    private fun insertMoviesDb(movies : List<Result>) = viewModelScope.launch {
         repository.insertMovies(movies=movies)
     }
 

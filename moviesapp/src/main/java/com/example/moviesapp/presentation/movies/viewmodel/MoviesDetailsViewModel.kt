@@ -32,7 +32,7 @@ class MoviesDetailsViewModel : ViewModel() {
         viewModelScope.launch {
             _info.value = RetrofitModule.apiMovies.getDetailInfo(movieId = id.toString())
 
-            _credits.value = RetrofitModule.apiMovies.getCreditsMovie(movieId = id.toString())
+            _credits.value =  RetrofitModule.apiMovies.getCreditsMovie(movieId = id.toString())
         }
     }
 }
