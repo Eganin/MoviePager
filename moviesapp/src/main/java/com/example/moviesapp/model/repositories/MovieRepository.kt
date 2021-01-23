@@ -1,10 +1,10 @@
 package com.example.moviesapp.model.repositories
 
 import android.content.Context
-import com.example.moviesapp.model.entities.configuration.GenreList
-import com.example.moviesapp.model.entities.configuration.ResponseConfiguration
-import com.example.moviesapp.model.entities.movies.popular.ResponseMovies
-import com.example.moviesapp.model.entities.movies.popular.Result
+import com.example.moviesapp.model.entities.movies.popular.results.Result
+import com.example.moviesapp.model.entities.movies.popular.results.ResultNowPlayong
+import com.example.moviesapp.model.entities.movies.popular.results.ResultTopRated
+import com.example.moviesapp.model.entities.movies.popular.results.ResultUpComing
 import com.example.moviesapp.model.network.RetrofitModule
 import com.example.moviesapp.storage.MoviesDatabase
 import kotlinx.coroutines.Dispatchers
@@ -46,18 +46,60 @@ class MovieRepository(applicationContext: Context) :Repository {
         RetrofitModule.apiMovies.getGenres()
     }
 
-    override  fun getAllMovies() = moviesData.getAllMovies()
+    override  fun getAllMoviesPopular() = moviesData.getAllMoviesPopular()
 
 
-    override suspend fun insertMovies(movies: List<Result>) = withContext(dispatcher) {
-        moviesData.insertMovies(movies = movies)
+    override suspend fun insertPopularMovies(movies: List<Result>) = withContext(dispatcher) {
+        moviesData.insertPopularMovies(movies = movies)
     }
 
-    override suspend fun deleteAllMovies() = withContext(dispatcher) {
-        moviesData.deleteAllMovies()
+    override suspend fun deleteAllPopularMovies() = withContext(dispatcher) {
+        moviesData.deleteAllPopularMovies()
     }
 
-    override suspend fun deleteMovieById(id: Long) = withContext(dispatcher) {
-        moviesData.deleteMovieById(id = id)
+    override suspend fun deletePopularMovieById(id: Long) = withContext(dispatcher) {
+        moviesData.deletePopularMovieById(id = id)
+    }
+
+    override fun getAllMoviesTopRated()= moviesData.getAllMoviesTopRated()
+
+    override suspend fun insertTopRatedMovies(movies: List<ResultTopRated>) {
+        moviesData.insertTopRatedMovies(movies = movies)
+    }
+
+    override suspend fun deleteAllTopRatedMovies() {
+        moviesData.deleteAllTopRatedMovies()
+    }
+
+    override suspend fun deleteTopRatedMovieById(id: Long) {
+        moviesData.deleteTopRatedMovieById(id = id)
+    }
+
+    override fun getAllMoviesNowPlayong()= moviesData.getAllMoviesNowPlatong()
+
+    override suspend fun insertNowPlayongMovies(movies: List<ResultNowPlayong>) {
+        moviesData.insertNowPlayongMovies(movies = movies)
+    }
+
+    override suspend fun deleteAllNowPlayongMovies() {
+        moviesData.deleteAllNowPlayongMovies()
+    }
+
+    override suspend fun deleteNowPlayongMovieById(id: Long) {
+        moviesData.deleteNowPlayongMovieById(id = id)
+    }
+
+    override fun getAllMoviesUpComing()= moviesData.getAllMoviesUpComing()
+
+    override suspend fun insertUpComingMovies(movies: List<ResultUpComing>) {
+        moviesData.insertUpComingMovies(movies = movies)
+    }
+
+    override suspend fun deleteAllUpComingMovies() {
+        moviesData.deleteAllUpComingMovies()
+    }
+
+    override suspend fun deleteUpComingMovieById(id: Long) {
+        moviesData.deleteUpComingMovieById(id = id)
     }
 }

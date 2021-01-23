@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.moviesapp.model.entities.configuration.GenreList
 import com.example.moviesapp.model.entities.configuration.Images
-import com.example.moviesapp.model.entities.movies.popular.Result
+import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.model.repositories.MovieRepository
 import kotlinx.coroutines.*
 

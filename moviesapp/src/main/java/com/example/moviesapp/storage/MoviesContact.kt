@@ -7,6 +7,9 @@ object MoviesContact {
 
     object Result{
         const val TABLE_NAME = "movies"
+        const val TABLE_NAME_TOP_RATED = "top_rated_movies"
+        const val TABLE_NAME_NOW_PLAYONG = "now_playong_movies"
+        const val TABLE_NAME_UP_COMING = "up_coming_movies"
         const val COLUMN_NAME_ID = BaseColumns._ID
         const val COLUMN_NAME_MOVIE = "id_movie"
         const val COLUMN_NAME_ADULT = "adult"

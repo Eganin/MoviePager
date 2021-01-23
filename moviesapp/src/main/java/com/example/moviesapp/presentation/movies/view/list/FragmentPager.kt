@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
 import com.example.moviesapp.application.MovieApp
-import com.example.moviesapp.model.entities.movies.popular.Result
+import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.presentation.movies.utils.afterTextChanged
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
 import com.example.moviesapp.presentation.movies.utils.hideKeyboard

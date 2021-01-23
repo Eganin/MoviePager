@@ -1,5 +1,6 @@
 package com.example.moviesapp.model.entities.movies.popular
 
+import com.example.moviesapp.model.entities.movies.popular.results.Result
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

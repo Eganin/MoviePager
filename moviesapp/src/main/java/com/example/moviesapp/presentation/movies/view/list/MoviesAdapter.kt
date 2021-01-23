@@ -1,6 +1,5 @@
 package com.example.moviesapp.presentation.movies.view.list
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +8,7 @@ import com.example.moviesapp.presentation.movies.viewmodel.Counter
 import com.example.moviesapp.presentation.movies.viewmodel.MovieDataType
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
 import com.example.moviesapp.model.entities.configuration.Images
-import com.example.moviesapp.model.entities.movies.popular.Result
+import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
 import kotlin.ClassCastException
 

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.moviesapp.model.entities.movies.popular.Result
+import com.example.moviesapp.model.entities.movies.popular.results.Result
 
 @Database(entities = [Result::class], version = 1)
 abstract class MoviesDatabase : RoomDatabase() {

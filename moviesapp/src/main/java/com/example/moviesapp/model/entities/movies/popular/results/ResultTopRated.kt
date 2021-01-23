@@ -1,18 +1,20 @@
-package com.example.moviesapp.model.entities.movies.popular
+package com.example.moviesapp.model.entities.movies.popular.results
 
-import androidx.room.*
-import com.example.moviesapp.model.entities.movies.details.Genre
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.example.moviesapp.storage.GenresConventer
 import com.example.moviesapp.storage.MoviesContact
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Entity(
-    tableName = MoviesContact.Result.TABLE_NAME
+    tableName = MoviesContact.Result.TABLE_NAME_TOP_RATED,
 )
 @TypeConverters(value = [GenresConventer::class])
 @Serializable
-data class Result(
+data class ResultTopRated (
     @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_ADULT)
     val adult: Boolean? = null,
 
@@ -66,4 +68,4 @@ data class Result(
     @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_VOTE_COUNT)
     @SerialName("vote_count")
     val voteCount: Long? = null
-)
+        )
