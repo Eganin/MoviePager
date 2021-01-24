@@ -18,16 +18,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviesapp.R
+import com.example.moviesapp.application.MovieApp
 import com.example.moviesapp.model.entities.configuration.Images
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.presentation.movies.utils.imageOptionMovie
+import com.example.moviesapp.presentation.movies.utils.network.hasConnection
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesDetailsViewModel
 
 
-class FragmentMoviesDetails : Fragment(){
+class FragmentMoviesDetails : Fragment() {
 
-    private lateinit var viewModel : MoviesDetailsViewModel
-    private val configuration: Images by lazy { arguments?.get(SAVE_CONFIGURATION) as Images }
+    private lateinit var viewModel: MoviesDetailsViewModel
+
+    private var configuration: Images? = null
+
     private lateinit var adapter: ActorsAdapter
     private var ageRating: AppCompatTextView? = null
     private var titleMovie: AppCompatTextView? = null
@@ -46,8 +50,10 @@ class FragmentMoviesDetails : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel =  ViewModelProvider(this)[MoviesDetailsViewModel::class.java]
-        arguments?.getLong(SAVE_MOVIE_DATA_KEY)?.let { viewModel.loadDetailData(id = it) }
+        viewModel = (requireActivity().application as MovieApp).myComponent.getMoviesDetailsViewModel(fragment = this)
+        if(hasConnection(context=requireContext())){
+            arguments?.getLong(SAVE_MOVIE_DATA_KEY)?.let { viewModel.loadDetailData(id = it) }
+        }
         viewModel.startLoadingData()
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
         viewModel.info.observe(viewLifecycleOwner, { bindViews(view = view, data = it) })
@@ -70,7 +76,15 @@ class FragmentMoviesDetails : Fragment(){
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        adapter = ActorsAdapter(configuration = configuration)
+        val config = arguments?.get(SAVE_CONFIGURATION)
+        config?.let { configuration = it as Images }
+        adapter = if (!hasConnection(context = requireContext())) {
+            configuration = null
+            ActorsAdapter()
+        } else {
+            ActorsAdapter(configuration = configuration)
+        }
+
     }
 
     override fun onDestroyView() {
@@ -142,7 +156,7 @@ class FragmentMoviesDetails : Fragment(){
                 .clear(detailPoster)
 
             Glide.with(requireContext())
-                .load(configuration.baseURL + (configuration.backdropSizes[3]) + data.backdropPath)
+                .load(configuration?.baseURL + (configuration?.backdropSizes?.get(3)) + data.backdropPath)
                 .apply(imageOptionMovie)
                 .into(detailPoster)
         }

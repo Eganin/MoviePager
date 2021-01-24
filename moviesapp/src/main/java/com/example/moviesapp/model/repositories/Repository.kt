@@ -3,6 +3,8 @@ package com.example.moviesapp.model.repositories
 import androidx.lifecycle.LiveData
 import com.example.moviesapp.model.entities.configuration.GenreList
 import com.example.moviesapp.model.entities.configuration.Images
+import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
+import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.model.entities.movies.popular.results.ResultNowPlayong
 import com.example.moviesapp.model.entities.movies.popular.results.ResultTopRated
@@ -56,4 +58,8 @@ interface Repository {
     suspend fun deleteAllUpComingMovies()
 
     suspend fun deleteUpComingMovieById(id: Long)
+
+    suspend fun getDetailInfoForMovie(movieId : String) : ResponseMovieDetail
+
+    suspend fun getCreditsForMovie(movieId : String) : ResponseCredits
 }

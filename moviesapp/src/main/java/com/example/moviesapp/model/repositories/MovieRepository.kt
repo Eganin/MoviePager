@@ -1,6 +1,8 @@
 package com.example.moviesapp.model.repositories
 
 import android.content.Context
+import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
+import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.model.entities.movies.popular.results.ResultNowPlayong
 import com.example.moviesapp.model.entities.movies.popular.results.ResultTopRated
@@ -105,4 +107,13 @@ class MovieRepository(applicationContext: Context) : Repository {
     override suspend fun deleteUpComingMovieById(id: Long) {
         moviesDataUpComing.deleteUpComingMovieById(id = id)
     }
+
+
+
+    override suspend fun getDetailInfoForMovie(movieId: String) =
+        RetrofitModule.apiMovies.getDetailInfo(movieId = movieId)
+
+
+    override suspend fun getCreditsForMovie(movieId: String) =
+        RetrofitModule.apiMovies.getCreditsMovie(movieId = movieId)
 }

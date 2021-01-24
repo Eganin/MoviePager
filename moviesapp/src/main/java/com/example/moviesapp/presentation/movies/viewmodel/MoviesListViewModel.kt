@@ -9,9 +9,7 @@ import com.example.moviesapp.model.entities.movies.popular.results.ResultNowPlay
 import com.example.moviesapp.model.entities.movies.popular.results.ResultTopRated
 import com.example.moviesapp.model.entities.movies.popular.results.ResultUpComing
 import com.example.moviesapp.model.repositories.MovieRepository
-import com.example.moviesapp.presentation.movies.utils.nowPlayongToResult
-import com.example.moviesapp.presentation.movies.utils.topRatedToResult
-import com.example.moviesapp.presentation.movies.utils.upComingToResult
+import com.example.moviesapp.presentation.movies.utils.*
 
 import kotlinx.coroutines.*
 
@@ -74,6 +72,7 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                                 repository.getTopRatedMovies(page = Counter.count.toString())
                             _moviesList.value = movies.topRatedToResult()
                             insertTopRatedMoviesDb(movies=movies)
+
                         }
                         MovieDataType.POPULAR -> {
                             increasePage()
@@ -81,6 +80,7 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                                 repository.getPopularMovies(page = Counter.count.toString())
                             _moviesList.value = movies
                             insertPopularMoviesDb(movies=movies)
+
                         }
                         MovieDataType.NOW_PLAYING -> {
                             increasePage()
@@ -88,6 +88,7 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                                 repository.getNowPlayingMovies(page = Counter.count.toString())
                             _moviesList.value = movies.nowPlayongToResult()
                             insertNowPlayongMoviesDb(movies=movies)
+
                         }
                         MovieDataType.UP_COMING -> {
                             increasePage()
@@ -95,6 +96,7 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                                 repository.getUpComingMovies(page = Counter.count.toString())
                             _moviesList.value = movies.upComingToResult()
                             insertUpComingMoviesDb(movies=movies)
+
                         }
                         MovieDataType.SEARCH -> query?.let {
                             val movies = repository.getSearchMovies(

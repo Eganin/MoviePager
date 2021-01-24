@@ -10,6 +10,7 @@ object MoviesContact {
         const val TABLE_NAME_TOP_RATED = "top_rated_movies"
         const val TABLE_NAME_NOW_PLAYONG = "now_playong_movies"
         const val TABLE_NAME_UP_COMING = "up_coming_movies"
+        const val TABLE_NAME_FAVOURITE = "favourite"
         const val COLUMN_NAME_ID = BaseColumns._ID
         const val COLUMN_NAME_MOVIE = "id_movie"
         const val COLUMN_NAME_ADULT = "adult"
@@ -25,6 +26,5 @@ object MoviesContact {
         const val COLUMN_NAME_VIDEO = "video"
         const val COLUMN_NAME_VOTE_AVERAGE = "vote_average"
         const val COLUMN_NAME_VOTE_COUNT = "vote_count"
-
     }
 }

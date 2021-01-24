@@ -11,7 +11,7 @@ import com.example.moviesapp.model.entities.movies.credits.Cast
 import com.example.moviesapp.presentation.movies.utils.imageOptionActor
 
 
-class ActorViewHolder(itemView: View , val configuration: Images) :
+class ActorViewHolder(itemView: View , val configuration: Images?) :
     RecyclerView.ViewHolder(itemView) {
 
     private val imageCast = itemView.findViewById<AppCompatImageView>(R.id.image_cast)
@@ -21,7 +21,7 @@ class ActorViewHolder(itemView: View , val configuration: Images) :
         Glide.with(context)
             .clear(imageCast)
         Glide.with(context)
-            .load(configuration.baseURL + (configuration.logoSizes[3]) +actor.profilePath)
+            .load(configuration?.baseURL + (configuration?.logoSizes?.get(3)) +actor.profilePath)
             .apply(imageOptionActor)
             .into(imageCast)
         name.text = actor.name

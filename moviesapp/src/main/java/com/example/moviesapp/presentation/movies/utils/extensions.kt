@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.model.entities.movies.popular.results.ResultNowPlayong
 import com.example.moviesapp.model.entities.movies.popular.results.ResultTopRated
@@ -112,4 +113,3 @@ fun List<ResultNowPlayong>.nowPlayongToResult(): List<Result> {
 
     return newResult
 }
-

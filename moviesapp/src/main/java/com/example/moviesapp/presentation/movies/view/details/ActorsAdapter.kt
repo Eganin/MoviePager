@@ -8,7 +8,7 @@ import com.example.moviesapp.model.entities.configuration.Images
 import com.example.moviesapp.model.entities.movies.credits.Cast
 
 
-class ActorsAdapter(val configuration: Images) : RecyclerView.Adapter<ActorViewHolder>() {
+class ActorsAdapter(val configuration: Images?=null) : RecyclerView.Adapter<ActorViewHolder>() {
 
 
     private var actors = listOf<Cast>()

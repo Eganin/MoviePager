@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.model.entities.movies.popular.results.ResultNowPlayong
 import com.example.moviesapp.model.entities.movies.popular.results.ResultTopRated
@@ -26,7 +27,7 @@ interface MoviesDaoPopular {
 }
 
 @Dao
-interface MoviesDaoTopRated{
+interface MoviesDaoTopRated {
     @Query("SELECT * FROM top_rated_movies")
     fun getAllMoviesTopRated(): LiveData<List<ResultTopRated>>
 
@@ -38,10 +39,11 @@ interface MoviesDaoTopRated{
 
     @Query("DELETE FROM top_rated_movies WHERE _id == :id")
     suspend fun deleteTopRatedMovieById(id: Long)
+
 }
 
 @Dao
-interface MoviesDaoNowPlayong{
+interface MoviesDaoNowPlayong {
     @Query("SELECT * FROM now_playong_movies")
     fun getAllMoviesNowPlayong(): LiveData<List<ResultNowPlayong>>
 
@@ -53,10 +55,11 @@ interface MoviesDaoNowPlayong{
 
     @Query("DELETE FROM now_playong_movies WHERE _id == :id")
     suspend fun deleteNowPlayongMovieById(id: Long)
+
 }
 
 @Dao
-interface MoviesDaoUpComing{
+interface MoviesDaoUpComing {
     @Query("SELECT * FROM up_coming_movies")
     fun getAllMoviesUpComing(): LiveData<List<ResultUpComing>>
 
@@ -68,4 +71,5 @@ interface MoviesDaoUpComing{
 
     @Query("DELETE FROM up_coming_movies WHERE _id == :id")
     suspend fun deleteUpComingMovieById(id: Long)
+
 }

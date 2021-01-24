@@ -1,15 +1,15 @@
 package com.example.moviesapp.presentation.movies.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.util.Log
+import androidx.lifecycle.*
 import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.model.network.RetrofitModule
+import com.example.moviesapp.model.repositories.MovieRepository
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
-class MoviesDetailsViewModel : ViewModel() {
+class MoviesDetailsViewModel(private val repository: MovieRepository) : ViewModel() {
 
     private val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> = _state
@@ -30,9 +30,19 @@ class MoviesDetailsViewModel : ViewModel() {
 
     fun loadDetailData(id: Long) {
         viewModelScope.launch {
-            _info.value = RetrofitModule.apiMovies.getDetailInfo(movieId = id.toString())
+            _info.value = repository.getDetailInfoForMovie(movieId = id.toString())
 
-            _credits.value =  RetrofitModule.apiMovies.getCreditsMovie(movieId = id.toString())
+            _credits.value = repository.getCreditsForMovie(movieId = id.toString())
+        }
+    }
+
+
+    @Suppress("UNCHECKED_CAST")
+    class Factory(private val repository: MovieRepository) :
+        ViewModelProvider.NewInstanceFactory() {
+
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            return MoviesDetailsViewModel(repository = repository) as T
         }
     }
 }
