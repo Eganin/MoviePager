@@ -8,17 +8,25 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviesapp.R
+import com.example.moviesapp.model.entities.favourite.FavouriteMovie
 import com.example.moviesapp.model.entities.movies.popular.results.Result
+import com.example.moviesapp.model.repositories.MovieRepository
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
 import com.example.moviesapp.presentation.movies.utils.imageOptionMovie
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class MovieViewHolder(
     itemView: View,
     val listener: MoviesAdapter.OnClickPoster?,
-    val viewModel: MoviesListViewModel
+    val viewModel: MoviesListViewModel,
+    val repository: MovieRepository
 ) :
     RecyclerView.ViewHolder(itemView) {
+
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     private val configuration = viewModel.configuration
     private val genres = viewModel.genreList
@@ -41,11 +49,11 @@ class MovieViewHolder(
 
     @SuppressLint("SetTextI18n")
     fun onBind(movie: Result) {
-        setClickListener(movie=movie)
+        setClickListener(movie = movie)
         title.text = movie.title
         pgMovie.text = if (movie.adult == true) "+18" else "+16"
         tagLine.text = genres?.genres?.filter { movie.genreIDS?.contains(it.id) ?: false }
-            ?.joinToString(separator = " , ") { it.name ?:"" }
+            ?.joinToString(separator = " , ") { it.name ?: "" }
 
         countReviews.text = "${movie.voteCount} reviews"
         //timeLine.text = "${movie.runtime} MIN"
@@ -54,16 +62,30 @@ class MovieViewHolder(
         bindStars(countRating = (movie.voteAverage?.div(2))?.toInt() ?: 0)
 
 
-        //bindFavouriteImage(isFavourite = movie.isFavourite)
+        bindFavouriteImage(isFavourite = movie.id)
     }
 
-    private fun setClickListener(movie: Result){
+    private fun setClickListener(movie: Result) {
         itemView.apply {
             setOnClickListener {
                 listener?.createMoviesDetailsFragment(
                     movieId = movie.id,
                     configuration = viewModel.configuration
                 )
+            }
+        }
+        favouriteImage.apply {
+            setOnClickListener {
+                scope.launch {
+                    val favouriteMovie = repository.getFavouriteMovieById(id = movie.id)
+                    if (favouriteMovie != null) {
+                        repository.deleteFavouriteMovieById(id = movie.id)
+                        paintLike(condition = false)
+                    } else {
+                        repository.insertFavouriteMovie(favouriteMovie = FavouriteMovie(id = movie.id))
+                        paintLike(condition = true)
+                    }
+                }
             }
         }
     }
@@ -79,18 +101,33 @@ class MovieViewHolder(
         }
     }
 
-    private fun bindFavouriteImage(isFavourite: Boolean) {
-        if (isFavourite) favouriteImage.setImageDrawable(
-            ContextCompat.getDrawable(
-                context,
-                R.drawable.ic_like_positive
+    private fun bindFavouriteImage(isFavourite: Long) {
+        scope.launch {
+            val favouriteMovie = repository.getFavouriteMovieById(id = isFavourite)
+            if (favouriteMovie != null) {
+                paintLike(condition = true)
+            }
+
+        }
+
+    }
+
+    private fun paintLike(condition: Boolean) {
+        if (condition) {
+            favouriteImage.setImageDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.ic_like_positive
+                )
             )
-        ) else favouriteImage.setImageDrawable(
-            ContextCompat.getDrawable(
-                context,
-                R.drawable.ic_like
+        } else {
+            favouriteImage.setImageDrawable(
+                ContextCompat.getDrawable(
+                    context,
+                    R.drawable.ic_like
+                )
             )
-        )
+        }
     }
 
     private fun downloadImage(movie: Result) {

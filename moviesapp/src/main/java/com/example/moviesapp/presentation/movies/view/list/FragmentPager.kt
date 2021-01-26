@@ -80,7 +80,7 @@ class FragmentPager : Fragment() {
                 }
             }
             viewModel.stopLoadingData()
-        } else if (sortedMoviesText?.text != getText(R.string.search_value) && hasConnection(context=requireContext())) {
+        } else if (sortedMoviesText?.text != getText(R.string.search_value) && hasConnection(context = requireContext())) {
 
             if (Counter.count == 0) when (getTypeMovies()) {
                 MovieDataType.POPULAR -> viewModel.deleteAllPopularMoviesDB()
@@ -102,7 +102,11 @@ class FragmentPager : Fragment() {
         viewModel =
             (requireActivity().application as MovieApp).myComponent.getMoviesViewModel(fragment = this)
         adapter =
-            MoviesAdapter(viewModel = viewModel, type = MovieDataType.POPULAR)
+            MoviesAdapter(
+                viewModel = viewModel,
+                type = MovieDataType.POPULAR,
+                repository = (requireActivity().application as MovieApp).myComponent.getRepository()
+            )
         if (context is MoviesAdapter.OnClickPoster) adapter.onClickPoster = context
     }
 

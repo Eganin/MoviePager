@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.example.moviesapp.model.entities.configuration.GenreList
 import com.example.moviesapp.model.entities.configuration.Images
+import com.example.moviesapp.model.entities.favourite.FavouriteMovie
 import com.example.moviesapp.model.entities.movies.credits.Cast
 import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
@@ -81,4 +82,14 @@ interface Repository {
     suspend fun deleteAllCast()
 
     suspend fun getCastMovieById(id: Long): ResponseCredits
+
+    fun getAllFavouriteMovies(): LiveData<List<FavouriteMovie>>
+
+    suspend fun insertFavouriteMovie(favouriteMovie: FavouriteMovie)
+
+    suspend fun deleteAllFavouriteMovies()
+
+    suspend fun getFavouriteMovieById(id: Long): FavouriteMovie
+
+    suspend fun deleteFavouriteMovieById(id : Long)
 }

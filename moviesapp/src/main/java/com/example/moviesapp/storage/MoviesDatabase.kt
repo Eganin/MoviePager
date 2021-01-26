@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.moviesapp.model.entities.favourite.FavouriteMovie
 import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.model.entities.movies.popular.results.Result
@@ -13,7 +14,7 @@ import com.example.moviesapp.model.entities.movies.popular.results.ResultUpComin
 
 @Database(
     entities = [Result::class, ResultTopRated::class, ResultNowPlayong::class,
-        ResultUpComing::class, ResponseMovieDetail::class, ResponseCredits::class],
+        ResultUpComing::class, ResponseMovieDetail::class, ResponseCredits::class, FavouriteMovie::class],
     version = 1
 )
 abstract class MoviesDatabase : RoomDatabase() {
@@ -23,7 +24,8 @@ abstract class MoviesDatabase : RoomDatabase() {
     abstract val moviesDaoNowPlayong: MoviesDaoNowPlayong
     abstract val moviesDaoUpComing: MoviesDaoUpComing
     abstract val moviesDaoDetail: MoviesDaoDetail
-    abstract  val moviesDaoCast : MoviesDaoCast
+    abstract val moviesDaoCast: MoviesDaoCast
+    abstract val moviesDaoFavourite : MoviesDaoFavourite
 
 
     companion object {

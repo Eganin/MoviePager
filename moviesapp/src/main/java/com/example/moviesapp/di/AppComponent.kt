@@ -23,4 +23,6 @@ class AppComponent(context: Context) {
         )
     }
 
+    fun getRepository() = repository
+
 }

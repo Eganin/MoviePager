@@ -2,6 +2,7 @@ package com.example.moviesapp.model.repositories
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import com.example.moviesapp.model.entities.favourite.FavouriteMovie
 import com.example.moviesapp.model.entities.movies.credits.Cast
 import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
@@ -25,6 +26,7 @@ class MovieRepository(applicationContext: Context) : Repository {
     private val moviesDataUpComing = db.moviesDaoUpComing
     private val moviesDataDetail = db.moviesDaoDetail
     private val moviesDataCast = db.moviesDaoCast
+    private val moviesDataFavourite = db.moviesDaoFavourite
 
     override suspend fun getPopularMovies(page: String) = withContext(dispatcher) {
         RetrofitModule.apiMovies.getPopularMovies(page = page).results
@@ -130,11 +132,25 @@ class MovieRepository(applicationContext: Context) : Repository {
 
     override suspend fun getDetailMovieById(id: Long) = moviesDataDetail.getDetailMovieById(id = id)
 
-    override fun getAllCastMovies()= moviesDataCast.getAllCastMovies()
-    override suspend fun insertCastMovie(cast: ResponseCredits) =moviesDataCast.insertCastMovie(cast=cast)
+    override fun getAllCastMovies() = moviesDataCast.getAllCastMovies()
 
-    override suspend fun deleteAllCast() =moviesDataCast.deleteAllCast()
+    override suspend fun insertCastMovie(cast: ResponseCredits) =
+        moviesDataCast.insertCastMovie(cast = cast)
 
-    override suspend fun getCastMovieById(id: Long)= moviesDataCast.getCastMovieById(id=id)
+    override suspend fun deleteAllCast() = moviesDataCast.deleteAllCast()
 
+    override suspend fun getCastMovieById(id: Long) = moviesDataCast.getCastMovieById(id = id)
+
+    override fun getAllFavouriteMovies() = moviesDataFavourite.getAllFavouriteMovies()
+
+    override suspend fun insertFavouriteMovie(favouriteMovie: FavouriteMovie) =
+        moviesDataFavourite.insertFavouriteMovie(favouriteMovie = favouriteMovie)
+
+    override suspend fun deleteAllFavouriteMovies() = moviesDataFavourite.deleteAllFavouriteMovies()
+
+    override suspend fun getFavouriteMovieById(id: Long) =
+        moviesDataFavourite.getFavouriteMovieById(id = id)
+
+    override suspend fun deleteFavouriteMovieById(id: Long) =
+        moviesDataFavourite.deleteFavouriteMovieById(id = id)
 }

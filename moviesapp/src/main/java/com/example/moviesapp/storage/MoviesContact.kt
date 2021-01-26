@@ -35,4 +35,9 @@ object MoviesContact {
         const val COLUMN_NAME_ID = BaseColumns._ID
         const val TABLE_NAME = "casts"
     }
+
+    object Favourite{
+        const val COLUMN_NAME_ID = BaseColumns._ID
+        const val TABLE_NAME = "favourites"
+    }
 }

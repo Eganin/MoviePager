@@ -9,6 +9,7 @@ import com.example.moviesapp.presentation.movies.viewmodel.MovieDataType
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
 import com.example.moviesapp.model.entities.configuration.Images
 import com.example.moviesapp.model.entities.movies.popular.results.Result
+import com.example.moviesapp.model.repositories.MovieRepository
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
 import kotlin.ClassCastException
 
@@ -16,7 +17,8 @@ import kotlin.ClassCastException
 class MoviesAdapter(
     val viewModel: MoviesListViewModel,
     var type: MovieDataType,
-    var query: String? = null
+    var query: String? = null,
+    val repository: MovieRepository
 ) : RecyclerView.Adapter<MovieViewHolder>() {
 
     private var movies = mutableListOf<Result>()
@@ -32,7 +34,8 @@ class MoviesAdapter(
             itemView = LayoutInflater.from(parent.context)
                 .inflate(R.layout.view_holder_movie, parent, false),
             listener = onClickPoster,
-            viewModel = viewModel
+            viewModel = viewModel,
+            repository = repository
         )
 
     }
