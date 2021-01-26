@@ -48,6 +48,8 @@ class MoviesAdapter(
 
     override fun getItemCount() = movies.size
 
+    fun size() = itemCount
+
     fun bindMovies(newMovies: List<Result>) {
         if (Counter.count != 0 && Counter.count != 1) {
             if (type != MovieDataType.SEARCH) {

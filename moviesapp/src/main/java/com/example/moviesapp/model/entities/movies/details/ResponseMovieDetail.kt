@@ -5,16 +5,21 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
+import com.example.moviesapp.storage.ListGenresConverter
 
 import com.example.moviesapp.storage.MoviesContact
 import kotlinx.serialization.*
 
+@Entity(
+    tableName = MoviesContact.Detail.TABLE_NAME
+)
+@TypeConverters(value = [ListGenresConverter::class])
 @Serializable
-data class ResponseMovieDetail (
-
+data class ResponseMovieDetail(
 
     @PrimaryKey(autoGenerate = true)
-    val idDb : Long? = null ,
+    @ColumnInfo(name = MoviesContact.Detail.COLUMN_NAME_ID)
+    val idDb: Long? = null,
 
     val adult: Boolean? = null,
 
@@ -22,6 +27,7 @@ data class ResponseMovieDetail (
     val backdropPath: String? = null,
 
     val budget: Long? = null,
+
 
     val genres: List<Genre>? = null,
 

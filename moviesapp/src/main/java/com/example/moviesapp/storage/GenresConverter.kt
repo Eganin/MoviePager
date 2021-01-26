@@ -3,7 +3,7 @@ package com.example.moviesapp.storage
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 
-class GenresConventer {
+class GenresConverter {
     @TypeConverter
     fun listGenresIdsToString(genresIds: List<Long>?): String = Gson().toJson(genresIds)
 

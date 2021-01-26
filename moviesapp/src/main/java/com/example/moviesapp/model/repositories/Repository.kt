@@ -11,21 +11,21 @@ import com.example.moviesapp.model.entities.movies.popular.results.ResultTopRate
 import com.example.moviesapp.model.entities.movies.popular.results.ResultUpComing
 
 interface Repository {
-    suspend fun getPopularMovies(page: String) : List<Result>
+    suspend fun getPopularMovies(page: String): List<Result>
 
-    suspend fun getNowPlayingMovies(page: String) : List<ResultNowPlayong>
+    suspend fun getNowPlayingMovies(page: String): List<ResultNowPlayong>
 
-    suspend fun getTopRatedMovies(page: String) : List<ResultTopRated>
+    suspend fun getTopRatedMovies(page: String): List<ResultTopRated>
 
-    suspend fun getUpComingMovies(page: String) : List<ResultUpComing>
+    suspend fun getUpComingMovies(page: String): List<ResultUpComing>
 
-    suspend fun getSearchMovies(searchValue: String, page: String) : List<Result>
+    suspend fun getSearchMovies(searchValue: String, page: String): List<Result>
 
     suspend fun getConfiguration(): Images
 
     suspend fun getGenres(): GenreList
 
-    fun getAllMoviesPopular() : LiveData<List<Result>>
+    fun getAllMoviesPopular(): LiveData<List<Result>>
 
     suspend fun insertPopularMovies(movies: List<Result>)
 
@@ -34,7 +34,7 @@ interface Repository {
     suspend fun deletePopularMovieById(id: Long)
 
 
-    fun getAllMoviesTopRated() : LiveData<List<ResultTopRated>>
+    fun getAllMoviesTopRated(): LiveData<List<ResultTopRated>>
 
     suspend fun insertTopRatedMovies(movies: List<ResultTopRated>)
 
@@ -43,7 +43,7 @@ interface Repository {
     suspend fun deleteTopRatedMovieById(id: Long)
 
 
-    fun getAllMoviesNowPlayong() : LiveData<List<ResultNowPlayong>>
+    fun getAllMoviesNowPlayong(): LiveData<List<ResultNowPlayong>>
 
     suspend fun insertNowPlayongMovies(movies: List<ResultNowPlayong>)
 
@@ -51,7 +51,7 @@ interface Repository {
 
     suspend fun deleteNowPlayongMovieById(id: Long)
 
-    fun getAllMoviesUpComing() : LiveData<List<ResultUpComing>>
+    fun getAllMoviesUpComing(): LiveData<List<ResultUpComing>>
 
     suspend fun insertUpComingMovies(movies: List<ResultUpComing>)
 
@@ -59,7 +59,15 @@ interface Repository {
 
     suspend fun deleteUpComingMovieById(id: Long)
 
-    suspend fun getDetailInfoForMovie(movieId : String) : ResponseMovieDetail
+    suspend fun getDetailInfoForMovie(movieId: String): ResponseMovieDetail
 
-    suspend fun getCreditsForMovie(movieId : String) : ResponseCredits
+    suspend fun getCreditsForMovie(movieId: String): ResponseCredits
+
+    fun getAllDetailMovies(): LiveData<List<ResponseMovieDetail>>
+
+    suspend fun insertDetailMovie(movie: ResponseMovieDetail)
+
+    suspend fun deleteAllDetailMovies()
+
+    suspend fun getDetailMovieById(id : Long) : ResponseMovieDetail
 }

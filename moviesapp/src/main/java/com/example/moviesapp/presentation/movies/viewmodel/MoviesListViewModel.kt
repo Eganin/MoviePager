@@ -71,6 +71,7 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                             val movies =
                                 repository.getTopRatedMovies(page = Counter.count.toString())
                             _moviesList.value = movies.topRatedToResult()
+                            movies.map { saveDetailInfo(movieId = it.id) }
                             insertTopRatedMoviesDb(movies=movies)
 
                         }
@@ -79,6 +80,7 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                             val movies =
                                 repository.getPopularMovies(page = Counter.count.toString())
                             _moviesList.value = movies
+                            movies.map { saveDetailInfo(movieId = it.id) }
                             insertPopularMoviesDb(movies=movies)
 
                         }
@@ -87,6 +89,7 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                             val movies =
                                 repository.getNowPlayingMovies(page = Counter.count.toString())
                             _moviesList.value = movies.nowPlayongToResult()
+                            movies.map { saveDetailInfo(movieId = it.id) }
                             insertNowPlayongMoviesDb(movies=movies)
 
                         }
@@ -95,6 +98,7 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                             val movies =
                                 repository.getUpComingMovies(page = Counter.count.toString())
                             _moviesList.value = movies.upComingToResult()
+                            movies.map { saveDetailInfo(movieId = it.id) }
                             insertUpComingMoviesDb(movies=movies)
 
                         }
@@ -157,6 +161,13 @@ class MoviesListViewModel(private val repository: MovieRepository) :
     fun deleteAllTUpComingMoviesDB() = viewModelScope.launch {
         repository.deleteAllUpComingMovies()
     }
+
+    fun saveDetailInfo(movieId : Long) = viewModelScope.launch {
+        val detailMovie = repository.getDetailInfoForMovie(movieId = movieId.toString())
+        repository.insertDetailMovie(movie=detailMovie)
+    }
+
+
 
     @Suppress("UNCHECKED_CAST")
     class Factory(private val repository: MovieRepository) :

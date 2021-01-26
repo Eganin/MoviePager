@@ -73,3 +73,19 @@ interface MoviesDaoUpComing {
     suspend fun deleteUpComingMovieById(id: Long)
 
 }
+
+@Dao
+interface  MoviesDaoDetail{
+    @Query("SELECT * FROM details")
+    fun getAllDetailMovies() : LiveData<List<ResponseMovieDetail>>
+
+    @Insert
+    suspend fun insertDetailMovie(movie : ResponseMovieDetail)
+
+    @Query("DELETE FROM details")
+    suspend fun deleteAllDetailMovies()
+
+    @Query("SELECT * FROM details WHERE _id == :id")
+    suspend fun getDetailMovieById(id : Long) : ResponseMovieDetail
+
+}

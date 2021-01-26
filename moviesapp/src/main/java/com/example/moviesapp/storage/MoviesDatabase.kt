@@ -11,7 +11,7 @@ import com.example.moviesapp.model.entities.movies.popular.results.ResultTopRate
 import com.example.moviesapp.model.entities.movies.popular.results.ResultUpComing
 
 @Database(
-    entities = [Result::class, ResultTopRated::class, ResultNowPlayong::class, ResultUpComing::class],
+    entities = [Result::class, ResultTopRated::class, ResultNowPlayong::class, ResultUpComing::class, ResponseMovieDetail::class],
     version = 1
 )
 abstract class MoviesDatabase : RoomDatabase() {
@@ -20,6 +20,7 @@ abstract class MoviesDatabase : RoomDatabase() {
     abstract val moviesDaoTopRated: MoviesDaoTopRated
     abstract val moviesDaoNowPlayong: MoviesDaoNowPlayong
     abstract val moviesDaoUpComing: MoviesDaoUpComing
+    abstract val moviesDaoDetail : MoviesDaoDetail
 
 
     companion object {

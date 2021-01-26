@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.example.moviesapp.storage.GenresConventer
+import com.example.moviesapp.storage.GenresConverter
 import com.example.moviesapp.storage.MoviesContact
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 @Entity(
     tableName = MoviesContact.Result.TABLE_NAME_NOW_PLAYONG,
 )
-@TypeConverters(value = [GenresConventer::class])
+@TypeConverters(value = [GenresConverter::class])
 @Serializable
 data class ResultNowPlayong  (
     @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_ADULT)

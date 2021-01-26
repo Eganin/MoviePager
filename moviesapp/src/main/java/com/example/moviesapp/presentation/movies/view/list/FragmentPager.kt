@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
@@ -56,20 +57,35 @@ class FragmentPager : Fragment() {
 
         if (sortedMoviesText?.text == getText(R.string.search_value)) {
             setupSearching()
-        } else if (!hasConnection(context = requireContext())) {
-                when(getTypeMovies()){
-                    MovieDataType.POPULAR->viewModel.popularMovies.observe(viewLifecycleOwner, this::updateAdapterDataFromDb)
-                    MovieDataType.TOP_RATED -> viewModel.topRatedMovies.observe(viewLifecycleOwner, {updateAdapterDataFromDb(data = it.topRatedToResult())})
-                    MovieDataType.NOW_PLAYING->viewModel.nowPlayongMovies.observe(viewLifecycleOwner, {updateAdapterDataFromDb(data = it.nowPlayongToResult())})
-                    MovieDataType.UP_COMING->viewModel.upComingMovies.observe(viewLifecycleOwner, {updateAdapterDataFromDb(data = it.upComingToResult())})
+        } else if (!hasConnection(context = requireContext()) && adapter.size() != 0) {
+            when (getTypeMovies()) {
+                MovieDataType.POPULAR -> viewModel.popularMovies.observe(
+                    viewLifecycleOwner,
+                    this::updateAdapterDataFromDb
+                )
+                MovieDataType.TOP_RATED -> viewModel.topRatedMovies.observe(viewLifecycleOwner) {
+                    updateAdapterDataFromDb(
+                        data = it.topRatedToResult()
+                    )
                 }
+                MovieDataType.NOW_PLAYING -> viewModel.nowPlayongMovies.observe(viewLifecycleOwner) {
+                    updateAdapterDataFromDb(
+                        data = it.nowPlayongToResult()
+                    )
+                }
+                MovieDataType.UP_COMING -> viewModel.upComingMovies.observe(viewLifecycleOwner) {
+                    updateAdapterDataFromDb(
+                        data = it.upComingToResult()
+                    )
+                }
+            }
             viewModel.stopLoadingData()
         } else if (sortedMoviesText?.text != getText(R.string.search_value)) {
-            if (Counter.count == 0) when(getTypeMovies()){
-                MovieDataType.POPULAR->viewModel.deleteAllPopularMoviesDB()
-                MovieDataType.TOP_RATED->viewModel.deleteAllTopRatedMoviesDB()
-                MovieDataType.NOW_PLAYING->viewModel.deleteAllTNowPlayongMoviesDB()
-                MovieDataType.UP_COMING->viewModel.deleteAllTUpComingMoviesDB()
+            if (Counter.count == 0) when (getTypeMovies()) {
+                MovieDataType.POPULAR -> viewModel.deleteAllPopularMoviesDB()
+                MovieDataType.TOP_RATED -> viewModel.deleteAllTopRatedMoviesDB()
+                MovieDataType.NOW_PLAYING -> viewModel.deleteAllTNowPlayongMoviesDB()
+                MovieDataType.UP_COMING -> viewModel.deleteAllTUpComingMoviesDB()
             }
             bind(
                 value = arguments?.getString(SAVE_SORTED_TYPE) ?: "Popular",

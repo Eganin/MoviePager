@@ -2,15 +2,15 @@ package com.example.moviesapp.model.entities.movies.popular.results
 
 import androidx.room.*
 import com.example.moviesapp.model.entities.movies.details.Genre
-import com.example.moviesapp.storage.GenresConventer
 import com.example.moviesapp.storage.MoviesContact
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import com.example.moviesapp.storage.GenresConverter
 
 @Entity(
     tableName = MoviesContact.Result.TABLE_NAME,
 )
-@TypeConverters(value = [GenresConventer::class])
+@TypeConverters(value = [GenresConverter::class])
 @Serializable
 data class Result(
     @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_ADULT)

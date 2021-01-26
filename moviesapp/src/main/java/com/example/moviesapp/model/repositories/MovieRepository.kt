@@ -1,6 +1,7 @@
 package com.example.moviesapp.model.repositories
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.model.entities.movies.popular.results.Result
@@ -21,6 +22,7 @@ class MovieRepository(applicationContext: Context) : Repository {
     private val moviesDataTopRated = db.moviesDaoTopRated
     private val moviesDataNowPlayong = db.moviesDaoNowPlayong
     private val moviesDataUpComing = db.moviesDaoUpComing
+    private val moviesDataDetail = db.moviesDaoDetail
 
     override suspend fun getPopularMovies(page: String) = withContext(dispatcher) {
         RetrofitModule.apiMovies.getPopularMovies(page = page).results
@@ -109,11 +111,20 @@ class MovieRepository(applicationContext: Context) : Repository {
     }
 
 
-
     override suspend fun getDetailInfoForMovie(movieId: String) =
         RetrofitModule.apiMovies.getDetailInfo(movieId = movieId)
 
 
     override suspend fun getCreditsForMovie(movieId: String) =
         RetrofitModule.apiMovies.getCreditsMovie(movieId = movieId)
+
+    override fun getAllDetailMovies(): LiveData<List<ResponseMovieDetail>> =
+        moviesDataDetail.getAllDetailMovies()
+
+    override suspend fun insertDetailMovie(movie: ResponseMovieDetail) =
+        moviesDataDetail.insertDetailMovie(movie = movie)
+
+    override suspend fun deleteAllDetailMovies() = moviesDataDetail.deleteAllDetailMovies()
+    override suspend fun getDetailMovieById(id: Long) = moviesDataDetail.getDetailMovieById(id = id)
+
 }
