@@ -1,19 +1,29 @@
 package com.example.moviesapp.storage
 
+import android.util.Log
 import androidx.room.TypeConverter
 import com.example.moviesapp.model.entities.movies.details.Genre
+import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
 class ListGenresConverter {
-    @TypeConverter
-    fun listGenresIdsToString(genres: List<Genre>?): String = Gson().toJson(genres)
+    private val gson = GsonBuilder()
+        .serializeNulls()
+        .serializeSpecialFloatingPointValues()
+        .setLenient()
+        .create()
 
     @TypeConverter
-    fun stringToListGenresIds(genresString: String): List<Genre>? {
-        val gson = Gson()
-        val objects = gson.fromJson(genresString, ArrayList::class.java)
+    fun listGenresToString(genres: List<Genre>?): String = gson.toJson(genres)
+
+    @TypeConverter
+    fun stringToListGenres(genresString: String): List<Genre>? {
         val genres = mutableListOf<Genre>()
-        objects.forEach { genres.add(gson.fromJson(it.toString(), Genre::class.java)) }
+
+        val objects = gson.fromJson(genresString.trim(), ArrayList::class.java)
+        objects.forEach { genres.add(gson.fromJson(it.toString().trim(), Genre::class.java)) }
+        objects.forEach { Log.d("AAA",it.toString()) }
 
         return genres
     }

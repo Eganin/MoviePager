@@ -45,7 +45,8 @@ class MovieViewHolder(
         title.text = movie.title
         pgMovie.text = if (movie.adult == true) "+18" else "+16"
         tagLine.text = genres?.genres?.filter { movie.genreIDS?.contains(it.id) ?: false }
-            ?.joinToString(separator = " , ") { it.name }
+            ?.joinToString(separator = " , ") { it.name ?:"" }
+
         countReviews.text = "${movie.voteCount} reviews"
         //timeLine.text = "${movie.runtime} MIN"
 

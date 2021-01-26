@@ -51,9 +51,14 @@ class FragmentMoviesDetails : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = (requireActivity().application as MovieApp).myComponent.getMoviesDetailsViewModel(fragment = this)
-        if(hasConnection(context=requireContext())){
+        viewModel =
+            (requireActivity().application as MovieApp).myComponent.getMoviesDetailsViewModel(
+                fragment = this
+            )
+        if (hasConnection(context = requireContext())) {
             arguments?.getLong(SAVE_MOVIE_DATA_KEY)?.let { viewModel.loadDetailData(id = it) }
+        } else {
+            arguments?.getLong(SAVE_MOVIE_DATA_KEY)?.let { viewModel.loadDetailDataFromDB(id = it) }
         }
         viewModel.startLoadingData()
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
@@ -124,7 +129,7 @@ class FragmentMoviesDetails : Fragment() {
     private fun bindViews(view: View, data: ResponseMovieDetail) {
         ageRating?.text = if (data.adult == true) "+18" else "+16"
         titleMovie?.text = data.title
-        tagLine?.text = data.genres?.joinToString(separator = " , ") { it.name }
+        tagLine?.text = data.genres?.joinToString(separator = " , ") { it.name ?:"" }
         reviewsCount?.text = "${data.voteCount} reviews"
         storyLine?.text = data.overview
         downloadPoster(detailPoster = detailPoster, data = data)

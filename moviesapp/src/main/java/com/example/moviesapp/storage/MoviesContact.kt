@@ -30,6 +30,9 @@ object MoviesContact {
     object Detail{
         const val COLUMN_NAME_ID = BaseColumns._ID
         const val TABLE_NAME = "details"
-        const val  COLUMN_NAME_BUDJET = "budjet"
+    }
+    object Cast{
+        const val COLUMN_NAME_ID = BaseColumns._ID
+        const val TABLE_NAME = "casts"
     }
 }

@@ -3,6 +3,6 @@ import kotlinx.serialization.*
 
 @Serializable
 data class Genre (
-    val id: Long,
-    val name: String
+    val id: Long?=null,
+    val name: String?=null
 )

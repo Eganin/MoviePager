@@ -57,7 +57,7 @@ class FragmentPager : Fragment() {
 
         if (sortedMoviesText?.text == getText(R.string.search_value)) {
             setupSearching()
-        } else if (!hasConnection(context = requireContext()) && adapter.size() != 0) {
+        } else if (!hasConnection(context = requireContext()) && adapter.size() == 0) {
             when (getTypeMovies()) {
                 MovieDataType.POPULAR -> viewModel.popularMovies.observe(
                     viewLifecycleOwner,
@@ -80,7 +80,8 @@ class FragmentPager : Fragment() {
                 }
             }
             viewModel.stopLoadingData()
-        } else if (sortedMoviesText?.text != getText(R.string.search_value)) {
+        } else if (sortedMoviesText?.text != getText(R.string.search_value) && hasConnection(context=requireContext())) {
+
             if (Counter.count == 0) when (getTypeMovies()) {
                 MovieDataType.POPULAR -> viewModel.deleteAllPopularMoviesDB()
                 MovieDataType.TOP_RATED -> viewModel.deleteAllTopRatedMoviesDB()

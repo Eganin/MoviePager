@@ -36,6 +36,14 @@ class MoviesDetailsViewModel(private val repository: MovieRepository) : ViewMode
         }
     }
 
+    fun loadDetailDataFromDB(id:Long){
+        viewModelScope.launch {
+            _info.value = repository.getDetailMovieById(id=id)
+
+            _credits.value = repository.getCastMovieById(id=id)
+        }
+    }
+
 
     @Suppress("UNCHECKED_CAST")
     class Factory(private val repository: MovieRepository) :

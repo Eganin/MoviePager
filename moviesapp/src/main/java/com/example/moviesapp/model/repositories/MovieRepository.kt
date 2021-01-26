@@ -2,6 +2,7 @@ package com.example.moviesapp.model.repositories
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import com.example.moviesapp.model.entities.movies.credits.Cast
 import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.model.entities.movies.popular.results.Result
@@ -23,6 +24,7 @@ class MovieRepository(applicationContext: Context) : Repository {
     private val moviesDataNowPlayong = db.moviesDaoNowPlayong
     private val moviesDataUpComing = db.moviesDaoUpComing
     private val moviesDataDetail = db.moviesDaoDetail
+    private val moviesDataCast = db.moviesDaoCast
 
     override suspend fun getPopularMovies(page: String) = withContext(dispatcher) {
         RetrofitModule.apiMovies.getPopularMovies(page = page).results
@@ -125,6 +127,14 @@ class MovieRepository(applicationContext: Context) : Repository {
         moviesDataDetail.insertDetailMovie(movie = movie)
 
     override suspend fun deleteAllDetailMovies() = moviesDataDetail.deleteAllDetailMovies()
+
     override suspend fun getDetailMovieById(id: Long) = moviesDataDetail.getDetailMovieById(id = id)
+
+    override fun getAllCastMovies()= moviesDataCast.getAllCastMovies()
+    override suspend fun insertCastMovie(cast: ResponseCredits) =moviesDataCast.insertCastMovie(cast=cast)
+
+    override suspend fun deleteAllCast() =moviesDataCast.deleteAllCast()
+
+    override suspend fun getCastMovieById(id: Long)= moviesDataCast.getCastMovieById(id=id)
 
 }

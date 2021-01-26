@@ -1,8 +1,11 @@
 package com.example.moviesapp.model.repositories
 
 import androidx.lifecycle.LiveData
+import androidx.room.Insert
+import androidx.room.Query
 import com.example.moviesapp.model.entities.configuration.GenreList
 import com.example.moviesapp.model.entities.configuration.Images
+import com.example.moviesapp.model.entities.movies.credits.Cast
 import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.model.entities.movies.popular.results.Result
@@ -69,5 +72,13 @@ interface Repository {
 
     suspend fun deleteAllDetailMovies()
 
-    suspend fun getDetailMovieById(id : Long) : ResponseMovieDetail
+    suspend fun getDetailMovieById(id: Long): ResponseMovieDetail
+
+    fun getAllCastMovies(): LiveData<List<ResponseCredits>>
+
+    suspend fun insertCastMovie(cast: ResponseCredits)
+
+    suspend fun deleteAllCast()
+
+    suspend fun getCastMovieById(id: Long): ResponseCredits
 }

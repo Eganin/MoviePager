@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.moviesapp.model.entities.movies.credits.Cast
+import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.model.entities.movies.popular.results.ResultNowPlayong
@@ -85,7 +87,21 @@ interface  MoviesDaoDetail{
     @Query("DELETE FROM details")
     suspend fun deleteAllDetailMovies()
 
-    @Query("SELECT * FROM details WHERE _id == :id")
+    @Query("SELECT * FROM details WHERE id == :id")
     suspend fun getDetailMovieById(id : Long) : ResponseMovieDetail
 
+}
+@Dao
+interface MoviesDaoCast{
+    @Query("SELECT * FROM casts")
+    fun getAllCastMovies() : LiveData<List<ResponseCredits>>
+
+    @Insert
+    suspend fun insertCastMovie(cast : ResponseCredits)
+
+    @Query("DELETE FROM casts")
+    suspend fun deleteAllCast()
+
+    @Query("SELECT * FROM casts WHERE id == :id")
+    suspend fun getCastMovieById(id : Long) : ResponseCredits
 }

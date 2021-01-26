@@ -71,8 +71,9 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                             val movies =
                                 repository.getTopRatedMovies(page = Counter.count.toString())
                             _moviesList.value = movies.topRatedToResult()
-                            movies.map { saveDetailInfo(movieId = it.id) }
-                            insertTopRatedMoviesDb(movies=movies)
+                            movies.map { saveDB(id=it.id) }
+                            insertTopRatedMoviesDb(movies = movies)
+
 
                         }
                         MovieDataType.POPULAR -> {
@@ -80,8 +81,8 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                             val movies =
                                 repository.getPopularMovies(page = Counter.count.toString())
                             _moviesList.value = movies
-                            movies.map { saveDetailInfo(movieId = it.id) }
-                            insertPopularMoviesDb(movies=movies)
+                            movies.map { saveDB(id=it.id) }
+                            insertPopularMoviesDb(movies = movies)
 
                         }
                         MovieDataType.NOW_PLAYING -> {
@@ -89,8 +90,8 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                             val movies =
                                 repository.getNowPlayingMovies(page = Counter.count.toString())
                             _moviesList.value = movies.nowPlayongToResult()
-                            movies.map { saveDetailInfo(movieId = it.id) }
-                            insertNowPlayongMoviesDb(movies=movies)
+                            movies.map { saveDB(id=it.id) }
+                            insertNowPlayongMoviesDb(movies = movies)
 
                         }
                         MovieDataType.UP_COMING -> {
@@ -98,8 +99,8 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                             val movies =
                                 repository.getUpComingMovies(page = Counter.count.toString())
                             _moviesList.value = movies.upComingToResult()
-                            movies.map { saveDetailInfo(movieId = it.id) }
-                            insertUpComingMoviesDb(movies=movies)
+                            movies.map { saveDB(id=it.id) }
+                            insertUpComingMoviesDb(movies = movies)
 
                         }
                         MovieDataType.SEARCH -> query?.let {
@@ -117,7 +118,7 @@ class MoviesListViewModel(private val repository: MovieRepository) :
         }
     }
 
-    fun increasePage() {
+    private fun increasePage() {
         Counter.increase(firstLaunch = firstLaunch)
         firstLaunch = false
     }
@@ -162,11 +163,15 @@ class MoviesListViewModel(private val repository: MovieRepository) :
         repository.deleteAllUpComingMovies()
     }
 
-    fun saveDetailInfo(movieId : Long) = viewModelScope.launch {
+    private fun saveDetailInfo(movieId: Long) = viewModelScope.launch {
         val detailMovie = repository.getDetailInfoForMovie(movieId = movieId.toString())
-        repository.insertDetailMovie(movie=detailMovie)
+        repository.insertDetailMovie(movie = detailMovie)
     }
-
+    private suspend fun saveDB(id : Long){
+        saveDetailInfo(movieId = id)
+        val cast = repository.getCreditsForMovie(movieId = id.toString())
+        repository.insertCastMovie(cast = cast)
+    }
 
 
     @Suppress("UNCHECKED_CAST")

@@ -15,11 +15,11 @@ import kotlinx.serialization.*
 )
 @TypeConverters(value = [ListGenresConverter::class])
 @Serializable
-data class ResponseMovieDetail(
+data class ResponseMovieDetail (
+
 
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = MoviesContact.Detail.COLUMN_NAME_ID)
-    val idDb: Long? = null,
+    val idDb : Long? = null ,
 
     val adult: Boolean? = null,
 
@@ -27,7 +27,6 @@ data class ResponseMovieDetail(
     val backdropPath: String? = null,
 
     val budget: Long? = null,
-
 
     val genres: List<Genre>? = null,
 
