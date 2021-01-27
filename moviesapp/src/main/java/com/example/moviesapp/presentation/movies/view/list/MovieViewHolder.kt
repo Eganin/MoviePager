@@ -27,6 +27,7 @@ class MovieViewHolder(
     RecyclerView.ViewHolder(itemView) {
 
     private val scope = CoroutineScope(Dispatchers.IO)
+    private val uiScope = CoroutineScope(Dispatchers.Main)
 
     private val configuration = viewModel.configuration
     private val genres = viewModel.genreList
@@ -80,10 +81,15 @@ class MovieViewHolder(
                     val favouriteMovie = repository.getFavouriteMovieById(id = movie.id)
                     if (favouriteMovie != null) {
                         repository.deleteFavouriteMovieById(id = movie.id)
-                        paintLike(condition = false)
+                        uiScope.launch {
+                            paintLike(condition = false)
+                        }
                     } else {
                         repository.insertFavouriteMovie(favouriteMovie = FavouriteMovie(id = movie.id))
-                        paintLike(condition = true)
+                        uiScope.launch {
+                            paintLike(condition = true)
+                        }
+
                     }
                 }
             }
@@ -105,9 +111,13 @@ class MovieViewHolder(
         scope.launch {
             val favouriteMovie = repository.getFavouriteMovieById(id = isFavourite)
             if (favouriteMovie != null) {
-                paintLike(condition = true)
-            }else{
-                paintLike(condition = false )
+                uiScope.launch {
+                    paintLike(condition = true)
+                }
+            } else {
+                uiScope.launch {
+                    paintLike(condition = false)
+                }
             }
 
         }

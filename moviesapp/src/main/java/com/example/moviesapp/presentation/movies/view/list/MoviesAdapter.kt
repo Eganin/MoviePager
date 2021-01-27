@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
-import com.example.moviesapp.presentation.movies.viewmodel.Counter
 import com.example.moviesapp.presentation.movies.viewmodel.MovieDataType
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
 import com.example.moviesapp.model.entities.configuration.Images
 import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.model.repositories.MovieRepository
+
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
-import kotlin.ClassCastException
 
 
 class MoviesAdapter(
@@ -44,9 +43,14 @@ class MoviesAdapter(
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.onBind(movie = movies[position])
-        if (position >= movies.size.minus(4) && movies.size >= 20 && hasConnection(context = holder.itemView.context)) {
+        if (position >= movies.size.minus(4) && movies.size >= 20 &&
+            hasConnection(context = holder.itemView.context)
+        ) {
+            Log.d("AASA", "AAAAAAAAAAAAAAAAAAAAAAA")
+
             viewModel.loadMovies(type = type)
         }
+        //CounterOrientation.count++
     }
 
 
@@ -55,35 +59,16 @@ class MoviesAdapter(
     fun size() = itemCount
 
     fun bindMovies(newMovies: List<Result>) {
-        if (Counter.count != 0 && Counter.count != 1) {
-            if (type != MovieDataType.SEARCH) {
-                try {
-                    val oldMovies = movies.subList(movies.size - 20, movies.size)
-                    if (oldMovies != newMovies) movies.addAll(newMovies)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    movies.addAll(newMovies)
-                }
-            }
-        } else if (Counter.count == 1) {
-            movies = try {
-                newMovies as MutableList<Result>
-            } catch (e: ClassCastException) {
-                e.printStackTrace()
-                viewModel.loadDataModel(type = type)
-                mutableListOf()
-            }
-        } else {
+        try {
+            val oldMovies = movies.subList(movies.size - 20, movies.size)
+            if (oldMovies != newMovies) movies.addAll(newMovies)
+        } catch (e: Exception) {
+            e.printStackTrace()
             movies.addAll(newMovies)
         }
 
 
     }
-
-    fun bindMoviesFromDb(newMovies: List<Result>) {
-        movies = newMovies as MutableList<Result>
-    }
-
 
     fun clearMovies() {
         movies = mutableListOf()

@@ -15,9 +15,6 @@ import kotlinx.coroutines.*
 
 class MoviesListViewModel(private val repository: MovieRepository) :
     ViewModel() {
-
-    private var firstLaunch = true
-
     private val _moviesList = MutableLiveData<List<Result>>()
     val moviesList: LiveData<List<Result>> = _moviesList
 
@@ -45,7 +42,6 @@ class MoviesListViewModel(private val repository: MovieRepository) :
 
                 genreList = repository.getGenres()
 
-                Log.d("AAA", query.toString())
                 if (query == null || query == "null" || query == "") {
                     loadMovies(type = type)
                 } else {
@@ -60,16 +56,14 @@ class MoviesListViewModel(private val repository: MovieRepository) :
     fun loadMovies(type: MovieDataType, query: String? = null) {
 
         if (isLoading) {
-            startLoadingData()
             viewModelScope.launch {
                 coroutineScope {
-                    Counter.count++
                     isLoading = false
                     when (type) {
                         MovieDataType.TOP_RATED -> {
-                            increasePage()
+                            CounterTopRated.count++
                             val movies =
-                                repository.getTopRatedMovies(page = Counter.count.toString())
+                                repository.getTopRatedMovies(page = CounterTopRated.count.toString())
                             _moviesList.value = movies.topRatedToResult()
                             movies.map { saveDB(id=it.id) }
                             insertTopRatedMoviesDb(movies = movies)
@@ -77,35 +71,36 @@ class MoviesListViewModel(private val repository: MovieRepository) :
 
                         }
                         MovieDataType.POPULAR -> {
-                            increasePage()
+                            CounterPopular.count++
                             val movies =
-                                repository.getPopularMovies(page = Counter.count.toString())
+                                repository.getPopularMovies(page = CounterPopular.count.toString())
                             _moviesList.value = movies
                             movies.map { saveDB(id=it.id) }
                             insertPopularMoviesDb(movies = movies)
 
                         }
                         MovieDataType.NOW_PLAYING -> {
-                            increasePage()
+                            CounterNowPlayong.count++
                             val movies =
-                                repository.getNowPlayingMovies(page = Counter.count.toString())
+                                repository.getNowPlayingMovies(page = CounterNowPlayong.count.toString())
                             _moviesList.value = movies.nowPlayongToResult()
                             movies.map { saveDB(id=it.id) }
                             insertNowPlayongMoviesDb(movies = movies)
 
                         }
                         MovieDataType.UP_COMING -> {
-                            increasePage()
+                            CounterUpcoming.count++
                             val movies =
-                                repository.getUpComingMovies(page = Counter.count.toString())
+                                repository.getUpComingMovies(page = CounterUpcoming.count.toString())
                             _moviesList.value = movies.upComingToResult()
                             movies.map { saveDB(id=it.id) }
                             insertUpComingMoviesDb(movies = movies)
 
                         }
                         MovieDataType.SEARCH -> query?.let {
+                            CounterSearch.count++
                             val movies = repository.getSearchMovies(
-                                searchValue = it, page = Counter.count.toString()
+                                searchValue = it, page = CounterSearch.count.toString()
                             )
                             _moviesList.value = movies
                         }
@@ -114,14 +109,9 @@ class MoviesListViewModel(private val repository: MovieRepository) :
                     isLoading = true
                 }
             }
-            stopLoadingData()
         }
     }
 
-    private fun increasePage() {
-        Counter.increase(firstLaunch = firstLaunch)
-        firstLaunch = false
-    }
 
     private fun startLoadingData() {
         _state.value = true
@@ -132,35 +122,51 @@ class MoviesListViewModel(private val repository: MovieRepository) :
     }
 
     private fun insertPopularMoviesDb(movies: List<Result>) = viewModelScope.launch {
+        startLoadingData()
         repository.insertPopularMovies(movies = movies)
+        stopLoadingData()
     }
 
     fun deleteAllPopularMoviesDB() = viewModelScope.launch {
+        startLoadingData()
         repository.deleteAllPopularMovies()
+        stopLoadingData()
     }
 
     private fun insertTopRatedMoviesDb(movies: List<ResultTopRated>) = viewModelScope.launch {
+        startLoadingData()
         repository.insertTopRatedMovies(movies = movies)
+        stopLoadingData()
     }
 
     fun deleteAllTopRatedMoviesDB() = viewModelScope.launch {
+        startLoadingData()
         repository.deleteAllTopRatedMovies()
+        stopLoadingData()
     }
 
     private fun insertNowPlayongMoviesDb(movies: List<ResultNowPlayong>) = viewModelScope.launch {
+        startLoadingData()
         repository.insertNowPlayongMovies(movies = movies)
+        stopLoadingData()
     }
 
     fun deleteAllTNowPlayongMoviesDB() = viewModelScope.launch {
+        startLoadingData()
         repository.deleteAllNowPlayongMovies()
+        stopLoadingData()
     }
 
     private fun insertUpComingMoviesDb(movies: List<ResultUpComing>) = viewModelScope.launch {
+        startLoadingData()
         repository.insertUpComingMovies(movies = movies)
+        stopLoadingData()
     }
 
     fun deleteAllTUpComingMoviesDB() = viewModelScope.launch {
+        startLoadingData()
         repository.deleteAllUpComingMovies()
+        stopLoadingData()
     }
 
     private fun saveDetailInfo(movieId: Long) = viewModelScope.launch {
@@ -168,9 +174,11 @@ class MoviesListViewModel(private val repository: MovieRepository) :
         repository.insertDetailMovie(movie = detailMovie)
     }
     private suspend fun saveDB(id : Long){
+        startLoadingData()
         saveDetailInfo(movieId = id)
         val cast = repository.getCreditsForMovie(movieId = id.toString())
         repository.insertCastMovie(cast = cast)
+        stopLoadingData()
     }
 
 
@@ -183,15 +191,6 @@ class MoviesListViewModel(private val repository: MovieRepository) :
         }
     }
 
-}
-
-object Counter {
-    var count = 0
-    fun increase(firstLaunch: Boolean) {
-        if (count != 1 && firstLaunch) {
-            count--
-        }
-    }
 }
 
 enum class MovieDataType {

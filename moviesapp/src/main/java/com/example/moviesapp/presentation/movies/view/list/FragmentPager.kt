@@ -25,7 +25,6 @@ import com.example.moviesapp.application.MovieApp
 import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.presentation.movies.utils.*
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
-import com.example.moviesapp.presentation.movies.viewmodel.Counter
 import com.example.moviesapp.presentation.movies.viewmodel.MovieDataType
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
 import kotlinx.coroutines.launch
@@ -62,37 +61,31 @@ class FragmentPager : Fragment() {
             when (getTypeMovies()) {
                 MovieDataType.POPULAR -> viewModel.popularMovies.observe(
                     viewLifecycleOwner,
-                    this::updateAdapterDataFromDb
+                    this::updateAdapter
                 )
                 MovieDataType.TOP_RATED -> viewModel.topRatedMovies.observe(viewLifecycleOwner) {
-                    updateAdapterDataFromDb(
-                        data = it.topRatedToResult()
-                    )
+                    updateAdapter(data = it.topRatedToResult())
                 }
                 MovieDataType.NOW_PLAYING -> viewModel.nowPlayongMovies.observe(viewLifecycleOwner) {
-                    updateAdapterDataFromDb(
-                        data = it.nowPlayongToResult()
-                    )
+                    updateAdapter(data = it.nowPlayongToResult())
                 }
                 MovieDataType.UP_COMING -> viewModel.upComingMovies.observe(viewLifecycleOwner) {
-                    updateAdapterDataFromDb(
-                        data = it.upComingToResult()
-                    )
+                    updateAdapter(data = it.upComingToResult())
                 }
             }
-            viewModel.stopLoadingData()
         } else if (sortedMoviesText?.text != getText(R.string.search_value) && hasConnection(context = requireContext())) {
-
-            if (Counter.count == 0) when (getTypeMovies()) {
-                MovieDataType.POPULAR -> viewModel.deleteAllPopularMoviesDB()
-                MovieDataType.TOP_RATED -> viewModel.deleteAllTopRatedMoviesDB()
-                MovieDataType.NOW_PLAYING -> viewModel.deleteAllTNowPlayongMoviesDB()
-                MovieDataType.UP_COMING -> viewModel.deleteAllTUpComingMoviesDB()
+            when {
+                CounterPopular.count == 0 -> viewModel.deleteAllPopularMoviesDB()
+                CounterTopRated.count == 0 -> viewModel.deleteAllTopRatedMoviesDB()
+                CounterNowPlayong.count == 0 -> viewModel.deleteAllTNowPlayongMoviesDB()
+                CounterUpcoming.count == 0 -> viewModel.deleteAllTUpComingMoviesDB()
             }
+
             bind(
                 value = arguments?.getString(SAVE_SORTED_TYPE) ?: "Popular",
                 saveInstance = savedInstanceState
             )
+
 
         }
 
@@ -131,14 +124,14 @@ class FragmentPager : Fragment() {
     fun bind(value: String, saveInstance: Bundle?) {
         sortedMoviesText?.text = value
         prepareData()
-        if (saveInstance == null) {
+        if (saveInstance == null ) {
             downloadData()
         }
     }
 
     private fun setupSearching() {
         prepareData()
-        Counter.count = 0
+        CounterSearch.count = 0
         searchImage?.isVisible = true
         searchEditText?.isVisible = true
         progressBar?.isVisible = false
@@ -148,7 +141,7 @@ class FragmentPager : Fragment() {
             searchText?.isVisible = false
             if (it.isNotEmpty()) {
                 Handler().postDelayed({
-                    Counter.count = 0
+                    CounterSearch.count = 0
                     if (hasConnection(context = requireContext())) {
                         lifecycleScope.launch {
                             downloadData()
@@ -240,11 +233,6 @@ class FragmentPager : Fragment() {
         adapter.bindMovies(newMovies = data)
         adapter.notifyDataSetChanged()
 
-    }
-
-    private fun updateAdapterDataFromDb(data: List<Result>) {
-        adapter.bindMoviesFromDb(newMovies = data)
-        adapter.notifyDataSetChanged()
     }
 
     private fun recalculationScreen(): Int {
