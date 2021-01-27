@@ -14,16 +14,22 @@ class CastConverter {
         .setLenient()
         .create()
     @TypeConverter
-    fun listCastToString(castes: List<Cast>?): String = gson.toJson(castes)
+    fun listCastToString(castes: List<Cast>?): String? = gson.toJson(castes)
 
     @TypeConverter
     fun stringToListCast(casteString: String): List<Cast>? {
-        Log.d("AAA",casteString)
+
         val objects = gson.fromJson(casteString.trim(), ArrayList::class.java)
         val castes = mutableListOf<Cast>()
-        objects.forEach { castes.add(gson.fromJson(it.toString().trim(), Cast::class.java)) }
         objects.forEach { Log.d("AAA",it.toString()) }
+        //objects.forEach { castes.add(gson.fromJson(it.toString().trim(), Cast::class.java)) }
+        objects.forEach { castes.add(parseJson(jsonString=it.toString().trim()))}
 
         return castes
+
+    }
+    private fun parseJson(jsonString : String): Cast{
+        val name = jsonString.split(",")[0].substring(6)
+        return Cast(name=name)
     }
 }

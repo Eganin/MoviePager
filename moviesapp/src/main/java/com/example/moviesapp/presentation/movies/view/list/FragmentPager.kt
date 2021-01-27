@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -137,6 +138,7 @@ class FragmentPager : Fragment() {
 
     private fun setupSearching() {
         prepareData()
+        Counter.count = 0
         searchImage?.isVisible = true
         searchEditText?.isVisible = true
         progressBar?.isVisible = false
@@ -165,10 +167,8 @@ class FragmentPager : Fragment() {
         val bundle = Bundle()
         bundle.putString(SAVE_SORTED_TYPE, (sortedMoviesText?.text ?: "Popular").toString())
         arguments = bundle
-        adapter.clearMovies()
         adapter.type = getTypeMovies()
         adapter.query = searchEditText?.text.toString().trim()
-        Counter.count = 0
     }
 
     private fun getTypeMovies() = when (sortedMoviesText?.text.toString().trim()) {

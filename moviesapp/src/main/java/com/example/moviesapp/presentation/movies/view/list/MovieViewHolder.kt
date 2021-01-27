@@ -106,6 +106,8 @@ class MovieViewHolder(
             val favouriteMovie = repository.getFavouriteMovieById(id = isFavourite)
             if (favouriteMovie != null) {
                 paintLike(condition = true)
+            }else{
+                paintLike(condition = false )
             }
 
         }

@@ -18,12 +18,18 @@ class ListGenresConverter {
     fun listGenresToString(genres: List<Genre>?): String = gson.toJson(genres)
 
     @TypeConverter
-    fun stringToListGenres(genresString: String): List<Genre>? {
-        val genres = mutableListOf<Genre>()
-
+    fun stringToListGenres(genresString: String): List<Genre?>? {
+        val genres = mutableListOf<Genre?>()
         val objects = gson.fromJson(genresString.trim(), ArrayList::class.java)
-        objects.forEach { genres.add(gson.fromJson(it.toString().trim(), Genre::class.java)) }
-        objects.forEach { Log.d("AAA",it.toString()) }
+        objects.forEach {
+            try {
+                genres.add(gson.fromJson(it.toString().trim(), Genre::class.java))
+            } catch (e: Exception) {
+                genres.add(null)
+            }
+
+        }
+
 
         return genres
     }

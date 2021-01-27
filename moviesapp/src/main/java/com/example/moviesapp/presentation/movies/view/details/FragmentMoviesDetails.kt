@@ -129,7 +129,8 @@ class FragmentMoviesDetails : Fragment() {
     private fun bindViews(view: View, data: ResponseMovieDetail) {
         ageRating?.text = if (data.adult == true) "+18" else "+16"
         titleMovie?.text = data.title
-        tagLine?.text = data.genres?.joinToString(separator = " , ") { it.name ?:"" }
+        val genres = data.genres?.filter{it != null}
+        tagLine?.text = genres?.joinToString(separator = " , ") { it.name ?:"" }
         reviewsCount?.text = "${data.voteCount} reviews"
         storyLine?.text = data.overview
         downloadPoster(detailPoster = detailPoster, data = data)

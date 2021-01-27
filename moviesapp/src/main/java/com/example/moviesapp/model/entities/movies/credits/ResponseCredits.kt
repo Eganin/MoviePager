@@ -1,9 +1,6 @@
 package com.example.moviesapp.model.entities.movies.credits
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import androidx.room.TypeConverters
+import androidx.room.*
 import com.example.moviesapp.storage.CastConverter
 import com.example.moviesapp.storage.MoviesContact
 import kotlinx.serialization.*
@@ -18,5 +15,6 @@ data class ResponseCredits (
     val idDb : Long? = null ,
 
     val id: Long,
+
     val cast: List<Cast>
 )

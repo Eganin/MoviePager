@@ -1,5 +1,6 @@
 package com.example.moviesapp.presentation.movies.view.list
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -43,7 +44,7 @@ class MoviesAdapter(
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.onBind(movie = movies[position])
-        if (position >= movies.size.minus(4) && movies.size >= 20 && hasConnection(context=holder.itemView.context)) {
+        if (position >= movies.size.minus(4) && movies.size >= 20 && hasConnection(context = holder.itemView.context)) {
             viewModel.loadMovies(type = type)
         }
     }
@@ -79,7 +80,9 @@ class MoviesAdapter(
 
     }
 
-    fun bindMoviesFromDb(newMovies: List<Result>) = movies.addAll(newMovies)
+    fun bindMoviesFromDb(newMovies: List<Result>) {
+        movies = newMovies as MutableList<Result>
+    }
 
 
     fun clearMovies() {
