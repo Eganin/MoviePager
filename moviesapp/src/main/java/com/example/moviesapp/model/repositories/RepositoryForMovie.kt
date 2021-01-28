@@ -14,7 +14,7 @@ import com.example.moviesapp.model.entities.movies.popular.results.ResultNowPlay
 import com.example.moviesapp.model.entities.movies.popular.results.ResultTopRated
 import com.example.moviesapp.model.entities.movies.popular.results.ResultUpComing
 
-interface Repository {
+interface RepositoryForMovie {
     suspend fun getPopularMovies(page: String): List<Result>
 
     suspend fun getNowPlayingMovies(page: String): List<ResultNowPlayong>

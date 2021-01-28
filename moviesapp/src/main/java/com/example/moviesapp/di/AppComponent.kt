@@ -4,25 +4,29 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.moviesapp.model.repositories.MovieRepository
+import com.example.moviesapp.model.repositories.WorkerRepository
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesDetailsViewModel
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
 
 class AppComponent(context: Context) {
 
-    private val repository = MovieRepository(applicationContext = context)
+    private val movieRepository = MovieRepository(applicationContext = context)
+    private val workerRepository = WorkerRepository()
 
     fun getMoviesViewModel(fragment: Fragment): MoviesListViewModel {
-        return ViewModelProvider(fragment, MoviesListViewModel.Factory(repository)).get(
+        return ViewModelProvider(fragment, MoviesListViewModel.Factory(movieRepository)).get(
             MoviesListViewModel::class.java
         )
     }
 
     fun getMoviesDetailsViewModel(fragment: Fragment) : MoviesDetailsViewModel {
-        return ViewModelProvider(fragment, MoviesDetailsViewModel.Factory(repository)).get(
+        return ViewModelProvider(fragment, MoviesDetailsViewModel.Factory(movieRepository)).get(
             MoviesDetailsViewModel::class.java
         )
     }
 
-    fun getRepository() = repository
+    fun getMovieRepository() = movieRepository
+
+    fun getWorkerRepository() = workerRepository
 
 }

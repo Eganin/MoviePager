@@ -20,6 +20,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.work.WorkManager
 import com.example.moviesapp.R
 import com.example.moviesapp.application.MovieApp
 import com.example.moviesapp.model.entities.movies.popular.results.Result
@@ -58,37 +59,12 @@ class FragmentPager : Fragment() {
         if (sortedMoviesText?.text == getText(R.string.search_value)) {
             setupSearching()
         } else if (!hasConnection(context = requireContext()) && adapter.size() == 0) {
-            when (getTypeMovies()) {
-                MovieDataType.POPULAR -> viewModel.popularMovies.observe(
-                    viewLifecycleOwner,
-                    this::updateAdapter
-                )
-                MovieDataType.TOP_RATED -> viewModel.topRatedMovies.observe(viewLifecycleOwner) {
-                    updateAdapter(data = it.topRatedToResult())
-                }
-                MovieDataType.NOW_PLAYING -> viewModel.nowPlayongMovies.observe(viewLifecycleOwner) {
-                    updateAdapter(data = it.nowPlayongToResult())
-                }
-                MovieDataType.UP_COMING -> viewModel.upComingMovies.observe(viewLifecycleOwner) {
-                    updateAdapter(data = it.upComingToResult())
-                }
-            }
+            observeValueFromDb()
         } else if (sortedMoviesText?.text != getText(R.string.search_value) && hasConnection(context = requireContext())) {
-            when {
-                CounterPopular.count == 0 -> viewModel.deleteAllPopularMoviesDB()
-                CounterTopRated.count == 0 -> viewModel.deleteAllTopRatedMoviesDB()
-                CounterNowPlayong.count == 0 -> viewModel.deleteAllTNowPlayongMoviesDB()
-                CounterUpcoming.count == 0 -> viewModel.deleteAllTUpComingMoviesDB()
-            }
-
-            bind(
-                value = arguments?.getString(SAVE_SORTED_TYPE) ?: "Popular",
-                saveInstance = savedInstanceState
-            )
-
-
+            downloadNotDb(savedInstanceState=savedInstanceState)
         }
-
+        val workerRepository = (requireActivity().application as MovieApp).myComponent.getWorkerRepository()
+        WorkManager.getInstance(requireContext()).enqueue(workerRepository.request)
     }
 
     override fun onAttach(context: Context) {
@@ -99,7 +75,7 @@ class FragmentPager : Fragment() {
             MoviesAdapter(
                 viewModel = viewModel,
                 type = MovieDataType.POPULAR,
-                repository = (requireActivity().application as MovieApp).myComponent.getRepository()
+                repository = (requireActivity().application as MovieApp).myComponent.getMovieRepository()
             )
         if (context is MoviesAdapter.OnClickPoster) adapter.onClickPoster = context
     }
@@ -121,10 +97,42 @@ class FragmentPager : Fragment() {
         recycler = null
     }
 
-    fun bind(value: String, saveInstance: Bundle?) {
+    private fun observeValueFromDb() =
+        when (getTypeMovies()) {
+            MovieDataType.POPULAR -> viewModel.popularMovies.observe(
+                viewLifecycleOwner,
+                this::updateAdapter
+            )
+            MovieDataType.TOP_RATED -> viewModel.topRatedMovies.observe(viewLifecycleOwner) {
+                updateAdapter(data = it.topRatedToResult())
+            }
+            MovieDataType.NOW_PLAYING -> viewModel.nowPlayongMovies.observe(viewLifecycleOwner) {
+                updateAdapter(data = it.nowPlayongToResult())
+            }
+            else -> viewModel.upComingMovies.observe(viewLifecycleOwner) {
+                updateAdapter(data = it.upComingToResult())
+            }
+        }
+
+    private fun downloadNotDb(savedInstanceState : Bundle?){
+        when {
+            CounterPopular.count == 0 -> viewModel.deleteAllPopularMoviesDB()
+            CounterTopRated.count == 0 -> viewModel.deleteAllTopRatedMoviesDB()
+            CounterNowPlayong.count == 0 -> viewModel.deleteAllTNowPlayongMoviesDB()
+            CounterUpcoming.count == 0 -> viewModel.deleteAllTUpComingMoviesDB()
+        }
+
+        bind(
+            value = arguments?.getString(SAVE_SORTED_TYPE) ?: "Popular",
+            saveInstance = savedInstanceState
+        )
+    }
+
+
+    private fun bind(value: String, saveInstance: Bundle?) {
         sortedMoviesText?.text = value
         prepareData()
-        if (saveInstance == null ) {
+        if (saveInstance == null) {
             downloadData()
         }
     }

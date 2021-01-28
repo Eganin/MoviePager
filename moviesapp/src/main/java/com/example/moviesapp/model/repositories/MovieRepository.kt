@@ -3,7 +3,6 @@ package com.example.moviesapp.model.repositories
 import android.content.Context
 import androidx.lifecycle.LiveData
 import com.example.moviesapp.model.entities.favourite.FavouriteMovie
-import com.example.moviesapp.model.entities.movies.credits.Cast
 import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.model.entities.movies.popular.results.Result
@@ -15,7 +14,7 @@ import com.example.moviesapp.storage.MoviesDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MovieRepository(applicationContext: Context) : Repository {
+class MovieRepository(applicationContext: Context) : RepositoryForMovie {
     private val dispatcher = Dispatchers.IO
 
     private val db = MoviesDatabase.getInstance(context = applicationContext)
