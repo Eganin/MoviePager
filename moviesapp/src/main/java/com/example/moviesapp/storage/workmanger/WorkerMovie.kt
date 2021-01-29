@@ -18,7 +18,6 @@ class WorkerMovie(val context: Context, params: WorkerParameters) : Worker(conte
     private val scope = CoroutineScope(Dispatchers.IO)
 
     override fun doWork(): Result {
-        Log.d("DATADATA","DATADATADATADATADATADATADATADATADATADATADATA")
         val movieRepository = (context as MovieApp).myComponent.getMovieRepository()
         try {
             scope.launch {
@@ -35,7 +34,6 @@ class WorkerMovie(val context: Context, params: WorkerParameters) : Worker(conte
                     nowPlayongMovies = nowPlayongMovies,
                     upComingMovies = upComingMovies
                 )
-                Log.d("DATADATA","DATADATADATADATADATADATADATADATADATADATADATA")
             }
             return Result.success()
 

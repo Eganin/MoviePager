@@ -25,6 +25,7 @@ import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.presentation.movies.utils.imageOptionMovie
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesDetailsViewModel
+import java.util.*
 
 
 class FragmentMoviesDetails : Fragment() {
@@ -127,11 +128,13 @@ class FragmentMoviesDetails : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun bindViews(view: View, data: ResponseMovieDetail) {
+        val localize = Locale.getDefault().language
         ageRating?.text = if (data.adult == true) "+18" else "+16"
         titleMovie?.text = data.title
-        val genres = data.genres?.filter{it != null}
-        tagLine?.text = genres?.joinToString(separator = " , ") { it.name ?:"" }
-        reviewsCount?.text = "${data.voteCount} reviews"
+        val genres = data.genres?.filter { it != null }
+        tagLine?.text = genres?.joinToString(separator = " , ") { it.name ?: "" }
+        reviewsCount?.text =
+            if (localize == "english ") "${data.voteCount} reviews" else "${data.voteCount} обзоров"
         storyLine?.text = data.overview
         downloadPoster(detailPoster = detailPoster, data = data)
         bindStars(view = view, countRating = (data.voteAverage?.div(2))?.toInt() ?: 0)

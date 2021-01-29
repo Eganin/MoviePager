@@ -14,7 +14,7 @@ import com.example.moviesapp.storage.MoviesDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class MovieRepository(applicationContext: Context) : RepositoryForMovie {
+class MovieRepository(applicationContext: Context , val language : String) : RepositoryForMovie {
     private val dispatcher = Dispatchers.IO
 
     private val db = MoviesDatabase.getInstance(context = applicationContext)
@@ -28,24 +28,24 @@ class MovieRepository(applicationContext: Context) : RepositoryForMovie {
     private val moviesDataFavourite = db.moviesDaoFavourite
 
     override suspend fun getPopularMovies(page: String) = withContext(dispatcher) {
-        RetrofitModule.apiMovies.getPopularMovies(page = page).results
+        RetrofitModule.apiMovies.getPopularMovies(page = page,language=language).results
     }
 
     override suspend fun getNowPlayingMovies(page: String) = withContext(dispatcher) {
-        RetrofitModule.apiMovies.getNowPlayingMovies(page = page).results
+        RetrofitModule.apiMovies.getNowPlayingMovies(page = page,language=language).results
     }
 
     override suspend fun getTopRatedMovies(page: String) = withContext(dispatcher) {
-        RetrofitModule.apiMovies.getTopRatedMovies(page = page).results
+        RetrofitModule.apiMovies.getTopRatedMovies(page = page,language=language).results
     }
 
     override suspend fun getUpComingMovies(page: String) = withContext(dispatcher) {
-        RetrofitModule.apiMovies.getUpComingMovies(page = page).results
+        RetrofitModule.apiMovies.getUpComingMovies(page = page,language=language).results
     }
 
     override suspend fun getSearchMovies(searchValue: String, page: String) =
         withContext(dispatcher) {
-            RetrofitModule.apiMovies.getSearchMovie(query = searchValue, page = page).results
+            RetrofitModule.apiMovies.getSearchMovie(query = searchValue, page = page,language=language).results
         }
 
     override suspend fun getConfiguration() = withContext(Dispatchers.IO) {
@@ -53,7 +53,7 @@ class MovieRepository(applicationContext: Context) : RepositoryForMovie {
     }
 
     override suspend fun getGenres() = withContext(dispatcher) {
-        RetrofitModule.apiMovies.getGenres()
+        RetrofitModule.apiMovies.getGenres(language=language)
     }
 
     override fun getAllMoviesPopular() = moviesDataPopular.getAllMoviesPopular()
@@ -115,11 +115,11 @@ class MovieRepository(applicationContext: Context) : RepositoryForMovie {
 
 
     override suspend fun getDetailInfoForMovie(movieId: String) =
-        RetrofitModule.apiMovies.getDetailInfo(movieId = movieId)
+        RetrofitModule.apiMovies.getDetailInfo(movieId = movieId,language=language)
 
 
     override suspend fun getCreditsForMovie(movieId: String) =
-        RetrofitModule.apiMovies.getCreditsMovie(movieId = movieId)
+        RetrofitModule.apiMovies.getCreditsMovie(movieId = movieId,language=language)
 
     override fun getAllDetailMovies(): LiveData<List<ResponseMovieDetail>> =
         moviesDataDetail.getAllDetailMovies()

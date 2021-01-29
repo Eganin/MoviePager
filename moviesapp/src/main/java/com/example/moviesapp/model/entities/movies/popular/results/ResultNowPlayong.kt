@@ -14,7 +14,7 @@ import kotlinx.serialization.Serializable
 )
 @TypeConverters(value = [GenresConverter::class])
 @Serializable
-data class ResultNowPlayong  (
+data class ResultNowPlayong(
     @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_ADULT)
     val adult: Boolean? = null,
 
@@ -28,7 +28,7 @@ data class ResultNowPlayong  (
 
     @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_ID)
     @PrimaryKey(autoGenerate = true)
-    val idDb : Long? = null ,
+    val idDb: Long? = null,
 
     @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_MOVIE)
     val id: Long,

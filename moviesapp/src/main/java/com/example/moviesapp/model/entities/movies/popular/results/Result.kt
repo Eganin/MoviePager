@@ -26,7 +26,7 @@ data class Result(
 
     @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_ID)
     @PrimaryKey(autoGenerate = true)
-    val idDb : Long? = null ,
+    val idDb: Long? = null,
 
     @ColumnInfo(name = MoviesContact.Result.COLUMN_NAME_MOVIE)
     val id: Long,
@@ -67,3 +67,5 @@ data class Result(
     @SerialName("vote_count")
     val voteCount: Long? = null
 )
+
+

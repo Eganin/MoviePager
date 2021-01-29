@@ -7,10 +7,12 @@ import com.example.moviesapp.model.repositories.MovieRepository
 import com.example.moviesapp.model.repositories.WorkerRepository
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesDetailsViewModel
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
+import java.util.*
 
 class AppComponent(context: Context) {
 
-    private val movieRepository = MovieRepository(applicationContext = context)
+    private val movieRepository =
+        MovieRepository(applicationContext = context, language = Locale.getDefault().language)
     private val workerRepository = WorkerRepository()
 
     fun getMoviesViewModel(fragment: Fragment): MoviesListViewModel {
@@ -19,7 +21,7 @@ class AppComponent(context: Context) {
         )
     }
 
-    fun getMoviesDetailsViewModel(fragment: Fragment) : MoviesDetailsViewModel {
+    fun getMoviesDetailsViewModel(fragment: Fragment): MoviesDetailsViewModel {
         return ViewModelProvider(fragment, MoviesDetailsViewModel.Factory(movieRepository)).get(
             MoviesDetailsViewModel::class.java
         )

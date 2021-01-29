@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">Фильмы</string>
+    <string name="poster">Постер</string>
+    <string name="back_text_details">Назад</string>
+    <string name="back_text_details_path"><![CDATA[<]]></string>
+    <string name="default_pg_text">13+</string>
+    <string name="default_tags_text">Action, Adventure, Fantasy</string>
+    <string name="star_text">star</string>
+    <string name="default_text_reviews_count">125 reviews</string>
+    <string name="storyline_label_text">Сюжетнпя линия</string>
+    <string name="default_text_storyline_description">After the devastating events of Avengers: Infinity War, the universe is in ruins. With the help of remaining allies, the Avengers assemble once more in order to reverse Thanos\' actions and restore balance to the universe.</string>
+    <string name="cast_label_text">Актеры</string>
+    <string name="chris_hemsworth">Chris Hemsworth</string>
+    <string name="mark_ruffalo">Mark Ruffalo</string>
+    <string name="chris_evans">Chris Evans</string>
+    <string name="robert_downey_jr">Robert Downey Jr.</string>
+    <string name="main_poster_description">Main Poster</string>
+    <string name="star_description">Star</string>
+    <string name="first_image_description">First Image</string>
+    <string name="second_image_description">Second Image</string>
+    <string name="three_image_description">Three image</string>
+    <string name="four_image_description">Four Image</string>
+    <string name="movies_list_label_text">Movies list</string>
+    <string name="default_title_movie">Avengers: End Game</string>
+    <string name="default_time_film">137 MIN</string>
+    <string name="image_actor_desciption">Image actor</string>
+    <string name="now_playong">Now playong</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated_text">Top rated</string>
+    <string name="up_coming">Up coming</string>
+    <string name="search">Search</string>
+    <string name="search_value">Search</string>
+    <string name="search_text">Введите название фильма чтобы найти его</string>
+</resources>
