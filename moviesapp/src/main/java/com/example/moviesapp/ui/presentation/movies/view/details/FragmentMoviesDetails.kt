@@ -6,14 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +24,7 @@ import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.presentation.movies.utils.imageOptionMovie
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesDetailsViewModel
+import com.example.moviesapp.ui.presentation.movies.view.details.CalendarView
 import java.util.*
 
 
@@ -42,6 +42,7 @@ class FragmentMoviesDetails : Fragment() {
     private var storyLine: AppCompatTextView? = null
     private var detailPoster: AppCompatImageView? = null
     private var progressBar: ProgressBar? = null
+    private var calendarView : ImageButton? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -76,6 +77,13 @@ class FragmentMoviesDetails : Fragment() {
         }
         view.findViewById<AppCompatTextView>(R.id.back_activity_path).setOnClickListener {
             activity?.onBackPressed()
+        }
+
+        calendarView?.setOnClickListener {
+            viewModel.info.observe(viewLifecycleOwner) {
+                CalendarView(movie=it)
+                    .show(this@FragmentMoviesDetails.parentFragmentManager,"CALENDAR")
+            }
         }
 
         viewModel.stopLoadingData()
@@ -116,6 +124,7 @@ class FragmentMoviesDetails : Fragment() {
         reviewsCount = view.findViewById(R.id.reviews_count)
         storyLine = view.findViewById(R.id.storyline_description)
         progressBar = view.findViewById(R.id.progress_bar_details)
+        calendarView = view.findViewById(R.id.set_date)
     }
 
     private fun setupRecyclerView(view: View) {
@@ -134,7 +143,7 @@ class FragmentMoviesDetails : Fragment() {
         val genres = data.genres?.filter { it != null }
         tagLine?.text = genres?.joinToString(separator = " , ") { it.name ?: "" }
         reviewsCount?.text =
-            if (localize == "english ") "${data.voteCount} reviews" else "${data.voteCount} обзоров"
+            if (localize == "english") "${data.voteCount} reviews" else "${data.voteCount} обзоров"
         storyLine?.text = data.overview
         downloadPoster(detailPoster = detailPoster, data = data)
         bindStars(view = view, countRating = (data.voteAverage?.div(2))?.toInt() ?: 0)
@@ -172,7 +181,6 @@ class FragmentMoviesDetails : Fragment() {
         }
 
     }
-
     companion object {
         fun newInstance(
             movieId: Long,

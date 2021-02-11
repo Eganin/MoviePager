@@ -31,6 +31,12 @@
     <string name="search">Search</string>
     <string name="search_value">Search</string>
     <string name="search_text">Enter the name of the movie to find it</string>
-    <string name="mailing_movies">Mailing movies</string>
-    <string name="all_new_movies">All new movies</string>
+    <string name="mailing_movies" translatable="false">Mailing movies</string>
+    <string name="all_new_movies" translatable="false">All new movies</string>
+    <string name="select_movie">Select a date watching the movie</string>
+    <string name="yes_dialog">Yes</string>
+    <string name="no_dialog">No</string>
+    <string name="access_text">Continue please grant access to calendar</string>
+    <string name="ok_dialog">OK</string>
+    <string name="cancel_dialog">Cancel</string>
 </resources>

@@ -87,6 +87,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ImageButton
+                android:id="@+id/set_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top_pg"
+                android:src="@drawable/ic_baseline_calendar_today_24"
+                android:background="@drawable/border"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginEnd="@dimen/default_margin"/>
+
             <TextView
                 android:fontFamily="@font/roboto_bold_family"
                 android:id="@+id/title_movie"
