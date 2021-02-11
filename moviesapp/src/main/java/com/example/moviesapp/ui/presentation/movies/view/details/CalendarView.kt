@@ -2,16 +2,12 @@ package com.example.moviesapp.ui.presentation.movies.view.details
 
 import android.Manifest
 import android.app.Dialog
-import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.provider.CalendarContract
-import android.util.Log
 import android.widget.CalendarView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
@@ -22,10 +18,11 @@ import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import java.util.*
 
 
-class CalendarView(private val movie: ResponseMovieDetail) : DialogFragment() {
+class CalendarView(private val movie: ResponseMovieDetail?=null) : DialogFragment() {
 
     private var calendar: CalendarView? = null
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private var currentDate : Calendar =  Calendar.getInstance()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -38,6 +35,13 @@ class CalendarView(private val movie: ResponseMovieDetail) : DialogFragment() {
         val inflater = activity?.layoutInflater
         val view = inflater?.inflate(R.layout.fragment_calendar, null, false)
         calendar = view?.findViewById(R.id.calendar_view)
+
+        calendar?.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            run {
+                currentDate = Calendar.getInstance()
+                currentDate.set(year,month , dayOfMonth)
+            }
+        }
 
         val builder = context?.let { AlertDialog.Builder(it) }
 
@@ -101,17 +105,14 @@ class CalendarView(private val movie: ResponseMovieDetail) : DialogFragment() {
 
     private fun addCalendarEvent() {
         calendar?.let{
-            val selectedDate = it.date
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = selectedDate
-
             val insertCalendarIntent = Intent(Intent.ACTION_INSERT)
                 .setData(CalendarContract.Events.CONTENT_URI)
-                .putExtra(CalendarContract.Events.TITLE, movie.originalTitle)
-                .putExtra(CalendarContract.Events.DESCRIPTION,movie.overview)
+                .putExtra(CalendarContract.Events.TITLE, movie?.originalTitle)
+                .putExtra(CalendarContract.Events.DESCRIPTION,movie?.overview)
                 .putExtra(CalendarContract.Events.EVENT_LOCATION, "Home")
-                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, calendar.timeInMillis)
-                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, calendar.timeInMillis+ movie.runtime!!)
+                .putExtra(CalendarContract.EXTRA_EVENT_ALL_DAY, false)
+                .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, currentDate.timeInMillis)
+                .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, currentDate.timeInMillis + movie?.runtime!!)
 
             startActivity(insertCalendarIntent)
         }
