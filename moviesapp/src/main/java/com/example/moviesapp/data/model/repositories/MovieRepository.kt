@@ -2,6 +2,7 @@ package com.example.moviesapp.model.repositories
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import com.example.moviesapp.data.MovieNotifications
 import com.example.moviesapp.model.entities.favourite.FavouriteMovie
 import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
@@ -26,6 +27,12 @@ class MovieRepository(applicationContext: Context , val language : String) : Rep
     private val moviesDataDetail = db.moviesDaoDetail
     private val moviesDataCast = db.moviesDaoCast
     private val moviesDataFavourite = db.moviesDaoFavourite
+
+    val movieNotifications = MovieNotifications(context=applicationContext)
+
+    init{
+        movieNotifications.initialize()
+    }
 
     override suspend fun getPopularMovies(page: String) = withContext(dispatcher) {
         RetrofitModule.apiMovies.getPopularMovies(page = page,language=language).results

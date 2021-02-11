@@ -114,7 +114,7 @@ fun List<ResultNowPlayong>.nowPlayongToResult(): List<Result> {
     return newResult
 }
 
-fun ResultNowPlayong.toResult() =Result(
+fun ResultNowPlayong.toResult() : Result=Result(
     adult = this.adult,
     backdropPath =this.backdropPath,
     genreIDS = this.genreIDS,
@@ -132,7 +132,7 @@ fun ResultNowPlayong.toResult() =Result(
     voteCount = this.voteCount
 )
 
-fun ResultTopRated.toResult() =Result(
+fun ResultTopRated.toResult(): Result =Result(
     adult = this.adult,
     backdropPath =this.backdropPath,
     genreIDS = this.genreIDS,
@@ -151,7 +151,7 @@ fun ResultTopRated.toResult() =Result(
 )
 
 
-fun ResultUpComing.toResult() =Result(
+fun ResultUpComing.toResult(): Result =Result(
     adult = this.adult,
     backdropPath =this.backdropPath,
     genreIDS = this.genreIDS,

@@ -2,9 +2,11 @@ package com.example.moviesapp.model.repositories
 
 import androidx.work.Constraints
 import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
 import androidx.work.PeriodicWorkRequest
 import com.example.moviesapp.storage.workmanger.WorkerMovie
 import java.util.concurrent.TimeUnit
+
 
 class WorkerRepository : RepositoryForWorker {
 
@@ -13,10 +15,12 @@ class WorkerRepository : RepositoryForWorker {
         .setRequiresCharging(true)
         .build()
 
+
     override val request = PeriodicWorkRequest
-        .Builder(WorkerMovie::class.java, 8, TimeUnit.HOURS,7,TimeUnit.HOURS)
+        .Builder(WorkerMovie::class.java, 16, TimeUnit.MINUTES, 15 , TimeUnit.MINUTES)
         .setConstraints(constraints)
         .build()
+
 
 
 }

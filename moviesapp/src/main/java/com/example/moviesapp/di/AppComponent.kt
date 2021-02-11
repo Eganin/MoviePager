@@ -1,5 +1,6 @@
 package com.example.moviesapp.di
 
+import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -20,6 +21,7 @@ class AppComponent(context: Context) {
             MoviesListViewModel::class.java
         )
     }
+
 
     fun getMoviesDetailsViewModel(fragment: Fragment): MoviesDetailsViewModel {
         return ViewModelProvider(fragment, MoviesDetailsViewModel.Factory(movieRepository)).get(

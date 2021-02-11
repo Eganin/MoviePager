@@ -5,6 +5,7 @@ import androidx.core.app.NotificationManagerCompat
 import com.example.moviesapp.model.entities.movies.popular.results.Result
 import android.content.Context
 import android.content.Intent
+import androidx.annotation.WorkerThread
 import androidx.core.app.*
 import androidx.core.app.NotificationManagerCompat.IMPORTANCE_HIGH
 import androidx.core.net.toUri
@@ -15,7 +16,6 @@ import com.example.moviesapp.screens.movies.MainActivity
 interface Notifications {
     fun initialize()
     fun showNotification(movie: Result)
-    fun dismissNotification(movieId: Long)
 }
 
 class MovieNotifications(private val context: Context) : Notifications {
@@ -32,6 +32,7 @@ class MovieNotifications(private val context: Context) : Notifications {
         }
     }
 
+    @WorkerThread
     override fun showNotification(movie: Result) {
         val uri = "https://moviesapp.example.com/movie/${movie.id}".toUri()
 
@@ -54,9 +55,6 @@ class MovieNotifications(private val context: Context) : Notifications {
 
         notificationManager.notify(MOVIE_TAG , movie.id.toInt() ,notificationBuilder.build())
     }
-
-    override fun dismissNotification(movieId: Long) =
-        notificationManager.cancel(MOVIE_TAG, movieId.toInt())
 
     companion object {
         private const val CHANNEL_MOVIES = "channel_movies"
