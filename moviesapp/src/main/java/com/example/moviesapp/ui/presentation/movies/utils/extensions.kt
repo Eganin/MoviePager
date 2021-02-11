@@ -113,3 +113,58 @@ fun List<ResultNowPlayong>.nowPlayongToResult(): List<Result> {
 
     return newResult
 }
+
+fun ResultNowPlayong.toResult() =Result(
+    adult = this.adult,
+    backdropPath =this.backdropPath,
+    genreIDS = this.genreIDS,
+    idDb = this.idDb,
+    id = this.id,
+    originalLanguage = this.originalLanguage,
+    originalTitle = this.originalTitle,
+    overview = this.overview,
+    popularity = this.popularity,
+    posterPath = this.posterPath,
+    releaseDate = this.releaseDate,
+    title = this.title,
+    video = this.video,
+    voteAverage = this.voteAverage,
+    voteCount = this.voteCount
+)
+
+fun ResultTopRated.toResult() =Result(
+    adult = this.adult,
+    backdropPath =this.backdropPath,
+    genreIDS = this.genreIDS,
+    idDb = this.idDb,
+    id = this.id,
+    originalLanguage = this.originalLanguage,
+    originalTitle = this.originalTitle,
+    overview = this.overview,
+    popularity = this.popularity,
+    posterPath = this.posterPath,
+    releaseDate = this.releaseDate,
+    title = this.title,
+    video = this.video,
+    voteAverage = this.voteAverage,
+    voteCount = this.voteCount
+)
+
+
+fun ResultUpComing.toResult() =Result(
+    adult = this.adult,
+    backdropPath =this.backdropPath,
+    genreIDS = this.genreIDS,
+    idDb = this.idDb,
+    id = this.id,
+    originalLanguage = this.originalLanguage,
+    originalTitle = this.originalTitle,
+    overview = this.overview,
+    popularity = this.popularity,
+    posterPath = this.posterPath,
+    releaseDate = this.releaseDate,
+    title = this.title,
+    video = this.video,
+    voteAverage = this.voteAverage,
+    voteCount = this.voteCount
+)
