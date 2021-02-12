@@ -25,7 +25,11 @@ import com.example.moviesapp.presentation.movies.utils.imageOptionMovie
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesDetailsViewModel
 import com.example.moviesapp.ui.presentation.movies.view.details.CalendarView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
+import android.util.Log
 
 
 class FragmentMoviesDetails : Fragment() {
@@ -33,6 +37,7 @@ class FragmentMoviesDetails : Fragment() {
     private lateinit var viewModel: MoviesDetailsViewModel
 
     private var configuration: Images? = null
+    private val scope = CoroutineScope(Dispatchers.IO)
 
     private lateinit var adapter: ActorsAdapter
     private var ageRating: AppCompatTextView? = null
@@ -42,7 +47,7 @@ class FragmentMoviesDetails : Fragment() {
     private var storyLine: AppCompatTextView? = null
     private var detailPoster: AppCompatImageView? = null
     private var progressBar: ProgressBar? = null
-    private var calendarView : ImageButton? = null
+    private var calendarView: ImageButton? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,9 +85,14 @@ class FragmentMoviesDetails : Fragment() {
         }
 
         calendarView?.setOnClickListener {
-            viewModel.info.observe(viewLifecycleOwner) {
-                CalendarView(movie=it)
-                    .show(this@FragmentMoviesDetails.parentFragmentManager,"CALENDAR")
+            scope.launch {
+                arguments?.getLong(SAVE_MOVIE_DATA_KEY)?.let {
+                    val data = (requireActivity().application as MovieApp)
+                        .myComponent.getMovieRepository().getDetailMovieById(id = it)
+
+                    CalendarView(movie=data)
+                        .show(this@FragmentMoviesDetails.parentFragmentManager, "CALENDAR")
+                }
             }
         }
 
@@ -181,6 +191,7 @@ class FragmentMoviesDetails : Fragment() {
         }
 
     }
+
     companion object {
         fun newInstance(
             movieId: Long,

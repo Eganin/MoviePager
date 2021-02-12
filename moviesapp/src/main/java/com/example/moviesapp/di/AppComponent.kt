@@ -8,6 +8,7 @@ import com.example.moviesapp.model.repositories.MovieRepository
 import com.example.moviesapp.model.repositories.WorkerRepository
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesDetailsViewModel
 import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
+import com.example.moviesapp.ui.presentation.movies.viewmodel.CalendarViewModel
 import java.util.*
 
 class AppComponent(context: Context) {
@@ -26,6 +27,12 @@ class AppComponent(context: Context) {
     fun getMoviesDetailsViewModel(fragment: Fragment): MoviesDetailsViewModel {
         return ViewModelProvider(fragment, MoviesDetailsViewModel.Factory(movieRepository)).get(
             MoviesDetailsViewModel::class.java
+        )
+    }
+
+    fun getCalendarViewModel(fragment : Fragment) : CalendarViewModel {
+        return ViewModelProvider(fragment, CalendarViewModel.Factory()).get(
+            CalendarViewModel::class.java
         )
     }
 

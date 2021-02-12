@@ -4,10 +4,8 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
-import com.example.moviesapp.model.network.RetrofitModule
 import com.example.moviesapp.model.repositories.MovieRepository
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 
 class MoviesDetailsViewModel(private val repository: MovieRepository) : ViewModel() {
 
