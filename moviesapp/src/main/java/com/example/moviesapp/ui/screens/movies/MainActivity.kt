@@ -1,7 +1,10 @@
 package com.example.moviesapp.screens.movies
 
+import android.content.ContentResolver
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.provider.CalendarContract
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.moviesapp.R
@@ -14,10 +17,12 @@ import com.example.moviesapp.presentation.movies.view.list.MoviesAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 class MainActivity : AppCompatActivity(), Router, MoviesAdapter.OnClickPoster {
 
     private val scope = CoroutineScope(Dispatchers.IO)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
