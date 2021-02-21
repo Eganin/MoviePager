@@ -6,24 +6,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ProgressBar
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviesapp.R
 import com.example.moviesapp.application.MovieApp
+import com.example.moviesapp.databinding.FragmentMoviesDetailsBinding
 import com.example.moviesapp.model.entities.configuration.Images
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.presentation.movies.utils.imageOptionMovie
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
-import com.example.moviesapp.presentation.movies.view.details.ActorsAdapter
-import com.example.moviesapp.ui.presentation.movies.view.BaseFragment
 import com.example.moviesapp.ui.presentation.movies.viewmodel.MoviesDetailsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,28 +27,24 @@ import kotlinx.coroutines.launch
 import java.util.*
 
 
-class FragmentMoviesDetails : BaseFragment() {
+class FragmentMoviesDetails : Fragment() {
 
     private lateinit var viewModel: MoviesDetailsViewModel
-
     private var configuration: Images? = null
     private val scope = CoroutineScope(Dispatchers.IO)
-
     private lateinit var adapter: ActorsAdapter
-    private var ageRating: AppCompatTextView? = null
-    private var titleMovie: AppCompatTextView? = null
-    private var tagLine: AppCompatTextView? = null
-    private var reviewsCount: AppCompatTextView? = null
-    private var storyLine: AppCompatTextView? = null
-    private var detailPoster: AppCompatImageView? = null
-    private var progressBar: ProgressBar? = null
-    private var calendarView: ImageButton? = null
+
+    private var _binding : FragmentMoviesDetailsBinding? = null
+    private val binding get()= _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_movies_details, container, false)
+    ): View?{
+        _binding = FragmentMoviesDetailsBinding.inflate(inflater, container, false)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -68,22 +60,21 @@ class FragmentMoviesDetails : BaseFragment() {
         }
         viewModel.startLoadingData()
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
-        viewModel.info.observe(viewLifecycleOwner) { bindViews(view = view, data = it) }
+        viewModel.info.observe(viewLifecycleOwner, this::bindViews)
         viewModel.credits.observe(viewLifecycleOwner) {
             adapter.bindActors(newActors = it.cast)
             adapter.notifyDataSetChanged()
         }
 
-        setupViews(view = view)
-        setupRecyclerView(view = view)
-        view.findViewById<AppCompatTextView>(R.id.back_activity).setOnClickListener {
+        setupRecyclerView()
+        binding.backActivity.setOnClickListener {
             activity?.onBackPressed()
         }
-        view.findViewById<AppCompatTextView>(R.id.back_activity_path).setOnClickListener {
+        binding.backActivityPath.setOnClickListener {
             activity?.onBackPressed()
         }
 
-        calendarView?.setOnClickListener {
+        binding.setDate.setOnClickListener {
             scope.launch {
                 arguments?.getLong(SAVE_MOVIE_DATA_KEY)?.let {
                     val data = (requireActivity().application as MovieApp)
@@ -113,60 +104,44 @@ class FragmentMoviesDetails : BaseFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        detailPoster = null
-        ageRating = null
-        titleMovie = null
-        tagLine = null
-        reviewsCount = null
-        storyLine = null
+        _binding=null
     }
 
     private fun setStateLoading(state: Boolean) {
-        progressBar?.isVisible = state
+        binding.progressBarDetails.isVisible = state
     }
 
-    private fun setupViews(view: View) {
-        detailPoster = view.findViewById(R.id.detail_poster)
-        ageRating = view.findViewById(R.id.pg)
-        titleMovie = view.findViewById(R.id.title_movie)
-        tagLine = view.findViewById(R.id.tag_line)
-        reviewsCount = view.findViewById(R.id.reviews_count)
-        storyLine = view.findViewById(R.id.storyline_description)
-        progressBar = view.findViewById(R.id.progress_bar_details)
-        calendarView = view.findViewById(R.id.set_date)
-    }
 
-    private fun setupRecyclerView(view: View) {
-        val recyclerView = view.findViewById<RecyclerView>(R.id.actors_recycler_view)
-        recyclerView.layoutManager =
+    private fun setupRecyclerView() {
+        binding.actorsRecyclerView.layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recyclerView.adapter = adapter
+        binding.actorsRecyclerView.adapter = adapter
         adapter.notifyDataSetChanged()
     }
 
     @SuppressLint("SetTextI18n")
-    private fun bindViews(view: View, data: ResponseMovieDetail) {
+    private fun bindViews(data: ResponseMovieDetail) {
         val localize = Locale.getDefault().language
-        ageRating?.text = if (data.adult == true) "+18" else "+16"
-        titleMovie?.text = data.title
+        binding.pg.text = if (data.adult == true) "+18" else "+16"
+        binding.titleMovie.text = data.title
         val genres = data.genres?.filter { it != null }
-        tagLine?.text = genres?.joinToString(separator = " , ") { it.name ?: "" }
-        reviewsCount?.text =
+        binding.tagLine.text = genres?.joinToString(separator = " , ") { it.name ?: "" }
+        binding.reviewsCount.text =
             if (localize == "english") "${data.voteCount} reviews" else "${data.voteCount} обзоров"
-        storyLine?.text = data.overview
-        downloadPoster(detailPoster = detailPoster, data = data)
-        bindStars(view = view, countRating = (data.voteAverage?.div(2))?.toInt() ?: 0)
+        binding.storylineDescription.text = data.overview
+        downloadPoster( data = data)
+        bindStars(countRating = (data.voteAverage?.div(2))?.toInt() ?: 0)
 
 
     }
 
-    private fun bindStars(view: View, countRating: Int) {
-        val listStarsRating = listOf<AppCompatImageView>(
-            view.findViewById(R.id.star_one),
-            view.findViewById(R.id.star_two),
-            view.findViewById(R.id.star_three),
-            view.findViewById(R.id.star_four),
-            view.findViewById(R.id.star_five)
+    private fun bindStars(countRating: Int) {
+        val listStarsRating = listOf(
+            binding.starOne as AppCompatImageView,
+            binding.starTwo as AppCompatImageView,
+            binding.starThree as AppCompatImageView,
+            binding.starFour as AppCompatImageView,
+            binding.starFive as AppCompatImageView,
         )
         for (i in 0 until countRating) {
             listStarsRating[i].setImageDrawable(
@@ -178,15 +153,15 @@ class FragmentMoviesDetails : BaseFragment() {
         }
     }
 
-    private fun downloadPoster(detailPoster: AppCompatImageView?, data: ResponseMovieDetail) {
-        if (detailPoster != null) {
+    private fun downloadPoster( data: ResponseMovieDetail) {
+        if (binding.detailPoster != null) {
             Glide.with(requireContext())
-                .clear(detailPoster)
+                .clear(binding.detailPoster)
 
             Glide.with(requireContext())
                 .load(configuration?.baseURL + (configuration?.backdropSizes?.get(3)) + data.backdropPath)
                 .apply(imageOptionMovie)
-                .into(detailPoster)
+                .into(binding.detailPoster)
         }
 
     }

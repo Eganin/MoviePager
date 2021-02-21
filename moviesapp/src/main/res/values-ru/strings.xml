@@ -31,4 +31,11 @@
     <string name="search">Search</string>
     <string name="search_value">Search</string>
     <string name="search_text">Введите название фильма чтобы найти его</string>
+    <string name="select_movie">Введите дату просмотра фильма</string>
+    <string name="yes_dialog">Да</string>
+    <string name="no_dialog">Нет</string>
+    <string name="access_text">Чтобы продолжить ,примите соглашение календаря</string>
+    <string name="ok_dialog">OK</string>
+    <string name="cancel_dialog">Отменить</string>
+    <string name="error_message">Произошла ошибка на сервере</string>
 </resources>

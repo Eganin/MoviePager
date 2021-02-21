@@ -9,8 +9,8 @@ import com.example.moviesapp.application.MovieApp
 import com.example.moviesapp.presentation.movies.utils.routing.Router
 import com.example.moviesapp.model.entities.configuration.Images
 import com.example.moviesapp.ui.presentation.movies.view.details.FragmentMoviesDetails
-import com.example.moviesapp.presentation.movies.view.list.FragmentMoviesList
-import com.example.moviesapp.presentation.movies.view.list.MoviesAdapter
+import com.example.moviesapp.ui.presentation.movies.view.list.FragmentMoviesList
+import com.example.moviesapp.ui.presentation.movies.view.list.MoviesAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

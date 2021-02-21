@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.example.moviesapp.R
 import com.example.moviesapp.application.MovieApp
+import com.example.moviesapp.databinding.FragmentCalendarBinding
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.ui.presentation.movies.utils.getDate
 import com.example.moviesapp.ui.presentation.movies.viewmodel.CalendarViewModel
@@ -28,9 +29,9 @@ class CalendarView(private val movie: ResponseMovieDetail? = null) : DialogFragm
 
     private var calendar: CalendarView? = null
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
-    private var data : ResponseMovieDetail?= null
+    private var data: ResponseMovieDetail? = null
 
-    private val viewModel : CalendarViewModel by lazy{
+    private val viewModel: CalendarViewModel by lazy {
         (requireContext().applicationContext as MovieApp).myComponent.getCalendarViewModel(fragment = this@CalendarView)
     }
 
@@ -39,19 +40,18 @@ class CalendarView(private val movie: ResponseMovieDetail? = null) : DialogFragm
         super.onAttach(context)
         requestPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestPermission()
-        ){}
+        ) {}
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val inflater = activity?.layoutInflater
-        val view = inflater?.inflate(R.layout.fragment_calendar, null, false)
-        calendar = view?.findViewById(R.id.calendar_view)
-
+        val view = FragmentCalendarBinding.inflate(inflater!!)
+        calendar = view.calendarView
         calendarSetDate()
 
         calendar?.setOnDateChangeListener { _, year, month, dayOfMonth ->
             run {
-                arguments = Bundle().apply{
+                arguments = Bundle().apply {
                     putInt(SAVE_YEAR_DATE, year)
                     putInt(SAVE_DAY_DATE, dayOfMonth)
                     putInt(SAVE_MONTH_DATE, month)
@@ -63,7 +63,7 @@ class CalendarView(private val movie: ResponseMovieDetail? = null) : DialogFragm
 
         builder?.let {
             it.setTitle(getString(R.string.select_movie))
-                .setView(view)
+                .setView(view.root)
                 .setPositiveButton(
                     getString(R.string.yes_dialog)
                 ) { dialog, _ ->
@@ -75,9 +75,9 @@ class CalendarView(private val movie: ResponseMovieDetail? = null) : DialogFragm
                 .setNegativeButton(getString(R.string.no_dialog)) { dialog, _ -> dialog.cancel() }
         }
 
-        try{
+        try {
             viewModel.startView(data = movie!!)
-        }catch (e: NullPointerException){
+        } catch (e: NullPointerException) {
             e.printStackTrace()
         }
         viewModel.movie.observe(this, { data = it })
@@ -86,27 +86,23 @@ class CalendarView(private val movie: ResponseMovieDetail? = null) : DialogFragm
     }
 
 
-    private fun calendarSetDate(){
+    private fun calendarSetDate() {
         val month = arguments?.getInt(SAVE_MONTH_DATE)
         val day = arguments?.getInt(SAVE_DAY_DATE)
         val year = arguments?.getInt(SAVE_YEAR_DATE)
 
-        calendar?.date =  getDate(year = year, month = month, day = day).timeInMillis
+        calendar?.date = getDate(year = year, month = month, day = day).timeInMillis
     }
 
     private fun checkPermissionsCalendar() {
         activity?.let {
             when {
                 ContextCompat.checkSelfPermission(it, Manifest.permission.WRITE_CALENDAR)
-                        == PackageManager.PERMISSION_GRANTED-> {addCalendarEvent();Log.d(
-                    "PERMISSION",
-                    "granted"
-                )}
+                        == PackageManager.PERMISSION_GRANTED -> addCalendarEvent()
 
-                shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CALENDAR) ->
-                {showPermissionExplanation();Log.d("PERMISSION", "nogranted")}
+                shouldShowRequestPermissionRationale(Manifest.permission.WRITE_CALENDAR) -> showPermissionExplanation()
 
-                else -> {requestPermissions();Log.d("PERMISSION", "request")}
+                else -> requestPermissions()
 
             }
         }
@@ -132,8 +128,7 @@ class CalendarView(private val movie: ResponseMovieDetail? = null) : DialogFragm
     }
 
     private fun addCalendarEvent() {
-        Log.d("DATA", data?.title.toString())
-        calendar?.let{
+        calendar?.let {
 
             val month = arguments?.getInt(SAVE_MONTH_DATE)
             val day = arguments?.getInt(SAVE_DAY_DATE)

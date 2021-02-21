@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
@@ -18,24 +19,18 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.work.WorkManager
 import com.example.moviesapp.R
 import com.example.moviesapp.application.MovieApp
+import com.example.moviesapp.databinding.FragmentMoviesListBinding
 import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.presentation.movies.utils.*
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
-import com.example.moviesapp.presentation.movies.view.list.MoviesAdapter
-import com.example.moviesapp.ui.presentation.movies.view.BaseFragment
 import com.example.moviesapp.ui.presentation.movies.viewmodel.MovieDataType
 import com.example.moviesapp.ui.presentation.movies.viewmodel.MoviesListViewModel
 import kotlinx.coroutines.launch
 
-class FragmentPager : BaseFragment() {
+class FragmentPager : Fragment() {
 
-    private var recycler: RecyclerView? = null
-    private var progressBar: ProgressBar? = null
-    private var sortedMoviesText: TextView? = null
-    private var sortedMoviesImage: ImageView? = null
-    private var searchImage: ImageView? = null
-    private var searchEditText: EditText? = null
-    private var searchText: TextView? = null
+    private var _binding : FragmentMoviesListBinding?= null
+    private val binding get() = _binding!!
 
     private lateinit var viewModel: MoviesListViewModel
     private lateinit var adapter: MoviesAdapter
@@ -44,21 +39,24 @@ class FragmentPager : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_movies_list, container, false)
+    ): View?{
+        _binding = FragmentMoviesListBinding.inflate(inflater, container, false)
+        return _binding?.root
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUI(view = view)
+        setupUI()
         viewModel.moviesList.observe(viewLifecycleOwner, this::updateAdapter)
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
-        viewModel.error.observe(viewLifecycleOwner,this::showToast)
+        viewModel.error.observe(viewLifecycleOwner, this::showToast)
 
-        if (sortedMoviesText?.text == getText(R.string.search_value)) {
+        if (binding.moviesListLabel.text == getText(R.string.search_value)) {
             setupSearching()
         } else if (!hasConnection(context = requireContext()) && adapter.size() == 0) {
             observeValueFromDb()
-        } else if (sortedMoviesText?.text != getText(R.string.search_value) && hasConnection(context = requireContext())) {
+        } else if (binding.moviesListLabel.text != getText(R.string.search_value) && hasConnection(context = requireContext())) {
             downloadNotDb(savedInstanceState = savedInstanceState)
         }
         val workerRepository =
@@ -82,18 +80,22 @@ class FragmentPager : BaseFragment() {
     override fun onDetach() {
         super.onDetach()
         adapter.onClickPoster = null
-        recycler = null
-        progressBar = null
-        sortedMoviesImage = null
-        sortedMoviesText = null
-        searchImage = null
-        searchText = null
+        _binding=null
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        recycler?.adapter = null
-        recycler = null
+        binding.moviesRecyclerView.adapter = null
+    }
+
+    private fun showToast(state: Boolean) {
+        if (!state) {
+            Toast.makeText(
+                requireContext(),
+                getString(R.string.error_message),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
     private fun observeValueFromDb() =
@@ -129,7 +131,7 @@ class FragmentPager : BaseFragment() {
 
 
     private fun bind(value: String, saveInstance: Bundle?) {
-        sortedMoviesText?.text = value
+        binding.moviesListLabel.text = value
         prepareData()
         if (saveInstance == null) {
             downloadData()
@@ -139,13 +141,13 @@ class FragmentPager : BaseFragment() {
     private fun setupSearching() {
         prepareData()
         CounterSearch.count = 0
-        searchImage?.isVisible = true
-        searchEditText?.isVisible = true
-        progressBar?.isVisible = false
-        searchText?.isVisible = true
+        binding.searchImage.isVisible = true
+        binding.searchEditText.isVisible = true
+        binding.progressBarMoviesList.isVisible = false
+        binding.searchText.isVisible = true
 
-        searchEditText?.afterTextChanged {
-            searchText?.isVisible = false
+        binding.searchEditText.afterTextChanged {
+            binding.searchText.isVisible = false
             if (it.isNotEmpty()) {
                 Handler().postDelayed({
                     CounterSearch.count = 0
@@ -156,7 +158,7 @@ class FragmentPager : BaseFragment() {
                     }
                 }, 2000)
             } else {
-                searchText?.isVisible = true
+                binding.searchText.isVisible = true
                 adapter.clearMovies()
             }
 
@@ -165,13 +167,13 @@ class FragmentPager : BaseFragment() {
 
     private fun prepareData() {
         val bundle = Bundle()
-        bundle.putString(SAVE_SORTED_TYPE, (sortedMoviesText?.text ?: "Popular").toString())
+        bundle.putString(SAVE_SORTED_TYPE, (binding.moviesListLabel.text ?: "Popular").toString())
         arguments = bundle
         adapter.type = getTypeMovies()
-        adapter.query = searchEditText?.text.toString().trim()
+        adapter.query = binding.searchEditText.text.toString().trim()
     }
 
-    private fun getTypeMovies() = when (sortedMoviesText?.text.toString().trim()) {
+    private fun getTypeMovies() = when (binding.moviesListLabel.text.toString().trim()) {
         getString(R.string.popular) -> MovieDataType.POPULAR
         getString(R.string.top_rated_text) -> MovieDataType.TOP_RATED
         getString(R.string.now_playong) -> MovieDataType.NOW_PLAYING
@@ -182,50 +184,41 @@ class FragmentPager : BaseFragment() {
 
 
     private fun setStateLoading(state: Boolean) {
-        progressBar?.isVisible = state
+        binding.progressBarMoviesList.isVisible = state
     }
 
     private fun downloadData() {
-        when (sortedMoviesText?.text) {
+        when (binding.moviesListLabel.text) {
             getString(R.string.popular) -> viewModel.loadDataModel(type = MovieDataType.POPULAR)
             getString(R.string.top_rated_text) -> viewModel.loadDataModel(type = MovieDataType.TOP_RATED)
             getString(R.string.now_playong) -> viewModel.loadDataModel(type = MovieDataType.NOW_PLAYING)
             getString(R.string.up_coming) -> viewModel.loadDataModel(type = MovieDataType.UP_COMING)
             getString(R.string.search_value) -> viewModel.loadDataModel(
                 type = MovieDataType.SEARCH,
-                query = searchEditText?.text.toString().trim()
+                query = binding.searchEditText.text.toString().trim()
             )
         }
     }
 
 
-    private fun setupUI(view: View) {
-        recycler = view.findViewById(R.id.movies_recycler_view)
-        progressBar = view.findViewById(R.id.progress_bar_movies_list)
-        sortedMoviesImage = view.findViewById(R.id.shape_for_movies_label)
-        sortedMoviesText = view.findViewById(R.id.movies_list_label)
-        searchImage = view.findViewById(R.id.search_image)
-        searchEditText = view.findViewById(R.id.search_edit_text)
-        searchText = view.findViewById(R.id.search_text)
+    private fun setupUI() {
         setupRecyclerView()
-
-        sortedMoviesText?.text = arguments?.getString(SAVE_SORTED_TYPE) ?: "Popular"
-
+        binding.moviesListLabel.text = arguments?.getString(SAVE_SORTED_TYPE) ?: "Popular"
     }
 
     private fun setupRecyclerView() {
-        recycler?.layoutManager = GridLayoutManager(
+        binding.moviesRecyclerView.layoutManager = GridLayoutManager(
             requireContext(), recalculationScreen()
         )
 
-        recycler?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.moviesRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
                     recyclerView.hideKeyboard()
                     try {
-                        searchEditText?.focusable = View.NOT_FOCUSABLE
+                        binding.searchEditText.focusable = View.NOT_FOCUSABLE
                     } catch (e: NoSuchMethodError) {
                         e.printStackTrace()
                     }
@@ -233,7 +226,7 @@ class FragmentPager : BaseFragment() {
             }
         })
 
-        recycler?.adapter = adapter
+        binding.moviesRecyclerView.adapter = adapter
     }
 
     private fun updateAdapter(data: List<Result>) {

@@ -1,4 +1,4 @@
-package com.example.moviesapp.presentation.movies.view.list
+package com.example.moviesapp.ui.presentation.movies.view.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,7 +12,6 @@ import com.example.moviesapp.R
 
 
 class FragmentMoviesList : Fragment() {
-
     private var viewPager: ViewPager? = null
 
     override fun onCreateView(

@@ -1,10 +1,9 @@
-package com.example.moviesapp.presentation.movies.view.list
+package com.example.moviesapp.ui.presentation.movies.view.list
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moviesapp.R
+import com.example.moviesapp.databinding.ViewHolderMovieBinding
 import com.example.moviesapp.ui.presentation.movies.viewmodel.MovieDataType
 import com.example.moviesapp.ui.presentation.movies.viewmodel.MoviesListViewModel
 import com.example.moviesapp.model.entities.configuration.Images
@@ -31,8 +30,7 @@ class MoviesAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         return MovieViewHolder(
-            itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.view_holder_movie, parent, false),
+            itemBinding = ViewHolderMovieBinding.inflate(LayoutInflater.from(parent.context), parent, false),
             listener = onClickPoster,
             viewModel = viewModel,
             repository = repository
@@ -45,12 +43,8 @@ class MoviesAdapter(
         holder.onBind(movie = movies[position])
         if (position >= movies.size.minus(4) && movies.size >= 20 &&
             hasConnection(context = holder.itemView.context)
-        ) {
-            Log.d("AASA", "AAAAAAAAAAAAAAAAAAAAAAA")
+        ) viewModel.loadMovies(type = type)
 
-            viewModel.loadMovies(type = type)
-        }
-        //CounterOrientation.count++
     }
 
 

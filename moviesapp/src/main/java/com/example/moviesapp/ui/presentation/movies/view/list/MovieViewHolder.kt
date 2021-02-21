@@ -1,13 +1,12 @@
-package com.example.moviesapp.presentation.movies.view.list
+package com.example.moviesapp.ui.presentation.movies.view.list
 
 import android.annotation.SuppressLint
-import android.view.View
 import androidx.appcompat.widget.AppCompatImageView
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviesapp.R
+import com.example.moviesapp.databinding.ViewHolderMovieBinding
 import com.example.moviesapp.model.entities.favourite.FavouriteMovie
 import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.model.repositories.MovieRepository
@@ -19,12 +18,12 @@ import kotlinx.coroutines.launch
 
 
 class MovieViewHolder(
-    itemView: View,
-    val listener: MoviesAdapter.OnClickPoster?,
-    val viewModel: MoviesListViewModel,
-    val repository: MovieRepository
+    private val itemBinding: ViewHolderMovieBinding,
+    private val listener: MoviesAdapter.OnClickPoster?,
+    private val viewModel: MoviesListViewModel,
+    private val repository: MovieRepository
 ) :
-    RecyclerView.ViewHolder(itemView) {
+    RecyclerView.ViewHolder(itemBinding.root) {
 
     private val scope = CoroutineScope(Dispatchers.IO)
     private val uiScope = CoroutineScope(Dispatchers.Main)
@@ -32,32 +31,23 @@ class MovieViewHolder(
     private val configuration = viewModel.configuration
     private val genres = viewModel.genreList
 
-    private val pgMovie = itemView.findViewById<AppCompatTextView>(R.id.pg_movie)
-    private val favouriteImage = itemView.findViewById<AppCompatImageView>(R.id.favourite_image)
-    private val imagePoster = itemView.findViewById<AppCompatImageView>(R.id.movie_poster)
-    private val tagLine = itemView.findViewById<AppCompatTextView>(R.id.tag_line_movie)
-    private val countReviews = itemView.findViewById<AppCompatTextView>(R.id.reviews_count_movie)
-    private val title = itemView.findViewById<AppCompatTextView>(R.id.title_movie)
-
-    //private val timeLine = itemView.findViewById<AppCompatTextView>(R.id.time_film)
-    private val listStarsRating = listOf<AppCompatImageView>(
-        itemView.findViewById(R.id.star_one_movie),
-        itemView.findViewById(R.id.star_two_movie),
-        itemView.findViewById(R.id.star_three_movie),
-        itemView.findViewById(R.id.star_four_movie),
-        itemView.findViewById(R.id.star_five_movie)
+    private val listStarsRating = listOf(
+        itemBinding.starOneMovie as AppCompatImageView,
+        itemBinding.starTwoMovie as AppCompatImageView,
+        itemBinding.starThreeMovie as AppCompatImageView,
+        itemBinding.starFourMovie as AppCompatImageView,
+        itemBinding.starFiveMovie as AppCompatImageView,
     )
 
     @SuppressLint("SetTextI18n")
     fun onBind(movie: Result) {
         setClickListener(movie = movie)
-        title.text = movie.title
-        pgMovie.text = if (movie.adult == true) "+18" else "+16"
-        tagLine.text = genres?.genres?.filter { movie.genreIDS?.contains(it.id) ?: false }
+        itemBinding.titleMovie.text = movie.title
+        itemBinding.pgMovie.text = if (movie.adult == true) "+18" else "+16"
+        itemBinding.tagLineMovie.text = genres?.genres?.filter { movie.genreIDS?.contains(it.id) ?: false }
             ?.joinToString(separator = " , ") { it.name ?: "" }
 
-        countReviews.text = "${movie.voteCount} reviews"
-        //timeLine.text = "${movie.runtime} MIN"
+        itemBinding.reviewsCountMovie.text = "${movie.voteCount} reviews"
 
         downloadImage(movie = movie)
         bindStars(countRating = (movie.voteAverage?.div(2))?.toInt() ?: 0)
@@ -67,15 +57,15 @@ class MovieViewHolder(
     }
 
     private fun setClickListener(movie: Result) {
-        itemView.apply {
-            setOnClickListener {
+        itemBinding.apply {
+            itemView.setOnClickListener {
                 listener?.createMoviesDetailsFragment(
                     movieId = movie.id,
                     configuration = viewModel.configuration
                 )
             }
         }
-        favouriteImage.apply {
+        itemBinding.favouriteImage.apply {
             setOnClickListener {
                 scope.launch {
                     val favouriteMovie = repository.getFavouriteMovieById(id = movie.id)
@@ -126,14 +116,14 @@ class MovieViewHolder(
 
     private fun paintLike(condition: Boolean) {
         if (condition) {
-            favouriteImage.setImageDrawable(
+            itemBinding.favouriteImage.setImageDrawable(
                 ContextCompat.getDrawable(
                     context,
                     R.drawable.ic_like_positive
                 )
             )
         } else {
-            favouriteImage.setImageDrawable(
+            itemBinding.favouriteImage.setImageDrawable(
                 ContextCompat.getDrawable(
                     context,
                     R.drawable.ic_like
@@ -144,7 +134,7 @@ class MovieViewHolder(
 
     private fun downloadImage(movie: Result) {
         Glide.with(context)
-            .clear(imagePoster)
+            .clear(itemBinding.moviePoster)
 
         Glide.with(context)
             .load(
@@ -152,10 +142,10 @@ class MovieViewHolder(
                     ?: "") + movie.posterPath
             )
             .apply(imageOptionMovie)
-            .into(imagePoster)
+            .into(itemBinding.moviePoster)
     }
 
 }
 
 private val RecyclerView.ViewHolder.context
-    get() = this.itemView.context
+    get() = itemView.context
