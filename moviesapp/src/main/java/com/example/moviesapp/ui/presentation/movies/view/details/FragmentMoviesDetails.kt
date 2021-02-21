@@ -1,4 +1,4 @@
-package com.example.moviesapp.presentation.movies.view.details
+package com.example.moviesapp.ui.presentation.movies.view.details
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,7 +12,6 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,16 +22,16 @@ import com.example.moviesapp.model.entities.configuration.Images
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.presentation.movies.utils.imageOptionMovie
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
-import com.example.moviesapp.presentation.movies.viewmodel.MoviesDetailsViewModel
-import com.example.moviesapp.ui.presentation.movies.view.details.CalendarView
+import com.example.moviesapp.presentation.movies.view.details.ActorsAdapter
+import com.example.moviesapp.ui.presentation.movies.view.BaseFragment
+import com.example.moviesapp.ui.presentation.movies.viewmodel.MoviesDetailsViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
-import android.util.Log
 
 
-class FragmentMoviesDetails : Fragment() {
+class FragmentMoviesDetails : BaseFragment() {
 
     private lateinit var viewModel: MoviesDetailsViewModel
 

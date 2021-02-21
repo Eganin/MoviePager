@@ -1,21 +1,16 @@
-package com.example.moviesapp.presentation.movies.view.list
+package com.example.moviesapp.ui.presentation.movies.view.list
 
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
@@ -26,11 +21,13 @@ import com.example.moviesapp.application.MovieApp
 import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.presentation.movies.utils.*
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
-import com.example.moviesapp.presentation.movies.viewmodel.MovieDataType
-import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
+import com.example.moviesapp.presentation.movies.view.list.MoviesAdapter
+import com.example.moviesapp.ui.presentation.movies.view.BaseFragment
+import com.example.moviesapp.ui.presentation.movies.viewmodel.MovieDataType
+import com.example.moviesapp.ui.presentation.movies.viewmodel.MoviesListViewModel
 import kotlinx.coroutines.launch
 
-class FragmentPager : Fragment() {
+class FragmentPager : BaseFragment() {
 
     private var recycler: RecyclerView? = null
     private var progressBar: ProgressBar? = null
@@ -55,15 +52,17 @@ class FragmentPager : Fragment() {
         setupUI(view = view)
         viewModel.moviesList.observe(viewLifecycleOwner, this::updateAdapter)
         viewModel.state.observe(viewLifecycleOwner, this::setStateLoading)
+        viewModel.error.observe(viewLifecycleOwner,this::showToast)
 
         if (sortedMoviesText?.text == getText(R.string.search_value)) {
             setupSearching()
         } else if (!hasConnection(context = requireContext()) && adapter.size() == 0) {
             observeValueFromDb()
         } else if (sortedMoviesText?.text != getText(R.string.search_value) && hasConnection(context = requireContext())) {
-            downloadNotDb(savedInstanceState=savedInstanceState)
+            downloadNotDb(savedInstanceState = savedInstanceState)
         }
-        val workerRepository = (requireActivity().application as MovieApp).myComponent.getWorkerRepository()
+        val workerRepository =
+            (requireActivity().application as MovieApp).myComponent.getWorkerRepository()
         WorkManager.getInstance(requireContext()).enqueue(workerRepository.request)
     }
 
@@ -114,7 +113,7 @@ class FragmentPager : Fragment() {
             }
         }
 
-    private fun downloadNotDb(savedInstanceState : Bundle?){
+    private fun downloadNotDb(savedInstanceState: Bundle?) {
         when {
             CounterPopular.count == 0 -> viewModel.deleteAllPopularMoviesDB()
             CounterTopRated.count == 0 -> viewModel.deleteAllTopRatedMoviesDB()

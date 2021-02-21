@@ -1,13 +1,16 @@
-package com.example.moviesapp.presentation.movies.viewmodel
+package com.example.moviesapp.ui.presentation.movies.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.moviesapp.model.entities.movies.credits.ResponseCredits
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.model.repositories.MovieRepository
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 class MoviesDetailsViewModel(private val repository: MovieRepository) : ViewModel() {
+
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ -> _error.value = true }
+
+    private val viewScope = CoroutineScope(SupervisorJob() + Dispatchers.Main + exceptionHandler)
 
     private val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> = _state
@@ -18,6 +21,9 @@ class MoviesDetailsViewModel(private val repository: MovieRepository) : ViewMode
     private val _info = MutableLiveData<ResponseMovieDetail>()
     val info: LiveData<ResponseMovieDetail> = _info
 
+    private val _error = MutableLiveData(false)
+    val error: LiveData<Boolean> = _error
+
     fun startLoadingData() {
         _state.value = true
     }
@@ -27,18 +33,18 @@ class MoviesDetailsViewModel(private val repository: MovieRepository) : ViewMode
     }
 
     fun loadDetailData(id: Long) {
-        viewModelScope.launch {
+        viewScope.launch {
             _info.value = repository.getDetailInfoForMovie(movieId = id.toString())
 
             _credits.value = repository.getCreditsForMovie(movieId = id.toString())
         }
     }
 
-    fun loadDetailDataFromDB(id:Long){
-        viewModelScope.launch {
-            _info.value = repository.getDetailMovieById(id=id)
+    fun loadDetailDataFromDB(id: Long) {
+        viewScope.launch {
+            _info.value = repository.getDetailMovieById(id = id)
 
-            _credits.value = repository.getCastMovieById(id=id)
+            _credits.value = repository.getCastMovieById(id = id)
         }
     }
 

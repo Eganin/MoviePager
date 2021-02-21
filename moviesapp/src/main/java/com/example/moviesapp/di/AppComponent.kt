@@ -1,13 +1,12 @@
 package com.example.moviesapp.di
 
-import android.app.Activity
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.moviesapp.model.repositories.MovieRepository
 import com.example.moviesapp.model.repositories.WorkerRepository
-import com.example.moviesapp.presentation.movies.viewmodel.MoviesDetailsViewModel
-import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
+import com.example.moviesapp.ui.presentation.movies.viewmodel.MoviesDetailsViewModel
+import com.example.moviesapp.ui.presentation.movies.viewmodel.MoviesListViewModel
 import com.example.moviesapp.ui.presentation.movies.viewmodel.CalendarViewModel
 import java.util.*
 

@@ -2,6 +2,7 @@ package com.example.moviesapp.presentation.movies.view.list
 
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.example.moviesapp.ui.presentation.movies.view.list.FragmentPager
 
 
 class ViewPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager) {

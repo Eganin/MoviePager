@@ -1,23 +1,19 @@
 package com.example.moviesapp.screens.movies
 
-import android.content.ContentResolver
-import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
-import android.provider.CalendarContract
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.moviesapp.R
 import com.example.moviesapp.application.MovieApp
 import com.example.moviesapp.presentation.movies.utils.routing.Router
 import com.example.moviesapp.model.entities.configuration.Images
-import com.example.moviesapp.presentation.movies.view.details.FragmentMoviesDetails
+import com.example.moviesapp.ui.presentation.movies.view.details.FragmentMoviesDetails
 import com.example.moviesapp.presentation.movies.view.list.FragmentMoviesList
 import com.example.moviesapp.presentation.movies.view.list.MoviesAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.*
 
 class MainActivity : AppCompatActivity(), Router, MoviesAdapter.OnClickPoster {
 

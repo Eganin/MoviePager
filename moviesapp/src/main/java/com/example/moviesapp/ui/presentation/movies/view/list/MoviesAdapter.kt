@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moviesapp.R
-import com.example.moviesapp.presentation.movies.viewmodel.MovieDataType
-import com.example.moviesapp.presentation.movies.viewmodel.MoviesListViewModel
+import com.example.moviesapp.ui.presentation.movies.viewmodel.MovieDataType
+import com.example.moviesapp.ui.presentation.movies.viewmodel.MoviesListViewModel
 import com.example.moviesapp.model.entities.configuration.Images
 import com.example.moviesapp.model.entities.movies.popular.results.Result
 import com.example.moviesapp.model.repositories.MovieRepository

@@ -1,6 +1,5 @@
-package com.example.moviesapp.presentation.movies.viewmodel
+package com.example.moviesapp.ui.presentation.movies.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.moviesapp.model.entities.configuration.GenreList
 import com.example.moviesapp.model.entities.configuration.Images
@@ -15,12 +14,20 @@ import kotlinx.coroutines.*
 
 class MoviesListViewModel(private val repository: MovieRepository) :
     ViewModel() {
+
+    private val exceptionHandler = CoroutineExceptionHandler { _, _ -> _error.value = true }
+
+    private val viewScope = CoroutineScope(SupervisorJob() + Dispatchers.Main + exceptionHandler)
+
     private val _moviesList = MutableLiveData<List<Result>>()
     val moviesList: LiveData<List<Result>> = _moviesList
 
 
     private val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> = _state
+
+    private val _error = MutableLiveData(false)
+    val error: LiveData<Boolean> = _error
 
     val popularMovies = repository.getAllMoviesPopular()
     val topRatedMovies = repository.getAllMoviesTopRated()
@@ -34,7 +41,7 @@ class MoviesListViewModel(private val repository: MovieRepository) :
 
 
     fun loadDataModel(type: MovieDataType, query: String? = null) {
-        viewModelScope.launch {
+        viewScope.launch {
             coroutineScope {
                 startLoadingData()
 
@@ -56,7 +63,7 @@ class MoviesListViewModel(private val repository: MovieRepository) :
     fun loadMovies(type: MovieDataType, query: String? = null) {
 
         if (isLoading) {
-            viewModelScope.launch {
+            viewScope.launch {
                 coroutineScope {
                     isLoading = false
                     when (type) {
@@ -121,55 +128,55 @@ class MoviesListViewModel(private val repository: MovieRepository) :
         _state.value = false
     }
 
-    private fun insertPopularMoviesDb(movies: List<Result>) = viewModelScope.launch {
+    private fun insertPopularMoviesDb(movies: List<Result>) = viewScope.launch {
         startLoadingData()
         repository.insertPopularMovies(movies = movies)
         stopLoadingData()
     }
 
-    fun deleteAllPopularMoviesDB() = viewModelScope.launch {
+    fun deleteAllPopularMoviesDB() = viewScope.launch {
         startLoadingData()
         repository.deleteAllPopularMovies()
         stopLoadingData()
     }
 
-    private fun insertTopRatedMoviesDb(movies: List<ResultTopRated>) = viewModelScope.launch {
+    private fun insertTopRatedMoviesDb(movies: List<ResultTopRated>) = viewScope.launch {
         startLoadingData()
         repository.insertTopRatedMovies(movies = movies)
         stopLoadingData()
     }
 
-    fun deleteAllTopRatedMoviesDB() = viewModelScope.launch {
+    fun deleteAllTopRatedMoviesDB() = viewScope.launch {
         startLoadingData()
         repository.deleteAllTopRatedMovies()
         stopLoadingData()
     }
 
-    private fun insertNowPlayongMoviesDb(movies: List<ResultNowPlayong>) = viewModelScope.launch {
+    private fun insertNowPlayongMoviesDb(movies: List<ResultNowPlayong>) = viewScope.launch {
         startLoadingData()
         repository.insertNowPlayongMovies(movies = movies)
         stopLoadingData()
     }
 
-    fun deleteAllTNowPlayongMoviesDB() = viewModelScope.launch {
+    fun deleteAllTNowPlayongMoviesDB() = viewScope.launch {
         startLoadingData()
         repository.deleteAllNowPlayongMovies()
         stopLoadingData()
     }
 
-    private fun insertUpComingMoviesDb(movies: List<ResultUpComing>) = viewModelScope.launch {
+    private fun insertUpComingMoviesDb(movies: List<ResultUpComing>) = viewScope.launch {
         startLoadingData()
         repository.insertUpComingMovies(movies = movies)
         stopLoadingData()
     }
 
-    fun deleteAllTUpComingMoviesDB() = viewModelScope.launch {
+    fun deleteAllTUpComingMoviesDB() = viewScope.launch {
         startLoadingData()
         repository.deleteAllUpComingMovies()
         stopLoadingData()
     }
 
-    private fun saveDetailInfo(movieId: Long) = viewModelScope.launch {
+    private fun saveDetailInfo(movieId: Long) = viewScope.launch {
         val detailMovie = repository.getDetailInfoForMovie(movieId = movieId.toString())
         repository.insertDetailMovie(movie = detailMovie)
     }
