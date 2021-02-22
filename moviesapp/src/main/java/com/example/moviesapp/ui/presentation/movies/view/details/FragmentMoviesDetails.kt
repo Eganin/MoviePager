@@ -21,11 +21,8 @@ import com.example.moviesapp.model.entities.configuration.Images
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.presentation.movies.utils.imageOptionMovie
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
-import com.example.moviesapp.ui.presentation.movies.view.list.FragmentPager
 import com.example.moviesapp.ui.presentation.movies.viewmodel.MoviesDetailsViewModel
 import com.google.android.material.transition.MaterialFade
-import com.google.android.material.transition.platform.MaterialContainerTransform
-import com.google.android.material.transition.platform.MaterialFadeThrough
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

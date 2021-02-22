@@ -14,10 +14,7 @@ import kotlinx.coroutines.*
 
 class MoviesListViewModel(private val repository: MovieRepository) :
     ViewModel() {
-
-    private val exceptionHandler = CoroutineExceptionHandler { _, _ -> _error.value = true }
-
-    private val viewScope = CoroutineScope(SupervisorJob() + Dispatchers.Main + exceptionHandler)
+    private val viewScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     private val _moviesList = MutableLiveData<List<Result>>()
     val moviesList: LiveData<List<Result>> = _moviesList
@@ -25,9 +22,6 @@ class MoviesListViewModel(private val repository: MovieRepository) :
 
     private val _state = MutableLiveData<Boolean>()
     val state: LiveData<Boolean> = _state
-
-    private val _error = MutableLiveData(false)
-    val error: LiveData<Boolean> = _error
 
     val popularMovies = repository.getAllMoviesPopular()
     val topRatedMovies = repository.getAllMoviesTopRated()
@@ -129,51 +123,35 @@ class MoviesListViewModel(private val repository: MovieRepository) :
     }
 
     private fun insertPopularMoviesDb(movies: List<Result>) = viewScope.launch {
-        startLoadingData()
         repository.insertPopularMovies(movies = movies)
-        stopLoadingData()
     }
 
     fun deleteAllPopularMoviesDB() = viewScope.launch {
-        startLoadingData()
         repository.deleteAllPopularMovies()
-        stopLoadingData()
     }
 
     private fun insertTopRatedMoviesDb(movies: List<ResultTopRated>) = viewScope.launch {
-        startLoadingData()
         repository.insertTopRatedMovies(movies = movies)
-        stopLoadingData()
     }
 
     fun deleteAllTopRatedMoviesDB() = viewScope.launch {
-        startLoadingData()
         repository.deleteAllTopRatedMovies()
-        stopLoadingData()
     }
 
     private fun insertNowPlayongMoviesDb(movies: List<ResultNowPlayong>) = viewScope.launch {
-        startLoadingData()
         repository.insertNowPlayongMovies(movies = movies)
-        stopLoadingData()
     }
 
     fun deleteAllTNowPlayongMoviesDB() = viewScope.launch {
-        startLoadingData()
         repository.deleteAllNowPlayongMovies()
-        stopLoadingData()
     }
 
     private fun insertUpComingMoviesDb(movies: List<ResultUpComing>) = viewScope.launch {
-        startLoadingData()
         repository.insertUpComingMovies(movies = movies)
-        stopLoadingData()
     }
 
     fun deleteAllTUpComingMoviesDB() = viewScope.launch {
-        startLoadingData()
         repository.deleteAllUpComingMovies()
-        stopLoadingData()
     }
 
     private fun saveDetailInfo(movieId: Long) = viewScope.launch {
