@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.example.moviesapp.R
 import com.example.moviesapp.application.MovieApp
@@ -20,7 +21,11 @@ import com.example.moviesapp.model.entities.configuration.Images
 import com.example.moviesapp.model.entities.movies.details.ResponseMovieDetail
 import com.example.moviesapp.presentation.movies.utils.imageOptionMovie
 import com.example.moviesapp.presentation.movies.utils.network.hasConnection
+import com.example.moviesapp.ui.presentation.movies.view.list.FragmentPager
 import com.example.moviesapp.ui.presentation.movies.viewmodel.MoviesDetailsViewModel
+import com.google.android.material.transition.MaterialFade
+import com.google.android.material.transition.platform.MaterialContainerTransform
+import com.google.android.material.transition.platform.MaterialFadeThrough
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,15 +39,22 @@ class FragmentMoviesDetails : Fragment() {
     private val scope = CoroutineScope(Dispatchers.IO)
     private lateinit var adapter: ActorsAdapter
 
-    private var _binding : FragmentMoviesDetailsBinding? = null
-    private val binding get()= _binding!!
+    private var _binding: FragmentMoviesDetailsBinding? = null
+    private val binding get() = _binding!!
+    private var currentContainer: ViewGroup? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View?{
+    ): View? {
         _binding = FragmentMoviesDetailsBinding.inflate(inflater, container, false)
+        currentContainer = container
+        val materialFade = MaterialFade().apply {
+            duration = 2000L
+        }
+        container?.let { TransitionManager.beginDelayedTransition(it, materialFade) }
         return _binding?.root
     }
 
@@ -69,9 +81,17 @@ class FragmentMoviesDetails : Fragment() {
         setupRecyclerView()
         binding.backActivity.setOnClickListener {
             activity?.onBackPressed()
+            val materialFade = MaterialFade().apply {
+                duration = 2000L
+            }
+            currentContainer?.let { TransitionManager.beginDelayedTransition(it, materialFade) }
         }
         binding.backActivityPath.setOnClickListener {
             activity?.onBackPressed()
+            val materialFade = MaterialFade().apply {
+                duration = 2000L
+            }
+            currentContainer?.let { TransitionManager.beginDelayedTransition(it, materialFade) }
         }
 
         binding.setDate.setOnClickListener {
@@ -80,7 +100,7 @@ class FragmentMoviesDetails : Fragment() {
                     val data = (requireActivity().application as MovieApp)
                         .myComponent.getMovieRepository().getDetailMovieById(id = it)
 
-                    CalendarView(movie=data)
+                    CalendarView(movie = data)
                         .show(this@FragmentMoviesDetails.parentFragmentManager, "CALENDAR")
                 }
             }
@@ -104,7 +124,7 @@ class FragmentMoviesDetails : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding=null
+        _binding = null
     }
 
     private fun setStateLoading(state: Boolean) {
@@ -129,7 +149,7 @@ class FragmentMoviesDetails : Fragment() {
         binding.reviewsCount.text =
             if (localize == "english") "${data.voteCount} reviews" else "${data.voteCount} обзоров"
         binding.storylineDescription.text = data.overview
-        downloadPoster( data = data)
+        downloadPoster(data = data)
         bindStars(countRating = (data.voteAverage?.div(2))?.toInt() ?: 0)
 
 
@@ -153,7 +173,7 @@ class FragmentMoviesDetails : Fragment() {
         }
     }
 
-    private fun downloadPoster( data: ResponseMovieDetail) {
+    private fun downloadPoster(data: ResponseMovieDetail) {
         if (binding.detailPoster != null) {
             Glide.with(requireContext())
                 .clear(binding.detailPoster)

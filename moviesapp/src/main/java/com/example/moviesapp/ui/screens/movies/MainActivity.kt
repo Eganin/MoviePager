@@ -1,4 +1,4 @@
-package com.example.moviesapp.screens.movies
+package com.example.moviesapp.ui.screens.movies
 
 import android.content.Intent
 import android.os.Bundle
@@ -72,15 +72,39 @@ class MainActivity : AppCompatActivity(), Router, MoviesAdapter.OnClickPoster {
         }
     }
 
-    private fun openNewFragment(fragment: Fragment, addToBackStack: Boolean = true) {
+    private fun openNewFragment(
+        fragment: Fragment,
+        addToBackStack: Boolean = true,
+        sharedElement: SharedElements? = null
+    ) {
         val fragmentTransaction =
             supportFragmentManager.beginTransaction().replace(R.id.main_container, fragment)
 
         if (addToBackStack) {
             fragmentTransaction.addToBackStack(fragment::class.java.simpleName)
         }
+        when (sharedElement) {
+            SharedElements.LIST -> {
+                fragmentTransaction.addSharedElement(
+                    fragment.requireView(),
+                    resources.getString(R.string.transition_name)
+                )
+                fragmentTransaction.hide(supportFragmentManager.fragments.last())
+            }
+            SharedElements.DETAILS -> {
+                fragmentTransaction.addSharedElement(
+                    fragment.requireView(),
+                    resources.getString(R.string.transition_name)
+                )
+                fragmentTransaction.hide(supportFragmentManager.fragments.last())
+            }
+            else -> {
+            }
+        }
 
         fragmentTransaction.commit()
     }
 
 }
+
+enum class SharedElements { LIST, DETAILS }

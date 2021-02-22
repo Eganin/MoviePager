@@ -1,6 +1,7 @@
 package com.example.moviesapp.ui.presentation.movies.view.list
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -16,6 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.TransitionManager
 import androidx.work.WorkManager
 import com.example.moviesapp.R
 import com.example.moviesapp.application.MovieApp

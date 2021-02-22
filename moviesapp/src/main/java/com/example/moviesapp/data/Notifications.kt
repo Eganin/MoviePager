@@ -10,7 +10,7 @@ import androidx.core.app.*
 import androidx.core.app.NotificationManagerCompat.IMPORTANCE_HIGH
 import androidx.core.net.toUri
 import com.example.moviesapp.R
-import com.example.moviesapp.screens.movies.MainActivity
+import com.example.moviesapp.ui.screens.movies.MainActivity
 
 
 interface Notifications {
